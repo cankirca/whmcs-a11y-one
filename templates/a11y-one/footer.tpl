@@ -146,7 +146,7 @@
             <span class="d-none d-md-inline-block">{lang key="admin.returnToAdmin"}</span>
         </a>
     {/if}
-    {else}
+    {else}{* end !$isAuthPage; auth-page footer below *}
     <footer class="auth-footer">
         <div class="container text-center">
             <p class="copyright mb-0">{lang key="copyrightFooterNotice" year=$date_year company=$companyname}</p>
