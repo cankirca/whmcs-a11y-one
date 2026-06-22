@@ -106,14 +106,3 @@
         </div>
     {/if}
 {/foreach}
-{literal}
-<script>
-/* A11y One: keep aria-expanded in sync with the custom card-minimise toggle */
-(function ($) {
-    $(document).on('click', '.card-minimise', function () {
-        var expanded = $(this).attr('aria-expanded') === 'true';
-        $(this).attr('aria-expanded', expanded ? 'false' : 'true');
-    });
-}(jQuery));
-</script>
-{/literal}
