@@ -1121,7 +1121,7 @@
 
         /* aria-label — use carrier key, falling back to English */
         if (!btn.getAttribute('aria-label')) {
-            btn.setAttribute('aria-label', _i18n('copyToClipboard', 'Copy to clipboard'));
+            btn.setAttribute('aria-label', _i18n('copytoclipboard', 'Copy to clipboard'));
         }
 
         /* aria-hidden on inner icons */
