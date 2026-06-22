@@ -1,6 +1,6 @@
 {assign var="isAuthPage" value=in_array($templatefile, ['login','clientregister','password-reset-container','user-password'])}
 <!doctype html>
-<html lang="{$language|truncate:5:'':true|default:'en'}">
+<html lang="{if $language == 'turkish'}tr{else}en{/if}">
 <head>
     <meta charset="{$charset}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
