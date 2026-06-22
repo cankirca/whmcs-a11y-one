@@ -14,6 +14,10 @@
     window.langPasswordStrong = "{lang key='pwstrengthstrong'}";
     jQuery(document).ready(function() {
         jQuery("#inputNewPassword1").keyup(registerFormPasswordStrengthFeedback);
+        var $stateSelect = jQuery("#stateinput");
+        if ($stateSelect.length) {
+            $stateSelect.attr("aria-labelledby", "stateFieldLabel");
+        }
     });
 </script>
 {if $registrationDisabled}
@@ -119,13 +123,11 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <div class="form-group prepend-icon">
-                                        <label for="state" class="field-icon" id="inputStateIcon">
+                                        <label for="state" class="field-icon" id="stateFieldLabel">
                                             <i class="fas fa-map-signs" aria-hidden="true"></i>
+                                            <span class="sr-only">{lang key='orderForm.state'}</span>
                                         </label>
-                                        <label for="stateinput" class="field-icon" id="inputStateTextIcon">
-                                            <i class="fas fa-map-signs" aria-hidden="true"></i>
-                                        </label>
-                                        <input type="text" name="state" id="state" class="field form-control" placeholder="{lang key='orderForm.state'}" value="{$clientstate}" {if !in_array('state', $optionalFields)}required aria-required="true"{/if}>
+                                        <input type="text" name="state" id="state" class="field form-control" placeholder="{lang key='orderForm.state'}" value="{$clientstate}" {if !in_array('state', $optionalFields)}required aria-required="true"{/if} aria-labelledby="stateFieldLabel">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -198,6 +200,7 @@
                                             <div class="form-group prepend-icon">
                                                 <label for="inputCurrency" class="field-icon">
                                                     <i class="far fa-money-bill-alt" aria-hidden="true"></i>
+                                                    <span class="sr-only">{lang key='choosecurrency'}</span>
                                                 </label>
                                                 <select id="inputCurrency" name="currency" class="field form-control">
                                                     {foreach $currencies as $curr}
