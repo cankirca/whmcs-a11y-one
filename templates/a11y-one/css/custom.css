@@ -75,6 +75,45 @@ body.auth-page { background: #f5f6f8; }
 .auth-footer { padding: 1.5rem 0; color: #595f6b; }
 .auth-page .card { box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 
+/* ------------------------------------------------------------------ */
+/* iCheck replacement — style the now-native checkbox/radio controls.   */
+/*                                                                      */
+/* a11y-one.js replaces iCheck so the real <input> stays visible,       */
+/* focusable and operable; these rules give it the twenty-one look      */
+/* (a ~20px square/round control painted in the WHMCS primary blue)     */
+/* without ever hiding it. accent-color keeps the control fully native  */
+/* — checked state, indeterminate state and keyboard operation are all  */
+/* handled by the browser and exposed to assistive tech.                */
+/* The .a11y-native-check class is added in JS to every input that the  */
+/* parent would have handed to iCheck (class .icheck-button).           */
+/* ------------------------------------------------------------------ */
+input.icheck-button,
+input.a11y-native-check {
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+    appearance: auto;
+    position: static;   /* undo any iCheck inline absolute positioning */
+    opacity: 1;         /* undo any iCheck inline opacity:0            */
+    width: 20px;
+    height: 20px;
+    margin: 0 .5rem 0 0;
+    vertical-align: middle;
+    cursor: pointer;
+    accent-color: #1a6fd4;  /* matches twenty-one square-blue + focus token */
+    flex: 0 0 auto;
+}
+input.icheck-button:disabled,
+input.a11y-native-check:disabled {
+    cursor: not-allowed;
+    opacity: .65;
+}
+/* Keyboard focus ring (inherits the global :focus-visible token above). */
+input.icheck-button:focus-visible,
+input.a11y-native-check:focus-visible {
+    outline: 3px solid #1a6fd4;
+    outline-offset: 2px;
+}
+
 /* Respect reduced-motion (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {
     * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
