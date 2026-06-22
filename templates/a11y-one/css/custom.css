@@ -160,6 +160,100 @@ input.a11y-native-check:focus-visible {
     transform: rotate(180deg);
 }
 
+/* ------------------------------------------------------------------ */
+/* Accessible ticket star-rating (viewticket.tpl)                       */
+/*                                                                      */
+/* The parent renders a clickable <span rate="N"> widget that is mouse- */
+/* only and exposes nothing to assistive tech. A11y One rebuilds it as  */
+/* a <fieldset> of five native radios; these rules draw the same gold   */
+/* stars OVER the native inputs (kept in the a11y tree, sr-only) so the */
+/* visual is unchanged while the control stays keyboard-operable.       */
+/*                                                                      */
+/* Star glyph + colours mirror the parent (FA \f005, #999 / #f2de88).   */
+/* direction:rtl puts DOM order 5..1 on screen as 1..5 left-to-right    */
+/* and lets the "~ later sibling" combinator fill from the chosen star  */
+/* down to the first.                                                   */
+.rating-fieldset {
+    float: right;
+    padding: 5px 10px;
+    margin: 0;
+    border: 0;
+    direction: rtl;
+    font-size: 24px;
+    line-height: 1;
+}
+/* The legend is the rating prompt — keep it for AT but visually hidden
+   so the row of stars reads exactly like the parent's. */
+.rating-fieldset .rating-legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    float: none;
+    font-size: 1rem;
+}
+.rating-fieldset .rating-star {
+    display: inline-block;
+    margin: 0;
+    cursor: pointer;
+    font-family: "Font Awesome 6 Pro";
+    font-weight: 400;
+    font-style: normal;
+}
+.rating-fieldset .rating-star::before {
+    content: "\f005";
+    color: #999;
+}
+/* Hover preview: the hovered star and every later sibling (visually to
+   its left, i.e. lower ratings) light up. */
+.rating-fieldset .rating-star:hover::before,
+.rating-fieldset .rating-star:hover ~ .rating-star::before,
+/* Checked state: the checked input's label and all later sibling labels. */
+.rating-fieldset .rating-input:checked + .rating-star::before,
+.rating-fieldset .rating-input:checked + .rating-star ~ .rating-star::before {
+    color: #f2de88;
+}
+/* Keyboard focus: outline the star whose radio is focused (the sr-only
+   input itself is not visible, so move the focus ring to its label). */
+.rating-fieldset .rating-input:focus-visible + .rating-star,
+.rating-fieldset .rating-input:focus + .rating-star {
+    outline: 3px solid #1a6fd4;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Contrast: ticket requestor badges (viewticket + sidebar).            */
+/* Parent uses light green/blue badge backgrounds with white bold text  */
+/* (~2.1-2.5:1). Darken the backgrounds so white text clears 4.5:1.     */
+.requestor-type-owner {
+    background-color: #1c7430 !important; /* white on this ~5.1:1 */
+}
+.requestor-type-operator {
+    background-color: #117285 !important; /* white on this ~4.8:1 */
+}
+
+/* Contrast: core renders some ticket status labels with an inline grey
+   background (#888888) + white text (~3.5:1). Lift the grey label to a
+   darker grey so white text clears 4.5:1. Targets the inline-styled label
+   used for "Closed"/low-priority states in the ticket sidebar/thread. */
+.label[style*="#888888"],
+.label[style*="#888"] {
+    background-color: #595f6b !important; /* white on this ~5.6:1 */
+}
+
+/* Contrast: bootstrap-markdown status footer text (#959694 on #f5f5f5 ~2.7:1). */
+.md-footer .small-font,
+.md-footer .markdown-save,
+.markdown-editor-status {
+    color: #595f6b !important; /* ~5.7:1 on #f5f5f5 */
+}
+
 /* Respect reduced-motion (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {
     * { animation-duration: .001ms !important; transition-duration: .001ms !important; }

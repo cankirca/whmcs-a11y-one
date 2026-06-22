@@ -58,3 +58,8 @@ $_LANG['a11yMdeFullscreen']          = 'Toggle full screen';
 $_LANG['a11yMdeToolbar']             = 'Text formatting';
 $_LANG['a11yFileAttachment']         = 'Attachment';
 $_LANG['a11yFileAttachmentAdded']    = 'Attachment field added';
+
+// WS-F Task 3 viewticket — accessible star rating
+$_LANG['a11yRateThisReply']          = 'Rate this support reply';
+$_LANG['a11yStarSingular']           = ':count star';
+$_LANG['a11yStarPlural']             = ':count stars';

@@ -58,3 +58,8 @@ $_LANG['a11yMdeFullscreen']          = 'Tam ekranı aç/kapat';
 $_LANG['a11yMdeToolbar']             = 'Metin biçimlendirme';
 $_LANG['a11yFileAttachment']         = 'Ek dosya';
 $_LANG['a11yFileAttachmentAdded']    = 'Ek dosya alanı eklendi';
+
+// WS-F Task 3 viewticket — accessible star rating
+$_LANG['a11yRateThisReply']          = 'Bu destek yanıtını değerlendirin';
+$_LANG['a11yStarSingular']           = ':count yıldız';
+$_LANG['a11yStarPlural']             = ':count yıldız';

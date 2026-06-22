@@ -1809,11 +1809,99 @@
         }
     }
 
+    /* ------------------------------------------------------------------ */
+    /* Ticket star rating — accessible radio group submit                   */
+    /*                                                                      */
+    /* viewticket.tpl rebuilds the parent's clickable <span rate="N">       */
+    /* widget as a <fieldset.rating-fieldset> of native radios. The parent  */
+    /* submitted a rating by navigating to                                  */
+    /*   viewticket.php?tid={tid}&c={c}&rating=rate{replyid}_{N}            */
+    /* (see twenty-one/js/whmcs.js "Ticket Rating Click Handler"). We       */
+    /* reproduce that EXACT submit on radio `change`, reading the ticket    */
+    /* identifiers carried as data-* on the fieldset. Keyboard users pick a */
+    /* star with the arrow keys (native radio behaviour) and the rating     */
+    /* posts identically to the original mouse-click flow.                  */
+    /* ------------------------------------------------------------------ */
+    function initTicketRatingA11y() {
+        var groups = document.querySelectorAll('.rating-fieldset[data-ticketreplyid]');
+        Array.prototype.forEach.call(groups, function (fs) {
+            if (fs.__a11yRatingDone) { return; }
+            fs.__a11yRatingDone = true;
+            fs.addEventListener('change', function (e) {
+                var input = e.target;
+                if (!input || input.type !== 'radio' || !input.value) { return; }
+                var tid = fs.getAttribute('data-ticketid');
+                var key = fs.getAttribute('data-ticketkey');
+                var replyId = fs.getAttribute('data-ticketreplyid');
+                if (!tid || !key || !replyId) { return; }
+                window.location = 'viewticket.php?tid=' + encodeURIComponent(tid)
+                    + '&c=' + encodeURIComponent(key)
+                    + '&rating=rate' + encodeURIComponent(replyId)
+                    + '_' + encodeURIComponent(input.value);
+            });
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Reply focus management                                               */
+    /*                                                                      */
+    /* The parent only smooth-scrolls to the reply composer (and, after a   */
+    /* post, the browser lands on the reply thread). Scrolling alone moves  */
+    /* nothing for keyboard / screen-reader users. We move focus to the     */
+    /* target region's heading after the scroll so the next Tab continues   */
+    /* from there and AT announces the destination. Targets carry           */
+    /* tabindex="-1" in the template so they are programmatically focusable */
+    /* without becoming a tab stop.                                         */
+    /* ------------------------------------------------------------------ */
+    function _focusRegion(target) {
+        if (!target) { return; }
+        var heading = target.querySelector('h1, h2, h3, .card-title, .reply-heading');
+        var focusEl = heading || target;
+        if (focusEl !== target && !focusEl.hasAttribute('tabindex')) {
+            focusEl.setAttribute('tabindex', '-1');
+        }
+        /* Defer until the smooth-scroll animation settles. */
+        setTimeout(function () {
+            try { focusEl.focus({ preventScroll: true }); }
+            catch (e) { focusEl.focus(); }
+        }, 550);
+    }
+
+    function initReplyFocusA11y() {
+        /* Buttons that scroll to a region (the "Reply" jump) also focus it. */
+        document.querySelectorAll('[data-a11y-scroll-focus]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var sel = btn.getAttribute('data-a11y-scroll-focus');
+                _focusRegion(sel ? document.querySelector(sel) : null);
+            });
+        });
+
+        /* After a reply is posted, WHMCS reloads the thread; move focus to
+           the most recent reply so the new content is announced. Only do
+           this when arriving from a reply submit (postreply / a reply hash)
+           to avoid stealing focus on a normal page view. */
+        var fromReply = /[?&]postreply=/.test(window.location.search)
+            || /^#ticketReply\d+$/.test(window.location.hash);
+        if (fromReply) {
+            var target = null;
+            if (window.location.hash && /^#ticketReply\d+$/.test(window.location.hash)) {
+                target = document.querySelector(window.location.hash);
+            }
+            if (!target) {
+                var replies = document.querySelectorAll('.ticket-reply-card');
+                target = replies.length ? replies[replies.length - 1] : null;
+            }
+            _focusRegion(target);
+        }
+    }
+
     function initTicketSubmitA11y() {
         watchMarkdownEditors();
         initFileUploadA11y();
         wireCustomFieldDescriptions();
         initKbSuggestions();
+        initTicketRatingA11y();
+        initReplyFocusA11y();
     }
 
     if (document.readyState === 'loading') {
