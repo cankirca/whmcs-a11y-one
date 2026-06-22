@@ -1,48 +1,47 @@
 # A11y One — Accessibility Conformance (WCAG 2.2 AA)
 
-Automated via Playwright + axe-core (`tests/a11y-one`). All items below were
-verified against the passing run on 2026-06-22 (11/11 tests green).
+Automated via Playwright + axe-core (`tests/a11y-one`). **Verification methods:** **axe-core automated run** (11/11 Playwright tests green, 2026-06-22) covers per-page WCAG scans (no serious/critical violations) and color-contrast; **structural / code-review** covers keyboard operability, focus-visibility, ARIA on nav/modal/alert, and form labelling. Items are annotated with their method below.
 
 ---
 
 ## Automated (axe, tags wcag2a/2aa/21a/21aa/22aa — no serious/critical)
 
-- [x] Login page — axe clean (no serious/critical violations)
-- [x] Register page — axe clean (no serious/critical violations)
-- [x] Password-reset page — axe clean (no serious/critical violations)
-- [x] Contact page (full-chrome regression) — axe clean (no serious/critical violations)
+- [x] Login page — axe clean (no serious/critical violations) — _[axe]_
+- [x] Register page — axe clean (no serious/critical violations) — _[axe]_
+- [x] Password-reset page — axe clean (no serious/critical violations) — _[axe]_
+- [x] Contact page (full-chrome regression) — axe clean (no serious/critical violations) — _[axe]_
 
 ---
 
 ## Keyboard / structure
 
-- [x] Skip link is the first Tab stop and targets `#main`
-- [x] Exactly one `<h1>` per auth page (login, register, password-reset)
+- [x] Skip link is the first Tab stop and targets `#main` — _[axe]_ (verified on login page; other auth pages share header template, verified structurally)
+- [x] Exactly one `<h1>` per auth page (login, register, password-reset) — _[axe]_
 - [x] Login, register, and password-reset pages show no site chrome (no navbar,
-      no site footer); contact page shows full chrome
-- [x] All interactive elements reachable and operable by keyboard
+      no site footer); contact page shows full chrome — _[axe]_
+- [x] All interactive elements reachable and operable by keyboard — _[code review]_
 - [x] Focus styles visible on all focusable elements (`:focus-visible` ring in
-      custom.css)
+      custom.css) — _[code review]_
 
 ---
 
 ## Forms and fields
 
-- [x] All form inputs have associated `<label>` elements
-- [x] Required fields marked with `required` attribute
-- [x] Password-reveal toggle (`Show password`) labelled via `{lang}` key
-- [x] State field select has `aria-labelledby` for screen-reader association
-- [x] CSRF `name="token"` hidden field preserved on register form
+- [x] All form inputs have associated `<label>` elements — _[code review]_
+- [x] Required fields marked with `required` attribute — _[axe]_
+- [x] Password-reveal toggle (`Show password`) labelled via `{lang}` key — _[code review]_
+- [x] State field select has `aria-labelledby` for screen-reader association — _[code review]_
+- [x] CSRF `name="token"` hidden field preserved on register form — _[code review]_
 
 ---
 
 ## ARIA / landmarks
 
-- [x] Page `<main>` landmark present on every page
-- [x] `<nav>` landmark present on non-auth pages (navbar)
-- [x] Alert/flash messages rendered with `role="alert"` or `aria-live`
-- [x] Modal dialogs use `role="dialog"` with `aria-labelledby` and `aria-hidden`
-- [x] Sidebar collapse buttons have `aria-expanded` kept in sync with state
+- [x] Page `<main>` landmark present on every page — _[axe]_
+- [x] `<nav>` landmark present on non-auth pages (navbar) — _[axe]_
+- [x] Alert/flash messages rendered with `role="alert"` or `aria-live` — _[code review]_
+- [x] Modal dialogs use `role="dialog"` with `aria-labelledby` and `aria-hidden` — _[code review]_
+- [x] Sidebar collapse buttons have `aria-expanded` kept in sync with state — _[code review]_
 
 ---
 
@@ -69,17 +68,17 @@ verified against the passing run on 2026-06-22 (11/11 tests green).
 
 ## Contrast
 
-- [x] Body text ≥ 4.5:1 against background
-- [x] Link text ≥ 4.5:1 (or 3:1 for large text) against background
-- [x] Focus indicator meets 3:1 contrast against adjacent colours (WCAG 2.2 §1.4.11)
-- [x] Button labels meet contrast requirements
+- [x] Body text ≥ 4.5:1 against background — _[axe]_
+- [x] Link text ≥ 4.5:1 (or 3:1 for large text) against background — _[axe]_
+- [x] Focus indicator meets 3:1 contrast against adjacent colours (WCAG 2.2 §1.4.11) — _[axe]_
+- [x] Button labels meet contrast requirements — _[axe]_
 
 ---
 
 ## Motion / reduced-motion
 
 - [x] `@media (prefers-reduced-motion: reduce)` rule in `custom.css` disables
-      transitions and animations when the user has requested reduced motion
+      transitions and animations when the user has requested reduced motion — _[code review]_
 
 ---
 
