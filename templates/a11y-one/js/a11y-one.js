@@ -1203,4 +1203,223 @@
         });
     }
 
+    /* ------------------------------------------------------------------ */
+    /* Global decorative-icon hiding                                       */
+    /*                                                                     */
+    /* FontAwesome glyphs are decorative by default. WHMCS templates emit  */
+    /* many <i>/<span> FA icons WITHOUT aria-hidden, so screen readers     */
+    /* announce the glyph ("?", PUA chars) before the link/button text     */
+    /* ("1 ? services"). This pass sets aria-hidden="true" on every FA     */
+    /* icon element that does not already have it.                         */
+    /*                                                                     */
+    /* SAFETY: An icon that is the SOLE accessible name of a control must  */
+    /* NOT be hidden until that control carries its own label. All such    */
+    /* header controls (switcher, cart, hamburger, notifications,          */
+    /* return-to-admin) were given explicit aria-label in header.tpl, so   */
+    /* hiding their icons here is safe. As an extra guard we skip an icon   */
+    /* whose nearest control ancestor has no other accessible text AND no  */
+    /* aria-label/aria-labelledby/title — leaving such an icon visible to  */
+    /* AT rather than producing an unlabelled control.                     */
+    /* Idempotent: only touches icons missing aria-hidden.                 */
+    /* ------------------------------------------------------------------ */
+
+    var _faIconSel = 'i[class*="fa-"], span[class*="fa-"], ' +
+        'i.fa, i.fas, i.far, i.fad, i.fal, i.fab, ' +
+        'span.fa, span.fas, span.far, span.fad, span.fal, span.fab';
+
+    function _isFaIcon(el) {
+        if (!el || !el.classList) { return false; }
+        var cl = el.classList;
+        if (cl.contains('fa') || cl.contains('fas') || cl.contains('far') ||
+            cl.contains('fad') || cl.contains('fal') || cl.contains('fab')) {
+            return true;
+        }
+        for (var i = 0; i < cl.length; i++) {
+            if (cl[i].indexOf('fa-') === 0) { return true; }
+        }
+        return false;
+    }
+
+    /* Does the control have an accessible name independent of this icon? */
+    function _controlHasOwnName(control, icon) {
+        if (!control) { return true; } /* not inside a control — always safe */
+        if (control.getAttribute('aria-label') ||
+            control.getAttribute('aria-labelledby') ||
+            control.getAttribute('title')) {
+            return true;
+        }
+        /* Clone, drop the candidate icon (and any sibling icons) + sr-only-less
+           check: does visible/sr-only text remain? */
+        var clone = control.cloneNode(true);
+        clone.querySelectorAll('i, svg').forEach(function (el) {
+            el.parentNode.removeChild(el);
+        });
+        var txt = (clone.textContent || '').replace(/\s+/g, ' ').trim();
+        return txt.length > 0;
+    }
+
+    function hideDecorativeIcons(root) {
+        var scope = root || document;
+        var icons = scope.querySelectorAll(_faIconSel);
+        Array.prototype.forEach.call(icons, function (icon) {
+            if (!_isFaIcon(icon)) { return; }
+            if (icon.getAttribute('aria-hidden') === 'true') { return; }
+            /* If the icon carries its own explicit accessible name, respect it. */
+            if (icon.getAttribute('aria-label') ||
+                icon.getAttribute('aria-labelledby') ||
+                icon.getAttribute('role') === 'img') {
+                return;
+            }
+            var control = icon.closest('a, button, [role="button"], label, summary');
+            if (control && !_controlHasOwnName(control, icon)) {
+                /* Icon is the only name source for an unlabelled control —
+                   don't hide it, or the control becomes nameless. */
+                return;
+            }
+            icon.setAttribute('aria-hidden', 'true');
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { hideDecorativeIcons(); });
+    } else {
+        hideDecorativeIcons();
+    }
+    /* Re-run after AJAX content swaps (sidebar refresh, alerts, etc.) */
+    if (typeof jQuery !== 'undefined') {
+        jQuery(document).on('ajaxComplete', function () { hideDecorativeIcons(); });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Account-notifications popover: aria-expanded sync + focus mgmt      */
+    /*                                                                     */
+    /* The button (#accountNotifications) opens a Bootstrap popover whose  */
+    /* content is #accountNotificationsContent (role=dialog, tabindex=-1   */
+    /* in header.tpl). We:                                                 */
+    /*  - sync aria-expanded on the button with shown/hidden.bs.popover    */
+    /*  - move focus into the popover on open (first link, else the        */
+    /*    dialog container)                                                */
+    /*  - Esc closes the popover and returns focus to the button          */
+    /* ------------------------------------------------------------------ */
+
+    function initNotificationsPopover() {
+        var btn = document.getElementById('accountNotifications');
+        if (!btn || btn.__a11yNotifBound) { return; }
+        if (typeof jQuery === 'undefined') { return; }
+        btn.__a11yNotifBound = true;
+
+        var $btn = jQuery(btn);
+
+        $btn.on('shown.bs.popover', function () {
+            btn.setAttribute('aria-expanded', 'true');
+            /* Bootstrap clones the content into the live popover. Focus the
+               first focusable element inside it, else the popover container. */
+            var tip = $btn.data('bs.popover');
+            var tipEl = tip && tip.tip ? tip.tip : document.querySelector('.popover.show, .popover.in');
+            if (!tipEl) { return; }
+            tipEl.setAttribute('role', 'dialog');
+            tipEl.setAttribute('aria-label', btn.getAttribute('aria-label') || '');
+            var focusTarget = tipEl.querySelector('a[href], button, [tabindex]');
+            if (!focusTarget) {
+                tipEl.setAttribute('tabindex', '-1');
+                focusTarget = tipEl;
+            }
+            if (focusTarget && typeof focusTarget.focus === 'function') {
+                focusTarget.focus();
+            }
+        });
+
+        $btn.on('hidden.bs.popover', function () {
+            btn.setAttribute('aria-expanded', 'false');
+        });
+
+        /* Esc within the popover closes it and returns focus to the button. */
+        document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Escape' && e.keyCode !== 27) { return; }
+            if (btn.getAttribute('aria-expanded') !== 'true') { return; }
+            var active = document.activeElement;
+            var inPopover = active && active.closest && active.closest('.popover');
+            if (inPopover || active === btn) {
+                $btn.popover('hide');
+                btn.focus();
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initNotificationsPopover);
+    } else {
+        initNotificationsPopover();
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Collapse toggles: aria-expanded sync (hamburger / mobile nav)       */
+    /*                                                                     */
+    /* Bootstrap 4's collapse plugin updates aria-expanded automatically   */
+    /* only when the toggle's data-target/href resolves cleanly; the       */
+    /* twenty-one hamburger uses data-target and starts with no            */
+    /* aria-expanded. We keep every collapse toggle's aria-expanded in     */
+    /* sync with the actual show/hide state via the bs.collapse events.    */
+    /* ------------------------------------------------------------------ */
+
+    function _togglesFor(collapseEl) {
+        var id = collapseEl.id;
+        var sel = [];
+        if (id) {
+            sel.push('[data-target="#' + id + '"]');
+            sel.push('[href="#' + id + '"]');
+            sel.push('[aria-controls="' + id + '"]');
+        }
+        if (!sel.length) { return []; }
+        return Array.prototype.slice.call(document.querySelectorAll(sel.join(',')));
+    }
+
+    if (typeof jQuery !== 'undefined') {
+        jQuery(document).on('shown.bs.collapse', function (e) {
+            _togglesFor(e.target).forEach(function (t) {
+                t.setAttribute('aria-expanded', 'true');
+            });
+        });
+        jQuery(document).on('hidden.bs.collapse', function (e) {
+            _togglesFor(e.target).forEach(function (t) {
+                t.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Development-license notice: give it a labelled region context.      */
+    /*                                                                     */
+    /* WHMCS core injects a yellow "Dev License" banner as the FIRST child */
+    /* of .primary-content (no id/class — inline styles only), landing     */
+    /* between the sidebar/nav and the page heading where a screen-reader  */
+    /* user hears orphan license text mid-navigation. It is NOT in any     */
+    /* template we override, so we cannot remove or relocate it cleanly;   */
+    /* the least-invasive accessibility fix is to wrap it in a named       */
+    /* region (role=region + aria-label) so AT announces it as a distinct, */
+    /* skippable landmark rather than stray text. Idempotent.              */
+    /* ------------------------------------------------------------------ */
+
+    function labelDevLicenseNotice() {
+        var candidates = document.querySelectorAll('.primary-content > div, #main-body > .container > div');
+        Array.prototype.forEach.call(candidates, function (div) {
+            if (div.__a11yLicenseWrapped) { return; }
+            if (div.getAttribute('role') === 'region') { return; }
+            var txt = (div.textContent || '');
+            /* Match WHMCS' core dev-license wording (locale-independent token). */
+            if (!/Development License|Dev License/i.test(txt)) { return; }
+            /* Only treat the compact banner, not large content blocks. */
+            if (txt.length > 400) { return; }
+            div.__a11yLicenseWrapped = true;
+            div.setAttribute('role', 'region');
+            div.setAttribute('aria-label', _i18n('devlicensenotice', 'Development license notice'));
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', labelDevLicenseNotice);
+    } else {
+        labelDevLicenseNotice();
+    }
+
 }());

@@ -27,3 +27,9 @@ $_LANG['a11yPage']                   = 'Sayfa';
 $_LANG['a11ySearch']                 = 'Ara';
 $_LANG['a11yCopyToClipboard']        = 'Panoya kopyala';
 $_LANG['a11yCopied']                 = 'Kopyalandı';
+
+// Header chrome (topbar / navbar) accessible names
+$_LANG['a11ySwitchAccount']          = 'Hesap değiştir';
+$_LANG['a11yMenu']                   = 'Menü';
+$_LANG['a11yItemsInCart']            = 'sepetteki ürün';
+$_LANG['a11yDevLicenseNotice']       = 'Geliştirme lisansı bildirimi';
