@@ -30,7 +30,7 @@
                                     <span class="d-none d-sm-inline">{lang key='nonotifications'}</span>
                                 {/if}
                             </button>
-                            <div id="accountNotificationsContent" class="w-hidden" role="dialog" aria-label="{lang key='notifications'}" tabindex="-1">
+                            <div id="accountNotificationsContent" class="w-hidden" tabindex="-1">
                                 <ul class="client-alerts">
                                 {foreach $clientAlerts as $alert}
                                     <li>

@@ -229,35 +229,54 @@
     }
 
     /* ------------------------------------------------------------------ */
-    /* Sidebar: keep aria-expanded in sync with the custom card-minimise   */
-    /* toggle; also ensure every card-minimise button has an accessible    */
-    /* name (the icon inside is aria-hidden).                              */
+    /* Sidebar collapse: clean disclosure pattern (SR round 2, fix C)      */
+    /*                                                                     */
+    /* sidebar.tpl now renders the toggle as a full-width <button> that    */
+    /* WRAPS the section title text + chevron, with aria-expanded /        */
+    /* aria-controls. The button's accessible name therefore comes         */
+    /* naturally from its title text (the chevron <i> is aria-hidden), so  */
+    /* a screen reader announces "{section title}, button, expanded/       */
+    /* collapsed" — the standard disclosure phrasing the SR user asked for.*/
+    /*                                                                     */
+    /* We DO NOT add a verb-prefixed aria-label here: that would override  */
+    /* the section-title name and bury the section under "Collapse …". We  */
+    /* only supply an aria-label as a FALLBACK when a button has no visible */
+    /* text of its own (defensive — e.g. an icon-only legacy card).        */
+    /* aria-expanded is kept in sync on click; the visible state lives in  */
+    /* aria-expanded, not in the name.                                     */
     /* ------------------------------------------------------------------ */
+    function _cardMinimiseAccessibleText(btn) {
+        /* Visible text of the button minus aria-hidden icons. */
+        var clone = btn.cloneNode(true);
+        clone.querySelectorAll('i, svg, [aria-hidden="true"]').forEach(function (el) {
+            if (el.parentNode) { el.parentNode.removeChild(el); }
+        });
+        return (clone.textContent || '').replace(/\s+/g, ' ').trim();
+    }
+
     function fixCardMinimiseButtons() {
         document.querySelectorAll('.card-minimise').forEach(function (btn) {
-            if (!btn.getAttribute('aria-label')) {
-                /* Derive a name from the controlled panel's heading text.   */
-                /* The button is nested inside the .card-title / .card-header */
-                /* so we must collect text nodes that are NOT inside the btn. */
-                var heading = null;
-                var header = btn.closest('.card-header');
-                if (header) {
-                    var titleEl = header.querySelector('.card-title');
-                    if (titleEl) {
-                        /* Clone and remove the button to get clean heading text */
-                        var clone = titleEl.cloneNode(true);
-                        var cloneBtn = clone.querySelector('.card-minimise');
-                        if (cloneBtn) { cloneBtn.parentNode.removeChild(cloneBtn); }
-                        heading = clone.textContent.replace(/\s+/g, ' ').trim();
-                    }
+            /* Hide the chevron from AT (decorative). */
+            btn.querySelectorAll('i, svg').forEach(function (icon) {
+                icon.setAttribute('aria-hidden', 'true');
+            });
+            /* If the button has its own visible text, that IS the name —   */
+            /* leave it alone (clean disclosure). Only fall back to a        */
+            /* derived label when the button would otherwise be nameless.    */
+            if (_cardMinimiseAccessibleText(btn)) { return; }
+            if (btn.getAttribute('aria-label')) { return; }
+            var heading = null;
+            var header = btn.closest('.card-header');
+            if (header) {
+                var titleEl = header.querySelector('.card-title');
+                if (titleEl) {
+                    var tClone = titleEl.cloneNode(true);
+                    var cloneBtn = tClone.querySelector('.card-minimise');
+                    if (cloneBtn) { cloneBtn.parentNode.removeChild(cloneBtn); }
+                    heading = tClone.textContent.replace(/\s+/g, ' ').trim();
                 }
-                var isExpanded = btn.getAttribute('aria-expanded') !== 'false';
-                var action = isExpanded ? _i18n('collapse', 'Collapse') : _i18n('expand', 'Expand');
-                var label = heading
-                    ? action + ' ' + heading
-                    : action + ' ' + _i18n('panel', 'panel');
-                btn.setAttribute('aria-label', label);
             }
+            btn.setAttribute('aria-label', heading || _i18n('panel', 'panel'));
         });
     }
 
@@ -268,18 +287,12 @@
         fixCardMinimiseButtons();
     }
 
+    /* Keep aria-expanded in sync with the parent theme's slide toggle. */
     document.addEventListener('click', function (e) {
         var btn = e.target.closest('.card-minimise');
         if (!btn) { return; }
         var expanded = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        /* Update label to reflect collapsed/expanded state */
-        var isNowExpanded = !expanded;
-        var collapse = _i18n('collapse', 'Collapse');
-        var expand   = _i18n('expand',   'Expand');
-        var current  = btn.getAttribute('aria-label') || '';
-        var replaceRe = new RegExp('^(' + collapse + '|' + expand + ') ');
-        btn.setAttribute('aria-label', current.replace(replaceRe, (isNowExpanded ? collapse + ' ' : expand + ' ')));
     });
 
     /* ------------------------------------------------------------------ */
@@ -341,17 +354,77 @@
             }
         }
 
-        /* 2. <th scope="col"> on all header cells ----------------------- */
+        /* 2. <th scope="col"> + sort state on all header cells ---------- */
         var ths = table.querySelectorAll('thead th');
         ths.forEach(function (th) {
             if (!th.getAttribute('scope')) {
                 th.setAttribute('scope', 'col');
             }
-            /* 3. aria-sort: DataTables 1.10.x sets aria-sort on the       */
-            /* sorted column's th. Verify and add "none" on unsorted cols. */
-            if (!th.getAttribute('aria-sort')) {
-                th.setAttribute('aria-sort', 'none');
+
+            /* 3. aria-sort + accessible sort-state name -------------------*/
+            /* DataTables marks the active column with .sorting_asc /       */
+            /* .sorting_desc and others with .sorting. It also stamps its    */
+            /* own aria-sort, but inconsistently (it leaves "none" on the    */
+            /* freshly-sorted column until the next interaction). Derive     */
+            /* aria-sort authoritatively from the class so it is always      */
+            /* correct after every draw, and make the header's accessible    */
+            /* name convey that it is a sort control and its current state.  */
+            var isSortable = th.classList.contains('sorting') ||
+                             th.classList.contains('sorting_asc') ||
+                             th.classList.contains('sorting_desc') ||
+                             th.classList.contains('sorting_asc_disabled') ||
+                             th.classList.contains('sorting_desc_disabled');
+
+            if (!isSortable) {
+                /* Non-sortable column — leave it without sort semantics.   */
+                if (!th.getAttribute('aria-sort')) {
+                    /* nothing to do — a plain column header */
+                }
+                return;
             }
+
+            var sortState; /* 'ascending' | 'descending' | 'none' */
+            if (th.classList.contains('sorting_asc')) {
+                sortState = 'ascending';
+            } else if (th.classList.contains('sorting_desc')) {
+                sortState = 'descending';
+            } else {
+                sortState = 'none';
+            }
+            th.setAttribute('aria-sort', sortState);
+
+            /* Column name: the th's own text minus any helper/sr nodes.    */
+            /* Cache it once so re-sorting (which leaves text intact) keeps  */
+            /* the same column name even if DataTables adds spans later.     */
+            var colName = th.getAttribute('data-a11y-col');
+            if (!colName) {
+                var thClone = th.cloneNode(true);
+                thClone.querySelectorAll('.sr-only, i, svg').forEach(function (el) {
+                    if (el.parentNode) { el.parentNode.removeChild(el); }
+                });
+                colName = (thClone.textContent || '').replace(/\s+/g, ' ').trim();
+                if (colName) { th.setAttribute('data-a11y-col', colName); }
+            }
+
+            /* Build "{column}, sortable, sorted ascending/descending/not   */
+            /* sorted" via the i18n carrier. This overrides DataTables'      */
+            /* own static aria-label ("activate to sort column ascending")  */
+            /* which never reflects the CURRENT state. We do NOT touch the   */
+            /* click handler — DataTables still sorts on click.             */
+            var stateWord;
+            if (sortState === 'ascending') {
+                stateWord = _i18n('sortedasc', 'sorted ascending');
+            } else if (sortState === 'descending') {
+                stateWord = _i18n('sorteddesc', 'sorted descending');
+            } else {
+                stateWord = _i18n('notsorted', 'not sorted');
+            }
+            var sortableWord = _i18n('sortable', 'sortable');
+            var name = (colName ? colName + ', ' : '') + sortableWord + ', ' + stateWord;
+            th.setAttribute('aria-label', name);
+            /* Mirror to title so mouse users get the same hint and we      */
+            /* shadow DataTables' default title text.                        */
+            th.setAttribute('title', name);
         });
 
         /* 4. Pagination: aria-label + aria-current ---------------------- */
@@ -456,6 +529,59 @@
                     }
                 }
             }
+        }
+
+        /* 7. Result-count live region ----------------------------------- */
+        /* After every draw (sort / search / page) announce the new result  */
+        /* count to SR users. DataTables already renders the human string   */
+        /* in .dataTables_info ("Showing X to Y of Z entries", localised by  */
+        /* DataTables). We mirror that text into a per-wrapper visually-     */
+        /* hidden aria-live="polite" region so the announcement fires on     */
+        /* every redraw. The visible .dataTables_info itself is NOT a live   */
+        /* region (and toggling it would be noisy), so we keep a dedicated   */
+        /* mirror. Idempotent: created once, text updated each draw.         */
+        announceTableInfo(wrapper, table);
+    }
+
+    /**
+     * Maintain a visually-hidden polite live region per DataTables wrapper
+     * that mirrors the .dataTables_info text, so SR users hear the updated
+     * result count after each sort / search / page.
+     * @param {Element} wrapper
+     * @param {Element} table
+     */
+    function announceTableInfo(wrapper, table) {
+        var infoEl = wrapper.querySelector('.dataTables_info');
+        if (!infoEl) { return; }
+        var text = (infoEl.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!text) { return; }
+
+        /* The visible info element duplicates this text; mark it aria-hidden */
+        /* so AT hears the announcement only once (from our live region).     */
+        infoEl.setAttribute('aria-hidden', 'true');
+
+        var region = wrapper.__a11yInfoLive;
+        if (!region || !region.isConnected) {
+            region = document.createElement('div');
+            region.className = 'sr-only';
+            region.setAttribute('aria-live', 'polite');
+            region.setAttribute('aria-atomic', 'true');
+            /* Inline sr-only so it works even without the theme stylesheet. */
+            region.style.cssText = [
+                'position:absolute', 'width:1px', 'height:1px', 'padding:0',
+                'margin:-1px', 'overflow:hidden', 'clip:rect(0,0,0,0)',
+                'white-space:nowrap', 'border:0'
+            ].join(';');
+            wrapper.appendChild(region);
+            wrapper.__a11yInfoLive = region;
+        }
+
+        /* Only update (and thus re-announce) when the text actually changed */
+        /* so the initial draw doesn't double-announce on the DOMContentLoaded */
+        /* fallback pass. */
+        if (region.__a11yLastText !== text) {
+            region.__a11yLastText = text;
+            region.textContent = text;
         }
     }
 

@@ -27,6 +27,10 @@ $_LANG['a11yPage']                   = 'Sayfa';
 $_LANG['a11ySearch']                 = 'Ara';
 $_LANG['a11yCopyToClipboard']        = 'Panoya kopyala';
 $_LANG['a11yCopied']                 = 'Kopyalandı';
+$_LANG['a11ySortable']               = 'sıralanabilir';
+$_LANG['a11ySortedAsc']              = 'artan sırada sıralı';
+$_LANG['a11ySortedDesc']             = 'azalan sırada sıralı';
+$_LANG['a11yNotSorted']              = 'sıralanmamış';
 
 // Header chrome (topbar / navbar) accessible names
 $_LANG['a11ySwitchAccount']          = 'Hesap değiştir';

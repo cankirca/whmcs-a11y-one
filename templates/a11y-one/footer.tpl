@@ -178,6 +178,10 @@
         data-pwstrong="{lang key='a11yPwStrong'}"
         data-copytoclipboard="{lang key='a11yCopyToClipboard'}"
         data-copied="{lang key='a11yCopied'}"
+        data-sortable="{lang key='a11ySortable'}"
+        data-sortedasc="{lang key='a11ySortedAsc'}"
+        data-sorteddesc="{lang key='a11ySortedDesc'}"
+        data-notsorted="{lang key='a11yNotSorted'}"
         data-devlicensenotice="{lang key='a11yDevLicenseNotice'}"
     ></span>
     <script src="{$WEB_ROOT}/templates/{$template}/js/a11y-one.js"></script>

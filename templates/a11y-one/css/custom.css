@@ -114,6 +114,52 @@ input.a11y-native-check:focus-visible {
     outline-offset: 2px;
 }
 
+/* ------------------------------------------------------------------ */
+/* Sidebar collapse disclosure (SR round 2, improvement C)            */
+/*                                                                    */
+/* The sidebar card toggle is now a full-width <button> wrapping the  */
+/* section title + chevron (clean disclosure pattern: the button's    */
+/* accessible name IS the section title; aria-expanded carries state).*/
+/* These rules keep the ORIGINAL visual appearance: the button must   */
+/* read as a heading row (inherit colour/size, no link underline),    */
+/* with the title on the left and the chevron pinned right. The       */
+/* parent theme rotates .card-minimise.minimised 180deg; because the  */
+/* chevron now lives in a child <i>, we move that rotation onto the   */
+/* icon so the title text does NOT flip.                              */
+/* ------------------------------------------------------------------ */
+.card-sidebar .card-title .card-minimise {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    /* The button replaces the heading text node; neutralise btn-link. */
+    transform: none;
+}
+.card-sidebar .card-title .card-minimise:hover,
+.card-sidebar .card-title .card-minimise:focus {
+    color: inherit;
+    text-decoration: none;
+}
+.card-sidebar .card-title .card-minimise .card-title-text {
+    flex: 0 1 auto;
+}
+/* Chevron pinned to the right, carries the rotate animation. */
+.card-sidebar .card-title .card-minimise .card-minimise-icon {
+    margin-left: auto;
+    transition: transform .2s ease;
+}
+/* Parent whmcs.js toggles .minimised on the button; rotate the icon, */
+/* not the whole button, so the title text stays upright.             */
+.card-sidebar .card-title .card-minimise.minimised {
+    transform: none;
+}
+.card-sidebar .card-title .card-minimise.minimised .card-minimise-icon {
+    transform: rotate(180deg);
+}
+
 /* Respect reduced-motion (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {
     * { animation-duration: .001ms !important; transition-duration: .001ms !important; }

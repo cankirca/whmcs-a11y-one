@@ -27,6 +27,10 @@ $_LANG['a11yPage']                   = 'Page';
 $_LANG['a11ySearch']                 = 'Search';
 $_LANG['a11yCopyToClipboard']        = 'Copy to clipboard';
 $_LANG['a11yCopied']                 = 'Copied';
+$_LANG['a11ySortable']               = 'sortable';
+$_LANG['a11ySortedAsc']              = 'sorted ascending';
+$_LANG['a11ySortedDesc']             = 'sorted descending';
+$_LANG['a11yNotSorted']              = 'not sorted';
 
 // Header chrome (topbar / navbar) accessible names
 $_LANG['a11ySwitchAccount']          = 'Switch account';
