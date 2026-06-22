@@ -37,3 +37,24 @@ $_LANG['a11ySwitchAccount']          = 'Switch account';
 $_LANG['a11yMenu']                   = 'Menu';
 $_LANG['a11yItemsInCart']            = 'items in cart';
 $_LANG['a11yDevLicenseNotice']       = 'Development license notice';
+
+// WS-F support tickets — list, submit flow, markdown editor, file upload
+$_LANG['ticketStatusUnread']         = 'unread';
+$_LANG['ticketStatusRead']           = 'read';
+$_LANG['a11yOpensInNewWindow']       = 'opens in new window';
+$_LANG['a11yMdeEditor']              = 'Message (Markdown editor)';
+$_LANG['a11yMdeBold']                = 'Bold';
+$_LANG['a11yMdeItalic']              = 'Italic';
+$_LANG['a11yMdeHeading']             = 'Heading';
+$_LANG['a11yMdeUrl']                 = 'Insert link';
+$_LANG['a11yMdeImage']               = 'Insert image';
+$_LANG['a11yMdeList']                = 'Bulleted list';
+$_LANG['a11yMdeListO']               = 'Numbered list';
+$_LANG['a11yMdeCode']                = 'Code';
+$_LANG['a11yMdeQuote']               = 'Quote';
+$_LANG['a11yMdePreview']             = 'Toggle preview';
+$_LANG['a11yMdeHelp']                = 'Markdown formatting help';
+$_LANG['a11yMdeFullscreen']          = 'Toggle full screen';
+$_LANG['a11yMdeToolbar']             = 'Text formatting';
+$_LANG['a11yFileAttachment']         = 'Attachment';
+$_LANG['a11yFileAttachmentAdded']    = 'Attachment field added';

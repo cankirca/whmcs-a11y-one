@@ -37,3 +37,24 @@ $_LANG['a11ySwitchAccount']          = 'Hesap değiştir';
 $_LANG['a11yMenu']                   = 'Menü';
 $_LANG['a11yItemsInCart']            = 'sepetteki ürün';
 $_LANG['a11yDevLicenseNotice']       = 'Geliştirme lisansı bildirimi';
+
+// WS-F support tickets — list, submit flow, markdown editor, file upload
+$_LANG['ticketStatusUnread']         = 'okunmamış';
+$_LANG['ticketStatusRead']           = 'okunmuş';
+$_LANG['a11yOpensInNewWindow']       = 'yeni pencerede açılır';
+$_LANG['a11yMdeEditor']              = 'Mesaj (Markdown düzenleyici)';
+$_LANG['a11yMdeBold']                = 'Kalın';
+$_LANG['a11yMdeItalic']              = 'İtalik';
+$_LANG['a11yMdeHeading']             = 'Başlık';
+$_LANG['a11yMdeUrl']                 = 'Bağlantı ekle';
+$_LANG['a11yMdeImage']               = 'Görsel ekle';
+$_LANG['a11yMdeList']                = 'Madde işaretli liste';
+$_LANG['a11yMdeListO']               = 'Numaralı liste';
+$_LANG['a11yMdeCode']                = 'Kod';
+$_LANG['a11yMdeQuote']               = 'Alıntı';
+$_LANG['a11yMdePreview']             = 'Önizlemeyi aç/kapat';
+$_LANG['a11yMdeHelp']                = 'Markdown biçimlendirme yardımı';
+$_LANG['a11yMdeFullscreen']          = 'Tam ekranı aç/kapat';
+$_LANG['a11yMdeToolbar']             = 'Metin biçimlendirme';
+$_LANG['a11yFileAttachment']         = 'Ek dosya';
+$_LANG['a11yFileAttachmentAdded']    = 'Ek dosya alanı eklendi';

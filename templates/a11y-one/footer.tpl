@@ -183,6 +183,22 @@
         data-sorteddesc="{lang key='a11ySortedDesc'}"
         data-notsorted="{lang key='a11yNotSorted'}"
         data-devlicensenotice="{lang key='a11yDevLicenseNotice'}"
+        data-mdeeditor="{lang key='a11yMdeEditor'}"
+        data-mdetoolbar="{lang key='a11yMdeToolbar'}"
+        data-mdebold="{lang key='a11yMdeBold'}"
+        data-mdeitalic="{lang key='a11yMdeItalic'}"
+        data-mdeheading="{lang key='a11yMdeHeading'}"
+        data-mdeurl="{lang key='a11yMdeUrl'}"
+        data-mdeimage="{lang key='a11yMdeImage'}"
+        data-mdelist="{lang key='a11yMdeList'}"
+        data-mdelisto="{lang key='a11yMdeListO'}"
+        data-mdecode="{lang key='a11yMdeCode'}"
+        data-mdequote="{lang key='a11yMdeQuote'}"
+        data-mdepreview="{lang key='a11yMdePreview'}"
+        data-mdehelp="{lang key='a11yMdeHelp'}"
+        data-mdefullscreen="{lang key='a11yMdeFullscreen'}"
+        data-fileattachment="{lang key='a11yFileAttachment'}"
+        data-fileattachmentadded="{lang key='a11yFileAttachmentAdded'}"
     ></span>
     <script src="{$WEB_ROOT}/templates/{$template}/js/a11y-one.js"></script>
     {$footeroutput}

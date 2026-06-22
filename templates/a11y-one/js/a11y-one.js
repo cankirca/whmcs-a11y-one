@@ -1548,4 +1548,278 @@
         labelDevLicenseNotice();
     }
 
+    /* ================================================================== */
+    /* WS-F: Support ticket submit flow                                    */
+    /* ================================================================== */
+
+    /* ------------------------------------------------------------------ */
+    /* Markdown editor (bootstrap-markdown widget)                         */
+    /*                                                                      */
+    /* The parent twenty-one theme enhances every <textarea.markdown-editor> */
+    /* with the bootstrap-markdown plugin (jQuery.fn.markdown). It builds:  */
+    /*   .md-editor                                                          */
+    /*     .md-header.btn-toolbar                                            */
+    /*       .btn-group > <button type=button data-handler="...-cmdXxx">    */
+    /*                       <span class="fa..."></span></button>           */
+    /*       .md-controls > a.md-control-fullscreen                          */
+    /*     textarea.md-input                                                 */
+    /*     .md-footer (custom status footer #...-footer)                     */
+    /*                                                                      */
+    /* The library sets only an English `title` on each button (and the     */
+    /* visible text is a stray space), so the buttons have an empty/poor     */
+    /* accessible name and the inner icon <span> is exposed. We patch the    */
+    /* widget AFTER it builds (without forking the plugin):                  */
+    /*   - localised aria-label + title per button (mapped by cmd handler)   */
+    /*   - inner icon span aria-hidden                                       */
+    /*   - the preview toggle gets aria-pressed reflecting its state         */
+    /*   - the textarea (.md-input) gets a localised aria-label              */
+    /*   - the status footer (.md-footer) becomes aria-live="polite"         */
+    /* We use a MutationObserver because the widget builds asynchronously    */
+    /* after the parent's document-ready runs.                              */
+    /* ------------------------------------------------------------------ */
+
+    /* Map the cmd* handler suffix → i18n carrier key + English fallback. */
+    var _mdeButtonMap = {
+        cmdBold:    ['mdebold', 'Bold'],
+        cmdItalic:  ['mdeitalic', 'Italic'],
+        cmdHeading: ['mdeheading', 'Heading'],
+        cmdUrl:     ['mdeurl', 'Insert link'],
+        cmdImage:   ['mdeimage', 'Insert image'],
+        cmdList:    ['mdelist', 'Bulleted list'],
+        cmdListO:   ['mdelisto', 'Numbered list'],
+        cmdCode:    ['mdecode', 'Code'],
+        cmdQuote:   ['mdequote', 'Quote'],
+        cmdPreview: ['mdepreview', 'Toggle preview'],
+        cmdHelp:    ['mdehelp', 'Markdown formatting help']
+    };
+
+    function _mdeHandlerSuffix(btn) {
+        var h = btn.getAttribute('data-handler') || '';
+        var m = h.match(/(cmd[A-Za-z]+)$/);
+        return m ? m[1] : null;
+    }
+
+    function enhanceMarkdownEditor(editor) {
+        if (!editor || editor.__a11yMdeDone) { return; }
+        editor.__a11yMdeDone = true;
+
+        /* Toolbar buttons */
+        var buttons = editor.querySelectorAll('.md-header button[data-handler]');
+        Array.prototype.forEach.call(buttons, function (btn) {
+            var suffix = _mdeHandlerSuffix(btn);
+            var entry = suffix && _mdeButtonMap[suffix];
+            if (entry) {
+                var label = _i18n(entry[0], entry[1]);
+                btn.setAttribute('aria-label', label);
+                btn.setAttribute('title', label);
+            }
+            /* The library puts a leading icon span inside the button. */
+            btn.querySelectorAll('i, span, svg').forEach(function (icon) {
+                if (!icon.hasAttribute('aria-hidden')) {
+                    icon.setAttribute('aria-hidden', 'true');
+                }
+            });
+            /* Preview toggle exposes pressed state. */
+            if (suffix === 'cmdPreview') {
+                if (!btn.hasAttribute('aria-pressed')) {
+                    btn.setAttribute('aria-pressed', 'false');
+                }
+                btn.addEventListener('click', function () {
+                    /* The library toggles the .md-preview block on click; read
+                       its presence on the next tick to reflect the new state. */
+                    setTimeout(function () {
+                        var isPreview = editor.querySelector('.md-preview') !== null;
+                        btn.setAttribute('aria-pressed', isPreview ? 'true' : 'false');
+                    }, 0);
+                });
+            }
+        });
+
+        /* Fullscreen control (an <a>, not a <button>). */
+        var fs = editor.querySelector('.md-control-fullscreen');
+        if (fs) {
+            fs.setAttribute('aria-label', _i18n('mdefullscreen', 'Toggle full screen'));
+            fs.setAttribute('title', _i18n('mdefullscreen', 'Toggle full screen'));
+            fs.querySelectorAll('i, span, svg').forEach(function (icon) {
+                icon.setAttribute('aria-hidden', 'true');
+            });
+        }
+
+        /* Toolbar container gets a group label. */
+        var toolbar = editor.querySelector('.md-header');
+        if (toolbar && !toolbar.hasAttribute('role')) {
+            toolbar.setAttribute('role', 'toolbar');
+            toolbar.setAttribute('aria-label', _i18n('mdetoolbar', 'Text formatting'));
+        }
+
+        /* The editing textarea gets an accessible name. Prefer a label
+           supplied by the source textarea (data-a11y-mde-label) so the
+           string is localised by the template; else use the carrier. */
+        var ta = editor.querySelector('textarea.md-input');
+        if (ta && !ta.getAttribute('aria-label')) {
+            var srcLabel = null;
+            /* bootstrap-markdown keeps the original id on the .md-input. */
+            if (ta.id) {
+                var src = document.getElementById(ta.id);
+                if (src) { srcLabel = src.getAttribute('data-a11y-mde-label'); }
+            }
+            ta.setAttribute('aria-label', srcLabel || _i18n('mdeeditor', 'Message (Markdown editor)'));
+        }
+
+        /* Status footer becomes a polite live region. */
+        var footer = editor.querySelector('.md-footer, .markdown-editor-status');
+        if (footer && !footer.hasAttribute('aria-live')) {
+            footer.setAttribute('aria-live', 'polite');
+            footer.setAttribute('role', 'status');
+        }
+    }
+
+    function enhanceAllMarkdownEditors() {
+        document.querySelectorAll('.md-editor').forEach(enhanceMarkdownEditor);
+    }
+
+    /* The widget builds after the parent's ready handler; observe for it. */
+    function watchMarkdownEditors() {
+        if (!document.querySelector('.markdown-editor, .md-editor, #fileUploadsContainer')) {
+            return; /* not a ticket/markdown page — skip the observer */
+        }
+        enhanceAllMarkdownEditors();
+        if (typeof MutationObserver === 'undefined') { return; }
+        var obs = new MutationObserver(function (mutations) {
+            var found = false;
+            mutations.forEach(function (m) {
+                Array.prototype.forEach.call(m.addedNodes, function (n) {
+                    if (n.nodeType !== 1) { return; }
+                    if (n.classList && n.classList.contains('md-editor')) { found = true; }
+                    else if (n.querySelector && n.querySelector('.md-editor')) { found = true; }
+                });
+            });
+            if (found) { enhanceAllMarkdownEditors(); }
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
+        /* Stop observing after a short window — the editor builds on load. */
+        setTimeout(function () { obs.disconnect(); enhanceAllMarkdownEditors(); }, 4000);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* File upload — accessible "add more" cloning                          */
+    /*                                                                      */
+    /* The parent binds #btnTicketAttachmentsAdd to append the markup from   */
+    /* .file-upload into #fileUploadsContainer. That cloned markup has a     */
+    /* <label> with NO `for` and an <input type=file> with NO id, so cloned  */
+    /* inputs are unlabelled. We fix this AFTER each add by minting a unique  */
+    /* id + matching label `for`, wiring aria-describedby to the accepted-   */
+    /* types help text, and announcing the new field via a polite region.    */
+    /* We delegate on the button (capturing AFTER the parent's handler ran   */
+    /* via a microtask) and also observe the container as a safety net.      */
+    /* ------------------------------------------------------------------ */
+
+    var _attachmentSeq = 1; /* #1 is the static first input */
+
+    function _fileAnnounceRegion() {
+        var r = document.getElementById('a11yFileUploadStatus');
+        if (!r) {
+            r = document.createElement('div');
+            r.id = 'a11yFileUploadStatus';
+            r.className = 'sr-only';
+            r.setAttribute('aria-live', 'polite');
+            r.setAttribute('role', 'status');
+            document.body.appendChild(r);
+        }
+        return r;
+    }
+
+    function fixFileUploadInputs(announce) {
+        var container = document.getElementById('fileUploadsContainer');
+        if (!container) { return; }
+        var fixedAny = false;
+        container.querySelectorAll('input[type="file"].custom-file-input').forEach(function (input) {
+            if (input.__a11yFileFixed) { return; }
+            input.__a11yFileFixed = true;
+            _attachmentSeq += 1;
+            var id = 'inputAttachment' + _attachmentSeq;
+            /* Guard against an id collision. */
+            while (document.getElementById(id)) {
+                _attachmentSeq += 1;
+                id = 'inputAttachment' + _attachmentSeq;
+            }
+            input.id = id;
+            input.setAttribute('aria-describedby', 'attachmentTypesHelp');
+            var label = input.parentNode ? input.parentNode.querySelector('.custom-file-label') : null;
+            if (label) {
+                label.setAttribute('for', id);
+                if (!label.textContent.trim()) {
+                    label.textContent = _i18n('fileattachment', 'Attachment') + ' ' + _attachmentSeq;
+                }
+            }
+            fixedAny = true;
+        });
+        if (fixedAny && announce) {
+            _fileAnnounceRegion().textContent = _i18n('fileattachmentadded', 'Attachment field added');
+        }
+    }
+
+    function initFileUploadA11y() {
+        var btn = document.getElementById('btnTicketAttachmentsAdd');
+        var container = document.getElementById('fileUploadsContainer');
+        if (!btn || !container) { return; }
+
+        /* After the parent's click handler appends a new field, fix it. */
+        btn.addEventListener('click', function () {
+            /* Defer so the parent's delegated jQuery handler runs first. */
+            setTimeout(function () { fixFileUploadInputs(true); }, 0);
+        });
+
+        /* Safety net: observe the container for appended fields. */
+        if (typeof MutationObserver !== 'undefined') {
+            var obs = new MutationObserver(function () { fixFileUploadInputs(true); });
+            obs.observe(container, { childList: true });
+        }
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Custom fields — wire aria-describedby to descriptions                */
+    /* The override template renders descriptions with id                   */
+    /* customfield{id}_desc; link them to the matching core-generated        */
+    /* control by its known id customfield{id} (no fork of $customfield.input). */
+    /* ------------------------------------------------------------------ */
+    function wireCustomFieldDescriptions() {
+        var container = document.getElementById('customFieldsContainer');
+        if (!container) { return; }
+        container.querySelectorAll('[id$="_desc"]').forEach(function (desc) {
+            var baseId = desc.id.replace(/_desc$/, '');
+            var control = document.getElementById(baseId);
+            if (control && !control.getAttribute('aria-describedby')) {
+                control.setAttribute('aria-describedby', desc.id);
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* KB suggestions polling trigger (moved out of inline <script>)        */
+    /* When the compose template renders #a11yKbSuggestTrigger, start the    */
+    /* parent's getTicketSuggestions() loop. The #autoAnswerSuggestions      */
+    /* container is already a named aria-live region in the template, so the */
+    /* AJAX-injected suggestions are announced.                             */
+    /* ------------------------------------------------------------------ */
+    function initKbSuggestions() {
+        if (!document.getElementById('a11yKbSuggestTrigger')) { return; }
+        if (typeof window.getTicketSuggestions === 'function') {
+            window.getTicketSuggestions();
+        }
+    }
+
+    function initTicketSubmitA11y() {
+        watchMarkdownEditors();
+        initFileUploadA11y();
+        wireCustomFieldDescriptions();
+        initKbSuggestions();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTicketSubmitA11y);
+    } else {
+        initTicketSubmitA11y();
+    }
+
 }());
