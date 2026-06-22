@@ -1,0 +1,11 @@
+# A11y One — accessible child theme of Twenty-One
+name: "A11y One"
+description: "Accessible (WCAG 2.2 AA) child theme of Twenty-One with a fast, minimal login."
+author: "Can Kirca"
+config:
+  parent: twenty-one
+dependencies:
+  bootstrap: 4.5.3
+provides:
+  jquery: 1.12.4
+  fontawesome: 5.10.1
