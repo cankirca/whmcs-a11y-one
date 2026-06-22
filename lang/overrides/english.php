@@ -9,3 +9,4 @@
 $_LANG['skipToMainContent']          = 'Skip to main content';
 $_LANG['userLogin']['showPassword']  = 'Show password';
 $_LANG['warning']                    = 'Warning';
+$_LANG['tablesearch']                = 'Search:';

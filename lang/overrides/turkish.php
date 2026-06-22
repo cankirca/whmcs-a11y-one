@@ -9,3 +9,4 @@
 $_LANG['skipToMainContent']          = 'Ana içeriğe geç';
 $_LANG['userLogin']['showPassword']  = 'Parolayı göster';
 $_LANG['warning']                    = 'Uyarı';
+$_LANG['tablesearch']                = 'Ara:';
