@@ -156,6 +156,27 @@
 
     {include file="$template/includes/generate-password.tpl"}
 
+    {* i18n carrier: a11y-one.js reads these data-attributes for localised ARIA strings.
+       Present on every page (moved here from tablelist.tpl) so auth pages also get
+       localised labels (password reveal, strength meter). Hidden from layout and AT. *}
+    <span id="a11yOneI18n" hidden
+        data-collapse="{lang key='a11yCollapse'}"
+        data-expand="{lang key='a11yExpand'}"
+        data-panel="{lang key='a11yPanel'}"
+        data-rowsperpage="{lang key='a11yRowsPerPage'}"
+        data-tablepagination="{lang key='a11yTablePagination'}"
+        data-prevpage="{lang key='a11yPrevPage'}"
+        data-nextpage="{lang key='a11yNextPage'}"
+        data-firstpage="{lang key='a11yFirstPage'}"
+        data-lastpage="{lang key='a11yLastPage'}"
+        data-page="{lang key='a11yPage'}"
+        data-search="{lang key='a11ySearch'}"
+        data-showpassword="{lang key='userLogin.showPassword'}"
+        data-hidepassword="{lang key='userLogin.hidePassword'}"
+        data-pwweak="{lang key='a11yPwWeak'}"
+        data-pwfair="{lang key='a11yPwFair'}"
+        data-pwstrong="{lang key='a11yPwStrong'}"
+    ></span>
     <script src="{$WEB_ROOT}/templates/{$template}/js/a11y-one.js"></script>
     {$footeroutput}
 

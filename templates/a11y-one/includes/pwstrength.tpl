@@ -4,14 +4,14 @@
    changes; adds a visible text label (Weak/Fair/Strong) so severity is not
    colour-only; adds aria-invalid + aria-describedby on confirm-password
    mismatch so AT can identify the error field. *}
-<div class="a11y-pw-strength-container" role="status" aria-live="polite" aria-atomic="false">
+<div class="a11y-pw-strength-container" role="status" aria-live="polite" aria-atomic="true">
     <div class="progress mb-1" id="passwordStrengthBar">
         <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
              aria-label="{lang key='pwstrengthrating'}">
             <span class="sr-only">{lang key='pwstrengthrating'}: 0%</span>
         </div>
     </div>
-    <p class="a11y-pw-strength-label small mb-2" id="a11yPwStrengthLabel" aria-hidden="true"></p>
+    <p class="a11y-pw-strength-label small mb-2" id="a11yPwStrengthLabel"></p>
 </div>
 
 {if file_exists("templates/$template/includes/alert.tpl")}
