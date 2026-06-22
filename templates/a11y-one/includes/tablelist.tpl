@@ -131,4 +131,9 @@
     data-lastpage="{lang key='a11yLastPage'}"
     data-page="{lang key='a11yPage'}"
     data-search="{lang key='a11ySearch'}"
+    data-showpassword="{lang key='userLogin.showPassword'}"
+    data-hidepassword="{lang key='userLogin.hidePassword'}"
+    data-pwweak="{lang key='a11yPwWeak'}"
+    data-pwfair="{lang key='a11yPwFair'}"
+    data-pwstrong="{lang key='a11yPwStrong'}"
 ></span>

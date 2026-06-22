@@ -8,6 +8,10 @@
 
 $_LANG['skipToMainContent']          = 'Ana içeriğe geç';
 $_LANG['userLogin']['showPassword']  = 'Parolayı göster';
+$_LANG['userLogin']['hidePassword']  = 'Parolayı gizle';
+$_LANG['a11yPwWeak']                 = 'Zayıf';
+$_LANG['a11yPwFair']                 = 'Orta';
+$_LANG['a11yPwStrong']               = 'Güçlü';
 $_LANG['warning']                    = 'Uyarı';
 $_LANG['tablesearch']                = 'Ara:';
 $_LANG['a11yCollapse']               = 'Daralt';

@@ -8,6 +8,10 @@
 
 $_LANG['skipToMainContent']          = 'Skip to main content';
 $_LANG['userLogin']['showPassword']  = 'Show password';
+$_LANG['userLogin']['hidePassword']  = 'Hide password';
+$_LANG['a11yPwWeak']                 = 'Weak';
+$_LANG['a11yPwFair']                 = 'Fair';
+$_LANG['a11yPwStrong']               = 'Strong';
 $_LANG['warning']                    = 'Warning';
 $_LANG['tablesearch']                = 'Search:';
 $_LANG['a11yCollapse']               = 'Collapse';

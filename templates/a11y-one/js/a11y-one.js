@@ -504,6 +504,222 @@
         fixResponsiveExpanders();
     }
 
+    /* ------------------------------------------------------------------ */
+    /* Password reveal buttons (site-wide generalisation)                 */
+    /*                                                                    */
+    /* Selects .btn-reveal-pw and .pw-reveal buttons across all pages.    */
+    /* Ensures each button has:                                           */
+    /*   - type="button"                                                  */
+    /*   - aria-controls → the sibling password input id (adds id if     */
+    /*     missing)                                                       */
+    /*   - aria-pressed reflecting current show/hide state                */
+    /*   - aria-label toggling between "Show password" / "Hide password"  */
+    /*     via the i18n carrier (data-showpassword / data-hidepassword)   */
+    /* On click: toggles input type between "password" and "text" and    */
+    /* updates aria-pressed + aria-label. All icons inside get           */
+    /* aria-hidden. Idempotent — safe on pages with inline attributes     */
+    /* (login, user-password, reset pages).                               */
+    /* ------------------------------------------------------------------ */
+
+    var _revealSel = '.btn-reveal-pw, .pw-reveal';
+
+    /**
+     * Read the show/hide label for a reveal button, honouring the
+     * translation the template already baked in via {lang}.
+     *
+     * Strategy: each button stores both labels as data attributes so toggling
+     * is locale-aware without the i18n carrier element.  The attributes are
+     * written by initRevealButton on first visit by deriving them from:
+     *   1. aria-label already on the button (the "show" label, from the
+     *      template's {lang} output — already correctly translated)
+     *   2. data-label-show / data-label-hide set externally, if present
+     *   3. The i18n carrier element (present on pages with tablelist.tpl)
+     *   4. English fallback
+     */
+    function _getShowLabel(btn) {
+        return btn.getAttribute('data-label-show') ||
+               _i18n('showpassword', 'Show password');
+    }
+    function _getHideLabel(btn) {
+        return btn.getAttribute('data-label-hide') ||
+               _i18n('hidepassword', 'Hide password');
+    }
+    function _revealLabel(btn, isVisible) {
+        return isVisible ? _getHideLabel(btn) : _getShowLabel(btn);
+    }
+
+    /**
+     * Initialise one reveal button. Idempotent: only sets attributes that
+     * are missing or need correction relative to the input's current state.
+     */
+    function initRevealButton(btn) {
+        /* Ensure type=button so it does not submit forms */
+        if (btn.getAttribute('type') !== 'button') {
+            btn.setAttribute('type', 'button');
+        }
+
+        /* Hide inner icons from AT */
+        btn.querySelectorAll('i, svg').forEach(function (icon) {
+            icon.setAttribute('aria-hidden', 'true');
+        });
+
+        /* Find the controlled password input.
+           Priority: aria-controls attr → .pw-input sibling → any
+           type=password sibling in the same input-group or form-group. */
+        var inputId = btn.getAttribute('aria-controls');
+        var input = inputId ? document.getElementById(inputId) : null;
+        if (!input) {
+            var container = btn.closest('.input-group') ||
+                            btn.closest('.form-group') ||
+                            btn.parentElement;
+            if (container) {
+                input = container.querySelector('.pw-input') ||
+                        container.querySelector('input[type="password"]') ||
+                        container.querySelector('input[type="text"].pw-input');
+            }
+        }
+        if (!input) { return; } /* no target — skip */
+
+        /* Ensure the input has an id so aria-controls can reference it */
+        if (!input.getAttribute('id')) {
+            input.setAttribute('id', 'a11y-pw-' + Math.random().toString(36).slice(2));
+        }
+        if (!btn.getAttribute('aria-controls')) {
+            btn.setAttribute('aria-controls', input.getAttribute('id'));
+        }
+
+        /* Capture the show-label from the existing aria-label (set by the
+           template via {lang} in the correct locale) before we ever change it.
+           Store both labels on the button so toggle stays locale-correct. */
+        if (!btn.getAttribute('data-label-show')) {
+            /* If the button has an aria-label already, treat it as the show
+               label (all templates start hidden / aria-pressed=false). */
+            var existingLabel = btn.getAttribute('aria-label');
+            if (existingLabel) {
+                btn.setAttribute('data-label-show', existingLabel);
+            } else {
+                btn.setAttribute('data-label-show', _i18n('showpassword', 'Show password'));
+            }
+        }
+        if (!btn.getAttribute('data-label-hide')) {
+            btn.setAttribute('data-label-hide', _i18n('hidepassword', 'Hide password'));
+        }
+
+        /* Derive current visibility from input type */
+        var isVisible = input.getAttribute('type') === 'text';
+
+        /* aria-pressed: set only if wrong or missing */
+        var wantedPressed = isVisible ? 'true' : 'false';
+        if (btn.getAttribute('aria-pressed') !== wantedPressed) {
+            btn.setAttribute('aria-pressed', wantedPressed);
+        }
+
+        /* aria-label: set the correct label for the current state.
+           If the button was already showing the right label (e.g. set by
+           the template), this is a no-op. */
+        var wantedLabel = _revealLabel(btn, isVisible);
+        if (!btn.getAttribute('aria-label') || btn.getAttribute('aria-label') !== wantedLabel) {
+            btn.setAttribute('aria-label', wantedLabel);
+        }
+    }
+
+    /** Initialise all reveal buttons currently in the DOM. */
+    function initAllRevealButtons() {
+        document.querySelectorAll(_revealSel).forEach(initRevealButton);
+    }
+
+    /* Reveal button click handling.
+     *
+     * The parent theme's whmcs.js also has a jQuery delegated handler for
+     * .btn-reveal-pw that toggles the input type. jQuery's delegated handlers
+     * on document fire BEFORE native document.addEventListener handlers when
+     * jQuery is loaded before our script.
+     *
+     * Strategy:
+     *  1. Use a capturing listener (capture:true) to record the PRE-click type
+     *     before ANY handler (jQuery or native) runs. Capturing fires during
+     *     the down-propagation phase, before bubbling handlers on document.
+     *  2. Use a bubbling listener (our main handler) to schedule a setTimeout(0)
+     *     that runs after all synchronous handlers. In the timeout we check if
+     *     the type changed; if not (no parent handler on this page) we toggle
+     *     it ourselves. Then sync ARIA either way.
+     */
+
+    /* Storing per-button pre-click types using the button element as key */
+    var _revealPreTypes = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+
+    /* Capturing phase: record type BEFORE any handler changes it */
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest ? e.target.closest(_revealSel) : null;
+        if (!btn) { return; }
+
+        var inputId = btn.getAttribute('aria-controls');
+        var input = inputId ? document.getElementById(inputId) : null;
+        if (!input) {
+            var c = btn.closest('.input-group') || btn.closest('.form-group') || btn.parentElement;
+            if (c) {
+                input = c.querySelector('.pw-input') ||
+                        c.querySelector('input[type="password"]') ||
+                        c.querySelector('input[type="text"].pw-input');
+            }
+        }
+        if (!input) { return; }
+
+        /* Store pre-click type */
+        if (_revealPreTypes) {
+            _revealPreTypes.set(btn, input.getAttribute('type'));
+        } else {
+            btn.__a11yRevealPreType = input.getAttribute('type');
+        }
+    }, true); /* ← capture: true — fires before any bubbling handler */
+
+    /* Bubbling phase: sync ARIA after all handlers (jQuery etc.) have run */
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest ? e.target.closest(_revealSel) : null;
+        if (!btn) { return; }
+
+        var inputId = btn.getAttribute('aria-controls');
+        var input = inputId ? document.getElementById(inputId) : null;
+        if (!input) {
+            var c2 = btn.closest('.input-group') || btn.closest('.form-group') || btn.parentElement;
+            if (c2) {
+                input = c2.querySelector('.pw-input') ||
+                        c2.querySelector('input[type="password"]') ||
+                        c2.querySelector('input[type="text"].pw-input');
+            }
+        }
+        if (!input) { return; }
+
+        var capturedBtn   = btn;
+        var capturedInput = input;
+        var preType = _revealPreTypes
+            ? (_revealPreTypes.get(btn) || capturedInput.getAttribute('type'))
+            : (btn.__a11yRevealPreType || capturedInput.getAttribute('type'));
+
+        /* After all synchronous handlers, sync ARIA */
+        setTimeout(function () {
+            var postType = capturedInput.getAttribute('type');
+
+            /* If no other handler changed the type, toggle it ourselves */
+            if (postType === preType) {
+                postType = (preType === 'password') ? 'text' : 'password';
+                capturedInput.setAttribute('type', postType);
+            }
+
+            /* Sync ARIA to final state */
+            var nowVisible = postType === 'text';
+            capturedBtn.setAttribute('aria-pressed', nowVisible ? 'true' : 'false');
+            capturedBtn.setAttribute('aria-label', _revealLabel(capturedBtn, nowVisible));
+        }, 0);
+    }); /* bubbling — fires after jQuery's delegated handlers */
+
+    /* Run init on DOMContentLoaded (or immediately if DOM is already ready) */
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAllRevealButtons);
+    } else {
+        initAllRevealButtons();
+    }
+
     /* Hook into DataTables draw.dt event (fires after every draw) */
     if (typeof jQuery !== 'undefined') {
         jQuery(document).on('draw.dt', function () {
