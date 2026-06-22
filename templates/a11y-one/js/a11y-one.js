@@ -1168,6 +1168,10 @@
     /* aria-busy="true" when clicked, signalling that an async operation  */
     /* is in progress. This supplements the visual spinner shown by the   */
     /* parent theme.                                                       */
+    /*                                                                     */
+    /* For full-page-reload actions (form POST), aria-busy persists on    */
+    /* the old page naturally (new page loads). For AJAX-only operations, */
+    /* we clear aria-busy when the AJAX completes via ajaxComplete.       */
     /* ------------------------------------------------------------------ */
 
     var _spinnerSel = '.spinner-on-click, .disable-on-click';
@@ -1179,8 +1183,24 @@
         if (btn.tagName !== 'BUTTON' && btn.tagName !== 'INPUT' && btn.getAttribute('role') !== 'button') {
             return;
         }
+        /* Mark this button so we can clear aria-busy on ajaxComplete.
+           Use data-a11y-busy flag to track elements we set aria-busy on. */
+        btn.setAttribute('data-a11y-busy', 'true');
         /* Set aria-busy immediately (synchronously, before submit) */
         btn.setAttribute('aria-busy', 'true');
     }, true); /* capture: true to fire before default form submission */
+
+    /* Clear aria-busy when AJAX operations complete, for buttons marked
+       with data-a11y-busy (preventing stale aria-busy on AJAX-only actions).
+       Only if jQuery is available (WHMCS uses jQuery for AJAX). */
+    if (typeof jQuery !== 'undefined') {
+        jQuery(document).on('ajaxComplete', function () {
+            /* Find all elements currently carrying our flag and clear aria-busy */
+            document.querySelectorAll('[data-a11y-busy="true"]').forEach(function (elem) {
+                elem.removeAttribute('aria-busy');
+                elem.removeAttribute('data-a11y-busy');
+            });
+        });
+    }
 
 }());
