@@ -34,6 +34,34 @@ textarea:focus-visible,
 /* Contrast: active breadcrumb text >= 4.5:1 on the #e9ecef breadcrumb bar (5.41:1) */
 .breadcrumb-item.active { color: #595f6b; }
 
+/* Contrast: .btn-success default Bootstrap green (#28a745) gives ~3.0:1 white text.
+   Override to #1c7430 which gives ~5.1:1 white text — passes WCAG AA 4.5:1. */
+.btn-success {
+    background-color: #1c7430 !important;
+    border-color: #1a6b2c !important;
+}
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active {
+    background-color: #155724 !important;
+    border-color: #144d20 !important;
+}
+
+/* Contrast: .status-unpaid badge uses Bootstrap danger red (#d9534f) as background,
+   with dark .textred text inside — that pairing is only 1.6:1. Fix: darken the
+   badge background to #c0392b (5.44:1 with white) and force white inner text.
+   For any standalone .textred on a white background, use #b02a37 (6.5:1 on white). */
+.label.status-unpaid,
+.badge.status-unpaid {
+    background-color: #c0392b !important;
+}
+.label.status-unpaid .textred,
+.badge.status-unpaid .textred {
+    color: #fff !important;
+}
+.textred { color: #b02a37 !important; }
+
 /* Minimum target size 24px (WCAG 2.5.8) */
 .btn, .nav-link, .form-check-input { min-height: 24px; }
 .btn-reveal-pw { min-width: 44px; }

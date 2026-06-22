@@ -117,3 +117,18 @@
     alreadyReady = true;
     });
 </script>
+{* i18n carrier: a11y-one.js reads these data-attributes for localised ARIA strings.
+   Hidden from AT (aria-hidden) and from visual layout (display:none). *}
+<span id="a11yOneI18n" aria-hidden="true" style="display:none"
+    data-collapse="{lang key='a11yCollapse'}"
+    data-expand="{lang key='a11yExpand'}"
+    data-panel="{lang key='a11yPanel'}"
+    data-rowsperpage="{lang key='a11yRowsPerPage'}"
+    data-tablepagination="{lang key='a11yTablePagination'}"
+    data-prevpage="{lang key='a11yPrevPage'}"
+    data-nextpage="{lang key='a11yNextPage'}"
+    data-firstpage="{lang key='a11yFirstPage'}"
+    data-lastpage="{lang key='a11yLastPage'}"
+    data-page="{lang key='a11yPage'}"
+    data-search="{lang key='a11ySearch'}"
+></span>

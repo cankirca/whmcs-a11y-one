@@ -9,6 +9,23 @@
     'use strict';
 
     /* ------------------------------------------------------------------ */
+    /* i18n: read localised strings from the carrier element rendered by   */
+    /* tablelist.tpl. Fall back to English only when the element is absent. */
+    /* ------------------------------------------------------------------ */
+    var _i18nEl = null;
+
+    function _i18n(key, fallback) {
+        if (!_i18nEl) {
+            _i18nEl = document.getElementById('a11yOneI18n');
+        }
+        if (_i18nEl) {
+            var val = _i18nEl.getAttribute('data-' + key);
+            if (val !== null && val !== '') { return val; }
+        }
+        return fallback;
+    }
+
+    /* ------------------------------------------------------------------ */
     /* Sidebar: keep aria-expanded in sync with the custom card-minimise   */
     /* toggle; also ensure every card-minimise button has an accessible    */
     /* name (the icon inside is aria-hidden).                              */
@@ -32,8 +49,10 @@
                     }
                 }
                 var isExpanded = btn.getAttribute('aria-expanded') !== 'false';
-                var action = isExpanded ? 'Collapse' : 'Expand';
-                var label = heading ? action + ' ' + heading : action + ' panel';
+                var action = isExpanded ? _i18n('collapse', 'Collapse') : _i18n('expand', 'Expand');
+                var label = heading
+                    ? action + ' ' + heading
+                    : action + ' ' + _i18n('panel', 'panel');
                 btn.setAttribute('aria-label', label);
             }
         });
@@ -53,8 +72,11 @@
         btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
         /* Update label to reflect collapsed/expanded state */
         var isNowExpanded = !expanded;
-        var current = btn.getAttribute('aria-label') || '';
-        btn.setAttribute('aria-label', current.replace(/^(Collapse|Expand) /, (isNowExpanded ? 'Collapse ' : 'Expand ')));
+        var collapse = _i18n('collapse', 'Collapse');
+        var expand   = _i18n('expand',   'Expand');
+        var current  = btn.getAttribute('aria-label') || '';
+        var replaceRe = new RegExp('^(' + collapse + '|' + expand + ') ');
+        btn.setAttribute('aria-label', current.replace(replaceRe, (isNowExpanded ? collapse + ' ' : expand + ' ')));
     });
 
     /* ------------------------------------------------------------------ */
@@ -133,36 +155,39 @@
         var paginate = wrapper.querySelector('.dataTables_paginate');
         if (paginate) {
             var pageItems = paginate.querySelectorAll('.paginate_button');
-            pageItems.forEach(function (li) {
-                var a = li.querySelector('a');
+            pageItems.forEach(function (item) {
+                /* .paginate_button may be an <li> containing an <a>,
+                   or in some DataTables builds the <a> directly. */
+                var a = (item.tagName === 'A') ? item : item.querySelector('a');
+                var li = (item.tagName === 'LI') ? item : item.closest('li');
                 if (!a) { return; }
 
                 var dtIdx = a.getAttribute('data-dt-idx');
-                var isActive = li.classList.contains('active');
-                var isDisabled = li.classList.contains('disabled');
+                var isActive = (li || item).classList.contains('active');
+                var isDisabled = (li || item).classList.contains('disabled');
 
                 /* Previous / Next buttons */
-                if (dtIdx === 'previous' || li.id && li.id.indexOf('_previous') !== -1) {
-                    a.setAttribute('aria-label', 'Previous page');
+                if (dtIdx === 'previous' || (item.id && item.id.indexOf('_previous') !== -1)) {
+                    a.setAttribute('aria-label', _i18n('prevpage', 'Previous page'));
                     if (isDisabled) { a.setAttribute('aria-disabled', 'true'); }
                     else { a.removeAttribute('aria-disabled'); }
                     a.removeAttribute('aria-current');
-                } else if (dtIdx === 'next' || li.id && li.id.indexOf('_next') !== -1) {
-                    a.setAttribute('aria-label', 'Next page');
+                } else if (dtIdx === 'next' || (item.id && item.id.indexOf('_next') !== -1)) {
+                    a.setAttribute('aria-label', _i18n('nextpage', 'Next page'));
                     if (isDisabled) { a.setAttribute('aria-disabled', 'true'); }
                     else { a.removeAttribute('aria-disabled'); }
                     a.removeAttribute('aria-current');
                 } else if (dtIdx === 'first') {
-                    a.setAttribute('aria-label', 'First page');
+                    a.setAttribute('aria-label', _i18n('firstpage', 'First page'));
                     a.removeAttribute('aria-current');
                 } else if (dtIdx === 'last') {
-                    a.setAttribute('aria-label', 'Last page');
+                    a.setAttribute('aria-label', _i18n('lastpage', 'Last page'));
                     a.removeAttribute('aria-current');
                 } else {
                     /* Numeric page button */
                     var pageNum = a.textContent.trim();
                     if (pageNum && !isNaN(Number(pageNum))) {
-                        a.setAttribute('aria-label', 'Page ' + pageNum);
+                        a.setAttribute('aria-label', _i18n('page', 'Page') + ' ' + pageNum);
                         if (isActive) {
                             a.setAttribute('aria-current', 'page');
                         } else {
@@ -176,7 +201,7 @@
             if (paginate.tagName !== 'NAV' && !paginate.closest('nav')) {
                 if (!paginate.getAttribute('role')) {
                     paginate.setAttribute('role', 'navigation');
-                    paginate.setAttribute('aria-label', 'Table pagination');
+                    paginate.setAttribute('aria-label', _i18n('tablepagination', 'Table pagination'));
                 }
             }
         }
@@ -192,7 +217,7 @@
                 var lbl = filterDiv.querySelector('label');
                 var lblText = lbl ? lbl.textContent.trim() : '';
                 if (!lblText) {
-                    searchInput.setAttribute('aria-label', 'Search');
+                    searchInput.setAttribute('aria-label', _i18n('search', 'Search'));
                 } else {
                     /* Label has text — give input an id and wire <label for> */
                     var tableId = table.getAttribute('id') || ('dt-' + Math.random().toString(36).slice(2));
@@ -215,7 +240,7 @@
                 var lenLbl = lengthDiv.querySelector('label');
                 var lenText = lenLbl ? lenLbl.textContent.trim() : '';
                 if (!lenText) {
-                    lengthSelect.setAttribute('aria-label', 'Rows per page');
+                    lengthSelect.setAttribute('aria-label', _i18n('rowsperpage', 'Rows per page'));
                 } else {
                     /* Label wraps select — give select an id and wire label */
                     var tableId2 = table.getAttribute('id') || ('dt-' + Math.random().toString(36).slice(2));
