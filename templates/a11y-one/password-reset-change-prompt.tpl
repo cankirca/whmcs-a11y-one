@@ -1,4 +1,4 @@
-<h2 class="h4 mb-3">{lang key='pwresetenternewpw'}</h2>
+<h2 class="h4 mb-3" id="changePasswordHeading">{lang key='pwresetenternewpw'}</h2>
 
 <form class="using-password-strength" method="POST" action="{routePath('password-reset-change-perform')}" aria-labelledby="changePasswordHeading">
     <input type="hidden" name="answer" id="answer" value="{$securityAnswer}" />

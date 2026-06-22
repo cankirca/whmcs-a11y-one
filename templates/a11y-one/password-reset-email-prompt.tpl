@@ -1,5 +1,5 @@
 <div class="mb-4">
-    <h2 class="h4">{lang key='pwresetemailneeded'}</h2>
+    <h2 class="h4" id="resetEmailHeading">{lang key='pwresetemailneeded'}</h2>
 </div>
 
 <form method="post" action="{routePath('password-reset-validate-email')}" role="form" aria-labelledby="resetEmailHeading">
@@ -11,7 +11,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-user" aria-hidden="true"></i></span>
             </div>
-            <input type="email" class="form-control" name="email" id="inputEmail" placeholder="name@example.com" autocomplete="username" autofocus>
+            <input type="email" class="form-control" name="email" id="inputEmail" autocomplete="username" autofocus>
           </div>
     </div>
 

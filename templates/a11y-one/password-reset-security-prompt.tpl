@@ -1,4 +1,4 @@
-<h2 class="h4 mb-3">{lang key='pwresetsecurityquestionrequired'}</h2>
+<h2 class="h4 mb-3" id="securityHeading">{lang key='pwresetsecurityquestionrequired'}</h2>
 
 {if $errorMessage}
     <p class="alert alert-danger text-center" id="securityErrorMsg" role="alert">

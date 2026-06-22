@@ -14,7 +14,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user" aria-hidden="true"></i></span>
                     </div>
-                    <input type="email" class="form-control" name="username" id="inputEmail" placeholder="name@example.com" autocomplete="username">
+                    <input type="email" class="form-control" name="username" id="inputEmail" autocomplete="username">
                 </div>
             </div>
             <div class="form-group mb-4">
