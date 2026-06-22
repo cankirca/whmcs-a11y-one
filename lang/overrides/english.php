@@ -63,3 +63,6 @@ $_LANG['a11yFileAttachmentAdded']    = 'Attachment field added';
 $_LANG['a11yRateThisReply']          = 'Rate this support reply';
 $_LANG['a11yStarSingular']           = ':count star';
 $_LANG['a11yStarPlural']             = ':count stars';
+
+// WS-F Task 4 ticketfeedback — accessible 1–10 rating radios
+$_LANG['a11yFeedbackOutOf10']        = 'out of 10';

@@ -63,3 +63,6 @@ $_LANG['a11yFileAttachmentAdded']    = 'Ek dosya alanı eklendi';
 $_LANG['a11yRateThisReply']          = 'Bu destek yanıtını değerlendirin';
 $_LANG['a11yStarSingular']           = ':count yıldız';
 $_LANG['a11yStarPlural']             = ':count yıldız';
+
+// WS-F Task 4 ticketfeedback — accessible 1–10 rating radios
+$_LANG['a11yFeedbackOutOf10']        = '10 üzerinden';
