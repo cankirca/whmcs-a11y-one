@@ -25,3 +25,5 @@ $_LANG['a11yFirstPage']              = 'İlk sayfa';
 $_LANG['a11yLastPage']               = 'Son sayfa';
 $_LANG['a11yPage']                   = 'Sayfa';
 $_LANG['a11ySearch']                 = 'Ara';
+$_LANG['a11yCopyToClipboard']        = 'Panoya kopyala';
+$_LANG['a11yCopied']                 = 'Kopyalandı';

@@ -25,3 +25,5 @@ $_LANG['a11yFirstPage']              = 'First page';
 $_LANG['a11yLastPage']               = 'Last page';
 $_LANG['a11yPage']                   = 'Page';
 $_LANG['a11ySearch']                 = 'Search';
+$_LANG['a11yCopyToClipboard']        = 'Copy to clipboard';
+$_LANG['a11yCopied']                 = 'Copied';

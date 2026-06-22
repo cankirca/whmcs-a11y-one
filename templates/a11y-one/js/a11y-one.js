@@ -738,4 +738,449 @@
         /* Already loaded — run async to let DataTables finish its own init */
         setTimeout(fixAllDataTables, 0);
     }
+
+    /* ------------------------------------------------------------------ */
+    /* Bootstrap Tabs a11y helper                                          */
+    /*                                                                     */
+    /* Bootstrap 4 sets role="tablist/tab/tabpanel" inconsistently and    */
+    /* does not reliably maintain aria-selected, aria-controls, or        */
+    /* aria-labelledby. It also has no arrow-key navigation.              */
+    /*                                                                     */
+    /* This helper, run on DOMContentLoaded + Bootstrap shown.bs.tab:     */
+    /*  - sets role="tablist" on each <ul class="nav-tabs">               */
+    /*  - sets role="tab", aria-selected, aria-controls on each tab link  */
+    /*  - sets role="tabpanel", aria-labelledby, tabindex="0" on panels   */
+    /*  - adds Left/Right arrow-key navigation (ARIA tabs pattern)        */
+    /* All fixes are idempotent; only sets what is missing or stale.      */
+    /* ------------------------------------------------------------------ */
+
+    /**
+     * Wire up one .nav-tabs widget: roles, aria attributes, arrow-key nav.
+     * @param {Element} tablist  The <ul class="nav-tabs"> element.
+     */
+    function initTabWidget(tablist) {
+        /* Idempotency guard — mark once fully processed */
+        if (tablist.__a11yTabsInited) { return; }
+        tablist.__a11yTabsInited = true;
+
+        /* role=tablist on the <ul> */
+        if (!tablist.getAttribute('role')) {
+            tablist.setAttribute('role', 'tablist');
+        }
+
+        /* Collect all tab links inside this widget */
+        var links = Array.prototype.slice.call(
+            tablist.querySelectorAll('.nav-link, .nav-item > a[data-toggle="tab"], a.tabControlLink[data-toggle="tab"]')
+        );
+        if (!links.length) { return; }
+
+        links.forEach(function (link) {
+            /* role=tab */
+            if (!link.getAttribute('role')) {
+                link.setAttribute('role', 'tab');
+            }
+
+            /* The Bootstrap 4 structure is: <ul role=tablist> <li class=nav-item>
+               <a role=tab>. For the tablist → tab ownership constraint to be met,
+               the <li> wrapper must be removed from the a11y tree with
+               role=presentation (standard Bootstrap tabs pattern). */
+            var li = link.parentElement;
+            if (li && li.tagName === 'LI') {
+                if (!li.getAttribute('role')) {
+                    li.setAttribute('role', 'presentation');
+                }
+            }
+
+            /* Resolve the panel target: href="#id" or data-target="#id" */
+            var panelId = null;
+            var href = link.getAttribute('href') || '';
+            if (href.charAt(0) === '#') {
+                panelId = href.slice(1);
+            }
+            if (!panelId) {
+                var dt = link.getAttribute('data-target') || '';
+                if (dt.charAt(0) === '#') { panelId = dt.slice(1); }
+            }
+
+            /* aria-controls → panel id */
+            if (panelId && !link.getAttribute('aria-controls')) {
+                link.setAttribute('aria-controls', panelId);
+            }
+
+            /* aria-selected: active class → true, else false */
+            var isActive = link.classList.contains('active');
+            link.setAttribute('aria-selected', isActive ? 'true' : 'false');
+
+            /* tabindex: only the active tab is in the natural tab order;  */
+            /* inactive tabs are reachable only via arrow keys.            */
+            link.setAttribute('tabindex', isActive ? '0' : '-1');
+
+            /* Find the controlled panel */
+            if (panelId) {
+                var panel = document.getElementById(panelId);
+                if (panel) {
+                    /* role=tabpanel */
+                    if (!panel.getAttribute('role')) {
+                        panel.setAttribute('role', 'tabpanel');
+                    }
+
+                    /* Ensure panel has an id so aria-labelledby can point back */
+                    /* Give the link an id if it doesn't have one already */
+                    if (!link.getAttribute('id')) {
+                        link.setAttribute('id', 'a11y-tab-' + panelId);
+                    }
+
+                    /* aria-labelledby → the tab link */
+                    if (!panel.getAttribute('aria-labelledby')) {
+                        panel.setAttribute('aria-labelledby', link.getAttribute('id'));
+                    }
+
+                    /* tabindex=0 so keyboard users can tab into the panel */
+                    if (!panel.getAttribute('tabindex')) {
+                        panel.setAttribute('tabindex', '0');
+                    }
+                }
+            }
+        });
+
+        /* Arrow-key navigation per ARIA Authoring Practices (roving tabindex) */
+        tablist.addEventListener('keydown', function (e) {
+            var key = e.key || e.keyCode;
+            var isLeft  = (key === 'ArrowLeft'  || key === 37);
+            var isRight = (key === 'ArrowRight' || key === 39);
+            var isHome  = (key === 'Home'       || key === 36);
+            var isEnd   = (key === 'End'        || key === 35);
+
+            if (!isLeft && !isRight && !isHome && !isEnd) { return; }
+
+            /* Re-query links at event time (DOM may have changed) */
+            var allLinks = Array.prototype.slice.call(
+                tablist.querySelectorAll('[role="tab"]:not([disabled])')
+            );
+            if (!allLinks.length) { return; }
+
+            var focused = document.activeElement;
+            var idx = allLinks.indexOf(focused);
+            if (idx === -1) { return; }
+
+            var nextIdx;
+            if (isLeft)  { nextIdx = (idx - 1 + allLinks.length) % allLinks.length; }
+            if (isRight) { nextIdx = (idx + 1) % allLinks.length; }
+            if (isHome)  { nextIdx = 0; }
+            if (isEnd)   { nextIdx = allLinks.length - 1; }
+
+            e.preventDefault();
+
+            var nextLink = allLinks[nextIdx];
+
+            /* Move focus + activate (ARIA tabs pattern: arrow activates) */
+            nextLink.focus();
+            /* If Bootstrap 4 is loaded, trigger the tab show via jQuery/BS */
+            /* so the panel actually switches, then sync ARIA.              */
+            if (typeof jQuery !== 'undefined' && jQuery.fn.tab) {
+                jQuery(nextLink).tab('show');
+            } else {
+                nextLink.click();
+            }
+        });
+    }
+
+    /**
+     * Sync aria-selected and tabindex on all tab links after Bootstrap
+     * activates a new tab (shown.bs.tab event).
+     * @param {Element} tablist
+     */
+    function syncTabAriaSelected(tablist) {
+        var links = Array.prototype.slice.call(
+            tablist.querySelectorAll('[role="tab"]')
+        );
+        links.forEach(function (link) {
+            var isActive = link.classList.contains('active');
+            link.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            link.setAttribute('tabindex', isActive ? '0' : '-1');
+        });
+    }
+
+    /**
+     * Patch any pre-existing role="tabpanel" elements that the WHMCS template
+     * already stamped in HTML but did not fully wire up (missing tabindex,
+     * aria-labelledby). We scan all tab links across the whole page (not just
+     * inside .nav-tabs) to find which link controls each panel.
+     */
+    function fixTemplateTabPanels() {
+        document.querySelectorAll('[role="tabpanel"]').forEach(function (panel) {
+            /* tabindex=0 */
+            if (!panel.getAttribute('tabindex')) {
+                panel.setAttribute('tabindex', '0');
+            }
+
+            /* aria-labelledby — find a link that points to this panel */
+            if (!panel.getAttribute('aria-labelledby')) {
+                var panelId = panel.getAttribute('id');
+                if (!panelId) { return; }
+                /* Look for a link with href="#<id>" or data-target="#<id>"
+                   anywhere in the document */
+                var link = document.querySelector(
+                    '[href="#' + panelId + '"][data-toggle="tab"], ' +
+                    '[data-target="#' + panelId + '"][data-toggle="tab"], ' +
+                    '[href="#' + panelId + '"].nav-link, ' +
+                    '[href="#' + panelId + '"].tabControlLink'
+                );
+                if (!link) { return; }
+
+                /* Ensure the link has an id */
+                if (!link.getAttribute('id')) {
+                    link.setAttribute('id', 'a11y-tab-' + panelId);
+                }
+                panel.setAttribute('aria-labelledby', link.getAttribute('id'));
+
+                /* Also ensure the link has role=tab */
+                if (!link.getAttribute('role')) {
+                    link.setAttribute('role', 'tab');
+                }
+            }
+        });
+    }
+
+    /** Init or re-sync all .nav-tabs widgets in the document. */
+    function initAllTabWidgets() {
+        document.querySelectorAll('ul.nav-tabs, ol.nav-tabs').forEach(function (tablist) {
+            initTabWidget(tablist);
+            /* Re-sync selected state on each call (handles page where active */
+            /* tab may vary by server-side condition)                         */
+            syncTabAriaSelected(tablist);
+        });
+        /* Also patch any panels the template already marked with role=tabpanel */
+        fixTemplateTabPanels();
+    }
+
+    /* Run on DOM ready */
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAllTabWidgets);
+    } else {
+        initAllTabWidgets();
+    }
+
+    /* Sync aria-selected whenever Bootstrap activates a new tab */
+    if (typeof jQuery !== 'undefined') {
+        jQuery(document).on('shown.bs.tab', function (e) {
+            var link = e.target; /* newly activated tab link */
+            var tablist = link ? link.closest('ul.nav-tabs, ol.nav-tabs') : null;
+            if (tablist) {
+                syncTabAriaSelected(tablist);
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Status badges a11y                                                  */
+    /*                                                                     */
+    /* WHMCS status badges use .label / .badge + modifier classes for     */
+    /* colour coding. Most already carry visible text. This helper         */
+    /* ensures any icon-only or genuinely empty badge is supplemented      */
+    /* with a visually-hidden text label derived from its class name.     */
+    /*                                                                     */
+    /* Scope: defensive / global. Pages still needing per-page deep work: */
+    /*   WS-D — productdetails: status badges for hosting account state   */
+    /*           (Active/Suspended/Terminated) and SSL status badges       */
+    /*   WS-E — domaindetails: registration status, WHOIS privacy         */
+    /*   WS-E — clientareadomains list: bulk status colour coding          */
+    /* Those pages use dynamic/AJAX-driven status text; per-page work      */
+    /* is deferred to their respective workstreams.                        */
+    /* ------------------------------------------------------------------ */
+
+    /**
+     * Map from badge modifier class → readable status text.
+     * Covers the Bootstrap + WHMCS label-* / status-* vocabulary.
+     */
+    var _badgeClassMap = {
+        'label-success':  'Active',
+        'label-danger':   'Error',
+        'label-warning':  'Warning',
+        'label-info':     'Info',
+        'label-default':  'Default',
+        'label-primary':  'Primary',
+        'badge-success':  'Active',
+        'badge-danger':   'Error',
+        'badge-warning':  'Warning',
+        'badge-info':     'Info',
+        'status-active':      'Active',
+        'status-suspended':   'Suspended',
+        'status-terminated':  'Terminated',
+        'status-cancelled':   'Cancelled',
+        'status-fraud':       'Fraud',
+        'status-pending':     'Pending',
+        'status-expired':     'Expired',
+        'status-grace':       'Grace Period',
+        'status-redemption':  'Redemption',
+        'status-transferred': 'Transferred Away',
+        'status-deleted':     'Deleted'
+    };
+
+    function fixStatusBadges() {
+        var sel = '.label, .badge, [class*="status-"]';
+        document.querySelectorAll(sel).forEach(function (badge) {
+            /* Skip if already processed */
+            if (badge.__a11yBadgeFixed) { return; }
+            badge.__a11yBadgeFixed = true;
+
+            /* If badge already has non-whitespace visible text, it's fine */
+            /* Clone and strip sr-only elements to get true visible text */
+            var clone = badge.cloneNode(true);
+            clone.querySelectorAll('.sr-only').forEach(function (el) { el.parentNode.removeChild(el); });
+            /* Also strip icon elements */
+            clone.querySelectorAll('i, svg, img').forEach(function (el) { el.parentNode.removeChild(el); });
+            var visibleText = clone.textContent.replace(/\s+/g, ' ').trim();
+
+            if (visibleText) {
+                /* Has visible text — ensure icons are aria-hidden */
+                badge.querySelectorAll('i, svg').forEach(function (icon) {
+                    icon.setAttribute('aria-hidden', 'true');
+                });
+                return;
+            }
+
+            /* Icon-only or empty badge: try to derive text from class */
+            var classes = Array.prototype.slice.call(badge.classList);
+            var derivedText = null;
+            for (var c = 0; c < classes.length; c++) {
+                if (_badgeClassMap[classes[c]]) {
+                    derivedText = _badgeClassMap[classes[c]];
+                    break;
+                }
+            }
+
+            if (derivedText) {
+                var srSpan = document.createElement('span');
+                srSpan.className = 'sr-only';
+                srSpan.textContent = derivedText;
+                badge.appendChild(srSpan);
+            }
+
+            /* Always hide inner icons from AT */
+            badge.querySelectorAll('i, svg').forEach(function (icon) {
+                icon.setAttribute('aria-hidden', 'true');
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fixStatusBadges);
+    } else {
+        fixStatusBadges();
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Copy-to-clipboard a11y                                              */
+    /*                                                                     */
+    /* WHMCS uses buttons with data-clipboard-target="<selector>" and     */
+    /* class "copy-to-clipboard". The parent's WHMCS.ui.clipboard().copy  */
+    /* handler fires on click. We:                                         */
+    /*  1. Ensure each copy button has aria-label (from i18n carrier).    */
+    /*  2. Ensure inner icons are aria-hidden.                             */
+    /*  3. On click (after the copy succeeds), inject a visually-hidden   */
+    /*     aria-live="polite" "Copied" announcement and return focus.      */
+    /*  4. One shared live-region is lazily created in <body>.            */
+    /* ------------------------------------------------------------------ */
+
+    var _copyLiveRegion = null;
+
+    function _getCopyLiveRegion() {
+        if (!_copyLiveRegion) {
+            _copyLiveRegion = document.createElement('div');
+            _copyLiveRegion.setAttribute('aria-live', 'polite');
+            _copyLiveRegion.setAttribute('aria-atomic', 'true');
+            /* sr-only positioning */
+            _copyLiveRegion.style.cssText = [
+                'position:absolute',
+                'width:1px',
+                'height:1px',
+                'padding:0',
+                'margin:-1px',
+                'overflow:hidden',
+                'clip:rect(0,0,0,0)',
+                'white-space:nowrap',
+                'border:0'
+            ].join(';');
+            document.body.appendChild(_copyLiveRegion);
+        }
+        return _copyLiveRegion;
+    }
+
+    /** Selector covering all WHMCS copy-button patterns */
+    var _copySel = '[data-clipboard-target], [data-clipboard-text], .copy-to-clipboard';
+
+    function initCopyButton(btn) {
+        if (btn.__a11yCopyInited) { return; }
+        btn.__a11yCopyInited = true;
+
+        /* Ensure type=button */
+        if (btn.tagName === 'BUTTON' && !btn.getAttribute('type')) {
+            btn.setAttribute('type', 'button');
+        }
+
+        /* aria-label — use carrier key, falling back to English */
+        if (!btn.getAttribute('aria-label')) {
+            btn.setAttribute('aria-label', _i18n('copyToClipboard', 'Copy to clipboard'));
+        }
+
+        /* aria-hidden on inner icons */
+        btn.querySelectorAll('i, svg, img').forEach(function (icon) {
+            icon.setAttribute('aria-hidden', 'true');
+        });
+    }
+
+    function initAllCopyButtons() {
+        document.querySelectorAll(_copySel).forEach(initCopyButton);
+    }
+
+    /* Announce on click — bubbling, after WHMCS handler has run */
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest ? e.target.closest(_copySel) : null;
+        if (!btn) { return; }
+
+        /* Defer so the native copy + WHMCS tooltip logic runs first */
+        setTimeout(function () {
+            var region = _getCopyLiveRegion();
+            /* Clear then set (ensures re-announcement even for identical text) */
+            region.textContent = '';
+            /* Use rAF to ensure the DOM mutation is flushed before setting text */
+            requestAnimationFrame(function () {
+                region.textContent = _i18n('copied', 'Copied');
+            });
+            /* Return focus to the trigger */
+            if (btn && typeof btn.focus === 'function') {
+                btn.focus();
+            }
+        }, 100);
+    });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAllCopyButtons);
+    } else {
+        initAllCopyButtons();
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Spinner / loading aria-busy                                         */
+    /*                                                                     */
+    /* Buttons with .spinner-on-click or .disable-on-click receive        */
+    /* aria-busy="true" when clicked, signalling that an async operation  */
+    /* is in progress. This supplements the visual spinner shown by the   */
+    /* parent theme.                                                       */
+    /* ------------------------------------------------------------------ */
+
+    var _spinnerSel = '.spinner-on-click, .disable-on-click';
+
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest ? e.target.closest(_spinnerSel) : null;
+        if (!btn) { return; }
+        /* Only set on buttons / submit inputs */
+        if (btn.tagName !== 'BUTTON' && btn.tagName !== 'INPUT' && btn.getAttribute('role') !== 'button') {
+            return;
+        }
+        /* Set aria-busy immediately (synchronously, before submit) */
+        btn.setAttribute('aria-busy', 'true');
+    }, true); /* capture: true to fire before default form submission */
+
 }());

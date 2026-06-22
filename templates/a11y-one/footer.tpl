@@ -176,6 +176,8 @@
         data-pwweak="{lang key='a11yPwWeak'}"
         data-pwfair="{lang key='a11yPwFair'}"
         data-pwstrong="{lang key='a11yPwStrong'}"
+        data-copytoclipboard="{lang key='a11yCopyToClipboard'}"
+        data-copied="{lang key='a11yCopied'}"
     ></span>
     <script src="{$WEB_ROOT}/templates/{$template}/js/a11y-one.js"></script>
     {$footeroutput}
