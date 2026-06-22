@@ -94,7 +94,8 @@
                     <div class="input-group search d-none d-xl-flex">
                         <div class="input-group-prepend">
                             <button class="btn btn-default" type="submit">
-                                <i class="fas fa-search"></i>
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                                <span class="sr-only">{lang key="searchOurKnowledgebase"}</span>
                             </button>
                         </div>
                         <input class="form-control appended-form-control font-weight-light" type="text" name="search" placeholder="{lang key="searchOurKnowledgebase"}...">
@@ -124,7 +125,8 @@
                         <div class="input-group search w-100 mb-2">
                             <div class="input-group-prepend">
                                 <button class="btn btn-default" type="submit">
-                                    <i class="fas fa-search"></i>
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                    <span class="sr-only">{lang key="searchOurKnowledgebase"}</span>
                                 </button>
                             </div>
                             <input class="form-control prepended-form-control" type="text" name="search" placeholder="{lang key="searchOurKnowledgebase"}...">

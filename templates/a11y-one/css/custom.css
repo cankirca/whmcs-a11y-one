@@ -31,6 +31,9 @@ textarea:focus-visible,
 /* Contrast: lift twenty-one's muted grey to >= 4.5:1 on white */
 .text-muted { color: #595f6b !important; }
 
+/* Contrast: active breadcrumb text >= 4.5:1 on the #e9ecef breadcrumb bar (5.41:1) */
+.breadcrumb-item.active { color: #595f6b; }
+
 /* Minimum target size 24px (WCAG 2.5.8) */
 .btn, .nav-link, .form-check-input { min-height: 24px; }
 .btn-reveal-pw { min-width: 44px; }
