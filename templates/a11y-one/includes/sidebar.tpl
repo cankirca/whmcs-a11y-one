@@ -5,10 +5,12 @@
                 {if $item->hasIcon()}<i class="{$item->getIcon()}" aria-hidden="true"></i>&nbsp;{/if}
                 {$item->getLabel()}
                 {if $item->hasBadge()}&nbsp;<span class="badge float-right">{$item->getBadge()}</span>{/if}
-                <i class="fas fa-chevron-up card-minimise float-right" aria-hidden="true"></i>
+                <button class="card-minimise float-right btn btn-link p-0 border-0" aria-expanded="true" aria-controls="sidebar-panel-{$item->getName()|lower|replace:' ':'-'}">
+                    <i class="fas fa-chevron-up" aria-hidden="true"></i>
+                </button>
             </h3>
         </div>
-        <div class="collapsable-card-body">
+        <div class="collapsable-card-body" id="sidebar-panel-{$item->getName()|lower|replace:' ':'-'}">
             {if $item->hasBodyHtml()}
                 <div class="card-body">
                     {$item->getBodyHtml()}
@@ -104,3 +106,14 @@
         </div>
     {/if}
 {/foreach}
+{literal}
+<script>
+/* A11y One: keep aria-expanded in sync with the custom card-minimise toggle */
+(function ($) {
+    $(document).on('click', '.card-minimise', function () {
+        var expanded = $(this).attr('aria-expanded') === 'true';
+        $(this).attr('aria-expanded', expanded ? 'false' : 'true');
+    });
+}(jQuery));
+</script>
+{/literal}
