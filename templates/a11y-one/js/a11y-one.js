@@ -10,12 +10,10 @@
 
     /* Sidebar: keep aria-expanded in sync with the custom card-minimise toggle */
     var minimiseBtns = document.querySelectorAll('.card-minimise');
-    if (minimiseBtns.length) {
-        document.addEventListener('click', function (e) {
-            var btn = e.target.closest('.card-minimise');
-            if (!btn) { return; }
-            var expanded = btn.getAttribute('aria-expanded') === 'true';
-            btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        });
-    }
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.card-minimise');
+        if (!btn) { return; }
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    });
 }());

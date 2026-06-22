@@ -156,7 +156,7 @@
 
     {include file="$template/includes/generate-password.tpl"}
 
-    <script src="{$WEB_ROOT}/templates/a11y-one/js/a11y-one.js"></script>
+    <script src="{$WEB_ROOT}/templates/{$template}/js/a11y-one.js"></script>
     {$footeroutput}
 
 </body>
