@@ -321,3 +321,25 @@ input.a11y-native-check:focus-visible {
 @media (prefers-reduced-motion: reduce) {
     * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
+
+/* === WS-D Task 3: SSL + subscription-manage === */
+/* managessl: validation-type badge contrast.
+   DV badge uses label-default (#6c757d bg on white = ~3.0:1 — FAILS WCAG AA).
+   Lift to #595f6b (~5.6:1 on white). OV = label-warning (#ffc107 + dark text — passes).
+   EV = label-success (#28a745 + white = ~4.6:1 — passes). */
+.label.label-default {
+    background-color: #595f6b !important; /* white text 5.6:1 */
+}
+
+/* configuressl-steptwo: ensure inline radio targets meet 24×24 px minimum (WCAG 2.5.5) */
+.configuressl-steptwo .form-check-inline {
+    min-height: 24px;
+    align-items: center;
+}
+
+/* subscription-manage: cap card width for readability; auto-centre */
+.mw-540 {
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+}

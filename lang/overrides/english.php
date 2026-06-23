@@ -91,3 +91,7 @@ $_LANG['a11yUpgradeConfirm']         = 'Confirm upgrade';
 $_LANG['a11yUpgradeConfigGroup']     = 'Configure: %s';
 $_LANG['a11yUpgradeBillingLabel']    = 'Billing cycle';
 $_LANG['a11yUpgradeQtyLabel']        = 'Quantity';
+
+// WS-D Task 3: SSL (managessl + configure ×3) + subscription-manage
+$_LANG['a11ySslValidationType']      = 'Validation type';
+$_LANG['a11ySslApproverEmailGroup']  = 'Select approver email address';

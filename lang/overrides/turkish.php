@@ -91,3 +91,7 @@ $_LANG['a11yUpgradeConfirm']         = 'Yükseltmeyi onayla';
 $_LANG['a11yUpgradeConfigGroup']     = 'Yapılandır: %s';
 $_LANG['a11yUpgradeBillingLabel']    = 'Fatura dönemi';
 $_LANG['a11yUpgradeQtyLabel']        = 'Miktar';
+
+// WS-D Task 3: SSL (managessl + configure ×3) + subscription-manage
+$_LANG['a11ySslValidationType']      = 'Doğrulama türü';
+$_LANG['a11ySslApproverEmailGroup']  = 'Onaylayıcı e-posta adresi seçin';
