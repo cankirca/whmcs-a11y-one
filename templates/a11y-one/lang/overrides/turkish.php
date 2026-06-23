@@ -18,3 +18,8 @@ $_LANG['announcementNewWindow']      = '(yeni pencerede açılır)';
 // WS-F Task 6: Server status
 $_LANG['serverstatusChecking']       = 'Kontrol ediliyor…';
 $_LANG['networkIssuesNavLabel']      = 'Ağ sorunları gezintisi';
+
+// WS-D Task 1: Products / services
+$_LANG['productDetails']['hookOutputLabel']   = 'Ek hizmet bilgisi';
+$_LANG['metrics']['tableCaption']             = 'Hizmet kullanım metrikleri';
+$_LANG['metrics']['pricingTableCaption']      = 'Fiyatlandırma kademeleri';

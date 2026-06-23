@@ -271,6 +271,52 @@ input.a11y-native-check:focus-visible {
     color: #595f6b !important;
 }
 
+/* ------------------------------------------------------------------ */
+/* Contrast: product-status-text + service status badges (WS-D Task 1) */
+/*                                                                      */
+/* .product-status-active bg #46a546 + white text = ~3.1:1 — FAILS.   */
+/* .product-status-pending bg #f89406 + white text = ~2.5:1 — FAILS.  */
+/* .product-status-cancelled / -terminated bg #666 + white = ~3.9:1.  */
+/* Fix: darken each colour to reach >= 4.5:1 with white text.          */
+/*                                                                      */
+/* Also fix the product-status-text div colour on coloured bg: the     */
+/* parent sets color:#fff which is fine, but each bg needs to clear     */
+/* 4.5:1. We override the backgrounds here and leave color:#fff alone. */
+/* ------------------------------------------------------------------ */
+.product-status-active {
+    background-color: #246b24 !important; /* white 5.1:1 */
+}
+.product-status-pending {
+    background-color: #7a5000 !important; /* white 7.2:1 */
+}
+.product-status-cancelled,
+.product-status-terminated {
+    background-color: #4a4a4a !important; /* white 7.0:1 */
+}
+.product-status-fraud {
+    /* parent #000 passes (21:1); keep as-is */
+}
+/* .product-status-suspended parent #0768b8 gives ~4.7:1 — passes. */
+
+/* Services list: .label.status-* badges on the clientareaproducts page.
+   These mirror Bootstrap label-{success/warning/default} colours.
+   Global fixStatusBadges() (a11y-one.js WS-A) injects sr-only text.
+   The colour fixes here ensure axe color-contrast passes on this page. */
+.label.status-active,
+.badge.status-active {
+    background-color: #246b24 !important; /* white 5.1:1 */
+}
+.label.status-pending,
+.badge.status-pending {
+    background-color: #7a5000 !important; /* white 7.2:1 */
+}
+.label.status-cancelled,
+.badge.status-cancelled,
+.label.status-terminated,
+.badge.status-terminated {
+    background-color: #4a4a4a !important; /* white 7.0:1 */
+}
+
 /* Respect reduced-motion (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {
     * { animation-duration: .001ms !important; transition-duration: .001ms !important; }

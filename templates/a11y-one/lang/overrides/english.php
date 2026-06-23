@@ -18,3 +18,8 @@ $_LANG['announcementNewWindow']      = '(opens in new window)';
 // WS-F Task 6: Server status
 $_LANG['serverstatusChecking']       = 'Checking…';
 $_LANG['networkIssuesNavLabel']      = 'Network issues navigation';
+
+// WS-D Task 1: Products / services
+$_LANG['productDetails']['hookOutputLabel']   = 'Additional service information';
+$_LANG['metrics']['tableCaption']             = 'Service usage metrics';
+$_LANG['metrics']['pricingTableCaption']      = 'Pricing tiers';
