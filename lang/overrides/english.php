@@ -100,6 +100,25 @@ $_LANG['a11ySslApproverEmailGroup']  = 'Select approver email address';
 $_LANG['a11ySecurePaymentFrame']     = 'Secure payment form';
 $_LANG['a11yQuoteActions']           = 'Actions';
 
+/* === WS-E Domains === */
+$_LANG['a11yDomainTableCaption']      = 'Your domains';
+$_LANG['a11yDomainSelectAll']         = 'Select all domains';
+$_LANG['a11yDomainSelectRow']         = 'Select domain';
+$_LANG['a11yDomainBulkActions']       = 'Bulk actions';
+$_LANG['a11yDomainSelectedCount']     = '%s domains selected';
+$_LANG['a11yDomainVisitSite']         = 'Visit site';
+$_LANG['a11yDomainAddNewRecord']      = 'Add new DNS record row';
+$_LANG['a11yDomainAddNewForwarder']   = 'Add new email forwarder row';
+$_LANG['a11yDomainForwardingAt']      = 'At domain, forwards to';
+$_LANG['a11yDomainCopyEpp']           = 'Copy EPP code to clipboard';
+$_LANG['a11yDomainNsChoice']          = 'Nameserver choice';
+$_LANG['a11yDomainPricingCaption']    = 'Domain pricing by extension';
+$_LANG['a11yDomainCurrencyLabel']     = 'Currency';
+$_LANG['a11yDomainEnabled']           = 'enabled';
+$_LANG['a11yDomainDisabled']          = 'disabled';
+$_LANG['a11yDomainBulkNsAffect']      = 'This change will affect the following domains';
+$_LANG['a11yDomainBulkContactAffect'] = 'This change will affect the following domains';
+
 // WS-B: Account / Profile / Security / Contacts / Users
 $_LANG['wsb']['required']              = 'required';
 $_LANG['wsb']['ssoToggleLabel']        = 'Enable Single Sign-On';

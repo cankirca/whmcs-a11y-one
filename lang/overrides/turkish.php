@@ -100,6 +100,25 @@ $_LANG['a11ySslApproverEmailGroup']  = 'Onaylayıcı e-posta adresi seçin';
 $_LANG['a11ySecurePaymentFrame']     = 'Güvenli ödeme formu';
 $_LANG['a11yQuoteActions']           = 'İşlemler';
 
+/* === WS-E Domains === */
+$_LANG['a11yDomainTableCaption']      = 'Alan adlarınız';
+$_LANG['a11yDomainSelectAll']         = 'Tüm alan adlarını seç';
+$_LANG['a11yDomainSelectRow']         = 'Alan adını seç';
+$_LANG['a11yDomainBulkActions']       = 'Toplu işlemler';
+$_LANG['a11yDomainSelectedCount']     = '%s alan adı seçildi';
+$_LANG['a11yDomainVisitSite']         = 'Siteyi ziyaret et';
+$_LANG['a11yDomainAddNewRecord']      = 'Yeni DNS kaydı satırı ekle';
+$_LANG['a11yDomainAddNewForwarder']   = 'Yeni e-posta yönlendirmesi satırı ekle';
+$_LANG['a11yDomainForwardingAt']      = 'Alan adında, şuraya yönlendirir';
+$_LANG['a11yDomainCopyEpp']           = 'EPP kodunu panoya kopyala';
+$_LANG['a11yDomainNsChoice']          = 'Ad sunucusu seçimi';
+$_LANG['a11yDomainPricingCaption']    = 'Uzantıya göre alan adı fiyatlandırması';
+$_LANG['a11yDomainCurrencyLabel']     = 'Para birimi';
+$_LANG['a11yDomainEnabled']           = 'etkin';
+$_LANG['a11yDomainDisabled']          = 'devre dışı';
+$_LANG['a11yDomainBulkNsAffect']      = 'Bu değişiklik aşağıdaki alan adlarını etkiler';
+$_LANG['a11yDomainBulkContactAffect'] = 'Bu değişiklik aşağıdaki alan adlarını etkiler';
+
 // WS-B: Hesap / Profil / Güvenlik / Kişiler / Kullanıcılar
 $_LANG['wsb']['required']              = 'zorunlu';
 $_LANG['wsb']['ssoToggleLabel']        = 'Tek oturum açmayı etkinleştir';

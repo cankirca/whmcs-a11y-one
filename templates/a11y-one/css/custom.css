@@ -462,3 +462,77 @@ fieldset.a11y-permissions > legend {
 .label-info {
     background-color: #117285 !important; /* white text 4.8:1 */
 }
+
+/* === WS-E Domains === */
+
+/* TLD filter buttons: badge-styled <button> elements; keep badge sizing. */
+.tld-filters .tld-filter-btn {
+    display: inline-block;
+    margin: 0 0.25rem 0.5rem 0;
+    font-size: 75%;
+    font-weight: 700;
+    padding: 0.25em 0.4em;
+    line-height: 1;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+.tld-filters .tld-filter-btn:focus-visible {
+    outline: 3px solid #0768b8;
+    outline-offset: 2px;
+}
+
+/* Domain status badges — ensure sufficient contrast on common statuses.
+   parent .status-active uses #5cb85c (bg) + white text = 3.1:1 — FAILS.
+   Override to darker green 4.6:1. */
+.label.status-active,
+.badge.status-active {
+    background-color: #2d7d2d !important; /* white 5.0:1 */
+}
+
+/* .status-expired / .status-cancelled uses #d9534f (bg) + white = 4.0:1 — BORDERLINE.
+   Use a slightly darker red. */
+.label.status-expired,
+.badge.status-expired,
+.label.status-cancelled,
+.badge.status-cancelled {
+    background-color: #b21f2d !important; /* white 5.0:1 */
+}
+
+/* .status-pending uses #f0ad4e (yellow) + white = 2.0:1 — FAILS.
+   Switch to dark text (body color) on yellow. */
+.label.status-pending,
+.badge.status-pending {
+    color: #212529 !important;
+}
+
+/* EPP code display — monospace, distinct background */
+.epp-code-display {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    display: inline-block;
+    user-select: all;
+}
+
+/* Domains table: select-all checkbox alignment */
+#tableDomainsList th:first-child,
+#tableDomainsList td:first-child {
+    width: 2rem;
+    vertical-align: middle;
+}
+
+/* Bulk domain management: contact fieldset border suppressed */
+fieldset.a11y-bulk-contact {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+fieldset.a11y-bulk-contact > legend {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+

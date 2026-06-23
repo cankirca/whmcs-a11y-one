@@ -2192,4 +2192,54 @@
     _A.initAriaDisabledLinks = initAriaDisabledLinks;
     _A.initStatesDropdownA11y = initStatesDropdownA11y;
 
+    /* === WS-E Domains ===
+     * Fix SSL-state images that WHMCS core JS injects dynamically without alt.
+     * These images carry a class of "ssl-state" and use title/data-* for tooltip
+     * content. We copy the title as alt text (or use empty alt for decorative).
+     * Run on DOMContentLoaded + observe dynamic injection via MutationObserver.
+     */
+    function fixSslStateImageAlts() {
+        document.querySelectorAll('img.ssl-state:not([alt])').forEach(function (img) {
+            var title = img.getAttribute('title') || img.getAttribute('data-original-title') || '';
+            img.setAttribute('alt', title); /* empty string if no title = decorative */
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fixSslStateImageAlts);
+    } else {
+        fixSslStateImageAlts();
+    }
+
+    /* Observe future injections (the ssl-info.js script populates images
+       after page load via AJAX — a MutationObserver catches additions). */
+    if (typeof MutationObserver !== 'undefined') {
+        new MutationObserver(function (mutations) {
+            mutations.forEach(function (m) {
+                if (m.type === 'childList') {
+                    m.addedNodes.forEach(function (node) {
+                        if (node.nodeType === 1) {
+                            if (node.matches && node.matches('img.ssl-state')) {
+                                fixSslStateImageAlts();
+                            } else if (node.querySelectorAll) {
+                                node.querySelectorAll('img.ssl-state:not([alt])').forEach(function () {
+                                    fixSslStateImageAlts();
+                                });
+                            }
+                        }
+                    });
+                } else if (m.type === 'attributes' && m.target.matches && m.target.matches('img.ssl-state')) {
+                    if (!m.target.getAttribute('alt')) {
+                        fixSslStateImageAlts();
+                    }
+                }
+            });
+        }).observe(document.body || document.documentElement, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['src', 'class']
+        });
+    }
+
 }());
