@@ -66,3 +66,11 @@ $_LANG['a11yStarPlural']             = ':count yıldız';
 
 // WS-F Task 4 ticketfeedback — accessible 1–10 rating radios
 $_LANG['a11yFeedbackOutOf10']        = '10 üzerinden';
+
+// WS-F Task 5 — KB + downloads accessible labels
+$_LANG['a11yKbSearchLabel']          = 'Bilgi bankasında ara';
+$_LANG['a11yKbPrint']                = 'Bu makaleyi yazdır';
+$_LANG['a11yKbVoteYes']              = 'Evet, bu makale yardımcı oldu';
+$_LANG['a11yKbVoteNo']               = 'Hayır, bu makale yardımcı olmadı';
+$_LANG['a11yDownloadsSearchLabel']   = 'İndirmelerde ara';
+$_LANG['a11yDownloadsClientsOnly']   = 'Yalnızca müşteriler';

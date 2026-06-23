@@ -66,3 +66,11 @@ $_LANG['a11yStarPlural']             = ':count stars';
 
 // WS-F Task 4 ticketfeedback — accessible 1–10 rating radios
 $_LANG['a11yFeedbackOutOf10']        = 'out of 10';
+
+// WS-F Task 5 — KB + downloads accessible labels
+$_LANG['a11yKbSearchLabel']          = 'Search the knowledgebase';
+$_LANG['a11yKbPrint']                = 'Print this article';
+$_LANG['a11yKbVoteYes']              = 'Yes, this article was helpful';
+$_LANG['a11yKbVoteNo']               = 'No, this article was not helpful';
+$_LANG['a11yDownloadsSearchLabel']   = 'Search downloads';
+$_LANG['a11yDownloadsClientsOnly']   = 'Clients only';

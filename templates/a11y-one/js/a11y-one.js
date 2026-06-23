@@ -1910,4 +1910,28 @@
         initTicketSubmitA11y();
     }
 
+    /* ------------------------------------------------------------------ */
+    /* KB article — print button progressive enhancement                    */
+    /*                                                                      */
+    /* knowledgebasearticle.tpl renders a <button class="btn-print-article">*/
+    /* with no onclick. We wire window.print() here so no inline script is  */
+    /* needed in the template.                                              */
+    /* ------------------------------------------------------------------ */
+    function initKbPrintButton() {
+        var btns = document.querySelectorAll('.btn-print-article');
+        Array.prototype.forEach.call(btns, function (btn) {
+            if (btn.__a11yPrintWired) { return; }
+            btn.__a11yPrintWired = true;
+            btn.addEventListener('click', function () {
+                window.print();
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initKbPrintButton);
+    } else {
+        initKbPrintButton();
+    }
+
 }());
