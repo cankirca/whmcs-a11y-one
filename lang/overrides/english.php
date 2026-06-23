@@ -99,3 +99,13 @@ $_LANG['a11ySslApproverEmailGroup']  = 'Select approver email address';
 // WS-C: Billing — invoices, quotes, viewinvoice, viewquote, viewbillingnote, payment
 $_LANG['a11ySecurePaymentFrame']     = 'Secure payment form';
 $_LANG['a11yQuoteActions']           = 'Actions';
+
+// WS-B: Account / Profile / Security / Contacts / Users
+$_LANG['wsb']['required']              = 'required';
+$_LANG['wsb']['ssoToggleLabel']        = 'Enable Single Sign-On';
+$_LANG['wsb']['marketingOptInLabel']   = 'Join our mailing list';
+$_LANG['wsb']['inviteEmailLabel']      = 'Invite user by email address';
+$_LANG['wsb']['permissionsGroupLabel'] = 'Invitation permissions';
+$_LANG['wsb']['emailStatusNotVerified'] = 'Email address not verified';
+$_LANG['wsb']['emailStatusVerified']   = 'Email address verified';
+$_LANG['wsb']['subUserTableCaption']   = 'Sub-account users and pending invitations';

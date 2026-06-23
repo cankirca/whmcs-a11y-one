@@ -99,3 +99,13 @@ $_LANG['a11ySslApproverEmailGroup']  = 'Onaylayıcı e-posta adresi seçin';
 // WS-C: Billing — faturalar, teklifler, fatura görüntüleme, ödeme
 $_LANG['a11ySecurePaymentFrame']     = 'Güvenli ödeme formu';
 $_LANG['a11yQuoteActions']           = 'İşlemler';
+
+// WS-B: Hesap / Profil / Güvenlik / Kişiler / Kullanıcılar
+$_LANG['wsb']['required']              = 'zorunlu';
+$_LANG['wsb']['ssoToggleLabel']        = 'Tek oturum açmayı etkinleştir';
+$_LANG['wsb']['marketingOptInLabel']   = 'Posta listemize katılın';
+$_LANG['wsb']['inviteEmailLabel']      = 'E-posta adresiyle kullanıcı davet et';
+$_LANG['wsb']['permissionsGroupLabel'] = 'Davet izinleri';
+$_LANG['wsb']['emailStatusNotVerified'] = 'E-posta adresi doğrulanmamış';
+$_LANG['wsb']['emailStatusVerified']   = 'E-posta adresi doğrulandı';
+$_LANG['wsb']['subUserTableCaption']   = 'Alt hesap kullanıcıları ve bekleyen davetler';

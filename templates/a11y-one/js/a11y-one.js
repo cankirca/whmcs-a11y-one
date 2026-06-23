@@ -1938,4 +1938,258 @@
         initKbPrintButton();
     }
 
+    /* ------------------------------------------------------------------ */
+    /* WS-B: Bootstrap-switch accessibility shim                           */
+    /* ------------------------------------------------------------------ */
+
+    /**
+     * bootstrapSwitch accessibility shim.
+     *
+     * bootstrapSwitch visually replaces a native checkbox with a
+     * custom widget that has no accessible name or state by default.
+     * This function:
+     *   1. Ensures the native <input> remains in the a11y tree.
+     *   2. Gives the rendered switch wrapper role="switch",
+     *      aria-checked, and aria-labelledby from the associated label.
+     *   3. Keeps aria-checked in sync on change.
+     *
+     * @param {Element|Document} [root]
+     */
+    function initBootstrapSwitchA11y(root) {
+        root = root || document;
+        root.querySelectorAll('input.toggle-switch-success, input[class*="bootstrap-switch"]').forEach(function (input) {
+            input.removeAttribute('aria-hidden');
+            if (input.tabIndex < 0) {
+                input.tabIndex = 0;
+            }
+
+            var wrapper = input.closest('.bootstrap-switch');
+            if (!wrapper) {
+                /* bootstrapSwitch not yet initialised — annotate raw input */
+                if (!input.id) {
+                    input.id = 'a11y-switch-' + Math.random().toString(36).slice(2);
+                }
+                if (!document.querySelector('label[for="' + input.id + '"]')) {
+                    var lbl = input.getAttribute('data-label') || input.getAttribute('aria-label') ||
+                        (input.nextSibling && input.nextSibling.textContent
+                            ? input.nextSibling.textContent.trim() : '');
+                    if (lbl) { input.setAttribute('aria-label', lbl); }
+                }
+                return;
+            }
+
+            if (!wrapper.getAttribute('role')) {
+                wrapper.setAttribute('role', 'switch');
+            }
+            wrapper.setAttribute('aria-checked', input.checked ? 'true' : 'false');
+
+            /* Accessible name: explicit label first, then nearest heading */
+            if (!wrapper.getAttribute('aria-labelledby') && !wrapper.getAttribute('aria-label')) {
+                var labelText = '';
+                if (input.id) {
+                    var labelEl = document.querySelector('label[for="' + input.id + '"]');
+                    if (labelEl) { labelText = labelEl.textContent.trim(); }
+                }
+                if (!labelText) {
+                    var cardBody = input.closest('.card-body');
+                    var heading = cardBody && cardBody.querySelector('.card-title');
+                    if (heading) { labelText = heading.textContent.trim(); }
+                }
+                if (labelText) {
+                    var labelId = 'a11y-sw-lbl-' + (input.id || Math.random().toString(36).slice(2));
+                    if (!document.getElementById(labelId)) {
+                        var span = document.createElement('span');
+                        span.id = labelId;
+                        span.className = 'sr-only';
+                        span.textContent = labelText;
+                        wrapper.parentNode.insertBefore(span, wrapper);
+                    }
+                    wrapper.setAttribute('aria-labelledby', labelId);
+                }
+            }
+
+            if (!wrapper.dataset.a11yBound) {
+                wrapper.dataset.a11yBound = '1';
+                input.addEventListener('switchChange.bootstrapSwitch', function () {
+                    wrapper.setAttribute('aria-checked', input.checked ? 'true' : 'false');
+                });
+                input.addEventListener('change', function () {
+                    wrapper.setAttribute('aria-checked', input.checked ? 'true' : 'false');
+                });
+                wrapper.addEventListener('keydown', function (e) {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault();
+                        input.click();
+                    }
+                });
+                if (!wrapper.hasAttribute('tabindex')) {
+                    wrapper.tabIndex = 0;
+                }
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* WS-B: 2FA AJAX modal focus management                               */
+    /* ------------------------------------------------------------------ */
+
+    /**
+     * When the AJAX-loaded 2FA modal (#modalAjax with .twofa-setup class)
+     * opens, move focus to the first interactive element inside it.
+     * Return focus to the trigger link when the modal closes.
+     */
+    function initTwofaModalFocus() {
+        var modal = document.getElementById('modalAjax');
+        if (!modal) { return; }
+
+        modal.addEventListener('shown.bs.modal', function () {
+            if (!modal.classList.contains('twofa-setup')) { return; }
+            var focusable = modal.querySelector(
+                'input:not([disabled]):not([type=hidden]), button:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href]'
+            );
+            if (focusable) {
+                focusable.focus();
+            } else {
+                var dialog = modal.querySelector('.modal-dialog');
+                if (dialog) {
+                    dialog.setAttribute('tabindex', '-1');
+                    dialog.focus();
+                }
+            }
+        });
+
+        var lastFocus = null;
+        document.querySelectorAll('.twofa-config-link').forEach(function (link) {
+            link.addEventListener('click', function () { lastFocus = link; });
+        });
+        modal.addEventListener('hidden.bs.modal', function () {
+            if (lastFocus) { lastFocus.focus(); lastFocus = null; }
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* WS-B: Linked-accounts live region                                   */
+    /* ------------------------------------------------------------------ */
+
+    /**
+     * Wraps #providerLinkingMessages in an aria-live region so
+     * screen-reader users hear status updates after OAuth linking.
+     */
+    function initLinkedAccountsLiveRegion() {
+        var msgBox = document.getElementById('providerLinkingMessages');
+        if (!msgBox) { return; }
+        if (!msgBox.getAttribute('aria-live')) {
+            msgBox.setAttribute('role', 'status');
+            msgBox.setAttribute('aria-live', 'polite');
+            msgBox.setAttribute('aria-atomic', 'true');
+        }
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* WS-B: Bootstrap modal aria-labelledby fix                           */
+    /* ------------------------------------------------------------------ */
+
+    /**
+     * Ensures every Bootstrap modal that contains a .modal-title
+     * gets aria-labelledby pointing to that title element.
+     */
+    function initModalAria(root) {
+        root = root || document;
+        root.querySelectorAll('.modal[role="dialog"]').forEach(function (modal) {
+            var title = modal.querySelector('.modal-title');
+            if (!title) { return; }
+            if (!title.id) {
+                title.id = 'modal-title-' + (modal.id || Math.random().toString(36).slice(2));
+            }
+            if (!modal.getAttribute('aria-labelledby')) {
+                modal.setAttribute('aria-labelledby', title.id);
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* WS-B: Disabled links — aria-disabled upgrade                        */
+    /* ------------------------------------------------------------------ */
+
+    /**
+     * Links with class .disabled lack aria-disabled="true" in the
+     * parent theme. Add it so AT announces them as unavailable.
+     */
+    function initAriaDisabledLinks(root) {
+        root = root || document;
+        root.querySelectorAll('a.disabled, a[disabled]').forEach(function (link) {
+            link.setAttribute('aria-disabled', 'true');
+            if (!link.dataset.a11yBound) {
+                link.dataset.a11yBound = '1';
+                link.addEventListener('click', function (e) { e.preventDefault(); });
+                link.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); }
+                });
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* WS-B: StatesDropdown.js accessibility patch                        */
+    /* ------------------------------------------------------------------ */
+
+    /**
+     * WHMCS core StatesDropdown.js replaces #inputState with #stateselect
+     * (country has states) or #stateinput (stateNotRequired=true). The new
+     * element loses the label association from <label for="inputState">.
+     * Copy the label text into aria-label on the dynamic element.
+     *
+     * StatesDropdown.js triggers 'state:rendered' on the country select each
+     * time it rebuilds the state field — bind there so we always run after.
+     */
+    function initStatesDropdownA11y() {
+        var label = document.querySelector('label[for="inputState"]');
+        if (!label) { return; }
+        var labelText = label.textContent.trim();
+
+        function labelStateEl() {
+            ['stateselect', 'stateinput'].forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el && !el.getAttribute('aria-label')) {
+                    el.setAttribute('aria-label', labelText);
+                }
+            });
+        }
+
+        var countrySelect = document.querySelector('select[name="country"]');
+        if (countrySelect) {
+            /* Re-label whenever StatesDropdown rebuilds (fires on initial load too) */
+            jQuery(countrySelect).on('state:rendered', labelStateEl);
+            /* Fallback: label whatever is already in the DOM right now */
+            setTimeout(labelStateEl, 0);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            initBootstrapSwitchA11y(document);
+            initTwofaModalFocus();
+            initLinkedAccountsLiveRegion();
+            initModalAria(document);
+            initAriaDisabledLinks(document);
+            initStatesDropdownA11y();
+        });
+    } else {
+        initBootstrapSwitchA11y(document);
+        initTwofaModalFocus();
+        initLinkedAccountsLiveRegion();
+        initModalAria(document);
+        initAriaDisabledLinks(document);
+        initStatesDropdownA11y();
+    }
+
+    /* Expose for re-use after AJAX / dynamic content */
+    var _A = window.A11yOne = window.A11yOne || {};
+    _A.initBootstrapSwitchA11y = initBootstrapSwitchA11y;
+    _A.initTwofaModalFocus = initTwofaModalFocus;
+    _A.initLinkedAccountsLiveRegion = initLinkedAccountsLiveRegion;
+    _A.initModalAria = initModalAria;
+    _A.initAriaDisabledLinks = initAriaDisabledLinks;
+    _A.initStatesDropdownA11y = initStatesDropdownA11y;
+
 }());

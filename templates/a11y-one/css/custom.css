@@ -441,3 +441,24 @@ input.a11y-native-check:focus-visible {
     text-decoration: none;
     z-index: 9999;
 }
+
+/* === WS-B === */
+/* Account / Profile / Security / Contacts / Users */
+
+/* Permission checkboxes fieldset — remove default border */
+fieldset.a11y-permissions {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+fieldset.a11y-permissions > legend {
+    margin-bottom: 0.5rem;
+}
+
+/* Contrast: .label-info (Bootstrap 3 badge, e.g. "Owner" on user-management)
+   default bg #5bc0de + white text = ~2.5:1 — FAILS WCAG AA 4.5:1.
+   Override to a darker teal that gives ~4.8:1 on white text. */
+.label-info {
+    background-color: #117285 !important; /* white text 4.8:1 */
+}
