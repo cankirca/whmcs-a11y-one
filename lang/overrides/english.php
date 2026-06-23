@@ -128,3 +128,22 @@ $_LANG['wsb']['permissionsGroupLabel'] = 'Invitation permissions';
 $_LANG['wsb']['emailStatusNotVerified'] = 'Email address not verified';
 $_LANG['wsb']['emailStatusVerified']   = 'Email address verified';
 $_LANG['wsb']['subUserTableCaption']   = 'Sub-account users and pending invitations';
+
+/* === WS-G Dashboard / Misc / Errors / OAuth / Standalone === */
+
+// clientareaemails — table caption + actions column header
+$_LANG['a11yEmailsTableCaption']     = 'Your email history';
+$_LANG['a11yEmailsActions']          = 'Actions';
+
+// 3dsecure — iframe title
+$_LANG['a11y3dSecureFrame']          = '3D Secure authentication';
+
+// oauth/login-twofactorauth — backup code input label
+$_LANG['a11yBackupCodeLabel']        = 'Backup code';
+
+// oauth/error — sr-only h1
+$_LANG['a11yOauthError']             = 'OAuth error';
+
+// forwardpage — live region + noscript
+$_LANG['a11yRedirectingPlease']      = 'Redirecting, please wait…';
+$_LANG['a11yJsRequiredForPayment']   = 'JavaScript is required to complete the payment redirect. Please enable JavaScript and reload the page.';

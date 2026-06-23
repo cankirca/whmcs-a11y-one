@@ -2229,3 +2229,33 @@
     }
 
 }());
+
+/* === WS-G verify-email live region ===
+ * WHMCS core scripts.min.js handles the btn-resend-verify-email AJAX call and
+ * updates the button text on success/error.  This small IIFE additionally
+ * copies the result text into the #verifyEmailStatus live region so that
+ * screen readers announce the outcome without a page reload.
+ */
+(function () {
+    function initVerifyEmailLiveRegion() {
+        var btn = document.querySelector('.btn-resend-verify-email');
+        if (!btn) { return; }
+        var targetSel = btn.getAttribute('data-status-target');
+        if (!targetSel) { return; }
+        var statusEl = document.querySelector(targetSel);
+        if (!statusEl) { return; }
+
+        /* Use MutationObserver to watch for the button text change that core
+           scripts.min.js performs on success/error — relay it to the live region. */
+        var observer = new MutationObserver(function () {
+            statusEl.textContent = btn.textContent.trim();
+        });
+        observer.observe(btn, { childList: true, subtree: true, characterData: true });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initVerifyEmailLiveRegion);
+    } else {
+        initVerifyEmailLiveRegion();
+    }
+}());

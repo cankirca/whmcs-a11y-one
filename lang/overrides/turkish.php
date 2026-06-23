@@ -128,3 +128,22 @@ $_LANG['wsb']['permissionsGroupLabel'] = 'Davet izinleri';
 $_LANG['wsb']['emailStatusNotVerified'] = 'E-posta adresi doğrulanmamış';
 $_LANG['wsb']['emailStatusVerified']   = 'E-posta adresi doğrulandı';
 $_LANG['wsb']['subUserTableCaption']   = 'Alt hesap kullanıcıları ve bekleyen davetler';
+
+/* === WS-G Dashboard / Misc / Errors / OAuth / Standalone === */
+
+// clientareaemails — tablo başlığı + eylemler sütun başlığı
+$_LANG['a11yEmailsTableCaption']     = 'E-posta geçmişiniz';
+$_LANG['a11yEmailsActions']          = 'İşlemler';
+
+// 3dsecure — iframe başlığı
+$_LANG['a11y3dSecureFrame']          = '3D Secure kimlik doğrulama';
+
+// oauth/login-twofactorauth — yedek kod giriş etiketi
+$_LANG['a11yBackupCodeLabel']        = 'Yedek kod';
+
+// oauth/error — ekran okuyucu h1
+$_LANG['a11yOauthError']             = 'OAuth hatası';
+
+// forwardpage — canlı bölge + noscript
+$_LANG['a11yRedirectingPlease']      = 'Yönlendiriliyor, lütfen bekleyin…';
+$_LANG['a11yJsRequiredForPayment']   = 'Ödeme yönlendirmesini tamamlamak için JavaScript gereklidir. Lütfen JavaScript\'i etkinleştirip sayfayı yeniden yükleyin.';

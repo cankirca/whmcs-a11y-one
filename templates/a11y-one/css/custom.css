@@ -536,3 +536,96 @@ fieldset.a11y-bulk-contact > legend {
     margin-bottom: 0.5rem;
 }
 
+/* === WS-G Dashboard / Misc / Errors / OAuth / Standalone === */
+
+/* Dashboard stat tiles: .tile sits on #f8f8f8; .stat/.title text is #888888
+   → contrast ratio 3.33:1 — FAILS WCAG AA (need ≥ 4.5:1 for 12 px bold).
+   Darken to #595959 → 7.0:1 on #f8f8f8.
+   Parent rule is .tiles .tile .title {color:#888} (3-class specificity), so we
+   must match that specificity to win. */
+.tiles .tile .stat,
+.tiles .tile .title {
+    color: #595959;
+}
+
+/* Dashboard panel action buttons: bg-color-gold / red / blue / asbestos classes
+   carry Bootstrap's status colours at low contrast with white text.
+   Replaced colours are tuned to ≥ 4.5:1 against #fff. */
+.btn-xs.bg-color-gold   { background-color: #946800 !important; border-color: #7a5600 !important; color: #fff !important; }
+.btn-xs.bg-color-red    { background-color: #b52b27 !important; border-color: #9c2522 !important; color: #fff !important; }
+.btn-xs.bg-color-blue   { background-color: #0069d9 !important; border-color: #0062cc !important; color: #fff !important; }
+.btn-xs.bg-color-asbestos { background-color: #5d6d7e !important; border-color: #4d5d6e !important; color: #fff !important; }
+
+/* Bootstrap .label-success (#5cb85c bg + white text = 2.5:1 — FAILS AA).
+   Darken to #3d7a3d → 4.56:1 on white. */
+.label-success {
+    background-color: #3d7a3d;
+}
+
+/* Panel card small/muted text on white: #888888 on #fff = 3.54:1 — FAILS AA.
+   card-body <small> elements inherit site muted colour — darken to #595959 → 7.0:1. */
+.card-body small,
+.list-group-item small {
+    color: #595959;
+}
+
+/* Switch-account chooser: buttons must fill width like the original <a> links */
+.select-account .btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 4px;
+}
+
+/* user-verify-email: live-region stays visually hidden but available to AT */
+#verifyEmailStatus {
+    clip: rect(0, 0, 0, 0);
+}
+
+/* Error pages: display-1 text-primary (#007bff on #fff ≈ 3.1:1 — FAILS AA).
+   Darken to #0056b3 (≈ 5.6:1 on white). */
+.error-container .text-primary,
+.text-center.p-5 h1.text-primary,
+.text-center.p-5 > i.text-primary {
+    color: #0056b3 !important;
+}
+
+/* btn-info (#17a2b8 bg + white text = 3.0:1 — FAILS AA globally).
+   Darken background to #117a8b (4.7:1 on white). */
+.btn-info {
+    background-color: #117a8b !important;
+    border-color: #10707f !important;
+}
+.btn-info:hover,
+.btn-info:focus {
+    background-color: #0f6674 !important;
+    border-color: #0e5c68 !important;
+}
+
+/* OAuth layout: header/footer rendered as block-level landmarks */
+header#header,
+footer#footer {
+    display: block;
+}
+
+/* OAuth layout: sr-only skip link */
+.sr-only-focusable:focus {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+}
+
+/* viewemail popup: ensure heading is readable at normal size inside popup */
+#popup-backdrop h1.h2 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+/* forwardpage: live-region sr-only */
+#fwdPageStatus {
+    clip: rect(0, 0, 0, 0);
+}
+
