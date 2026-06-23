@@ -147,3 +147,23 @@ $_LANG['a11yOauthError']             = 'OAuth hatası';
 // forwardpage — canlı bölge + noscript
 $_LANG['a11yRedirectingPlease']      = 'Yönlendiriliyor, lütfen bekleyin…';
 $_LANG['a11yJsRequiredForPayment']   = 'Ödeme yönlendirmesini tamamlamak için JavaScript gereklidir. Lütfen JavaScript\'i etkinleştirip sayfayı yeniden yükleyin.';
+
+/* === WS-H Cart === */
+$_LANG['a11yCartConfigOptionsGroup'] = 'Yapılandırılabilir seçenekler';
+$_LANG['a11yCartDomainOptionGroup']  = 'Alan adı kayıt seçeneği';
+$_LANG['a11yCartNameserversGroup']   = 'Özel ad sunucuları';
+$_LANG['a11yCartDomainAddonsGroup']  = 'Alan adı ek hizmetleri';
+$_LANG['a11yCartPaymentMethodGroup'] = 'Ödeme yöntemi';
+$_LANG['a11yCartCreditCardGroup']    = 'Kredi kartı bilgileri';
+$_LANG['a11yCartApplyCreditGroup']   = 'Hesap bakiyesi';
+$_LANG['a11yCartDomainResults']      = 'Alan adı arama sonuçları';
+$_LANG['a11yCartOrderSummaryRegion'] = 'Sipariş özeti';
+$_LANG['a11yCartAddDomainToCart']    = '%s sepete ekle';
+$_LANG['a11yCartDomainAdded']        = '%s sepete eklendi';
+$_LANG['a11yCartDomainUnavailable']  = '%s kullanılamıyor';
+$_LANG['a11yCartQuantityFor']        = '%s için miktar';
+$_LANG['a11yCartPromoCodeLabel']     = 'Promosyon kodu';
+$_LANG['a11yCartRegistrantContact']  = 'Alan adı kayıt sahibi iletişim';
+$_LANG['a11yCartSecurityQuestion']   = 'Güvenlik sorusu';
+$_LANG['a11yCartAccountSelect']      = 'Bu sipariş için hesap seçin';
+$_LANG['a11yCartCvvHelp']            = 'Bu nedir?';

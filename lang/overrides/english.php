@@ -147,3 +147,23 @@ $_LANG['a11yOauthError']             = 'OAuth error';
 // forwardpage — live region + noscript
 $_LANG['a11yRedirectingPlease']      = 'Redirecting, please wait…';
 $_LANG['a11yJsRequiredForPayment']   = 'JavaScript is required to complete the payment redirect. Please enable JavaScript and reload the page.';
+
+/* === WS-H Cart === */
+$_LANG['a11yCartConfigOptionsGroup'] = 'Configurable options';
+$_LANG['a11yCartDomainOptionGroup']  = 'Domain registration option';
+$_LANG['a11yCartNameserversGroup']   = 'Custom nameservers';
+$_LANG['a11yCartDomainAddonsGroup']  = 'Domain add-on services';
+$_LANG['a11yCartPaymentMethodGroup'] = 'Payment method';
+$_LANG['a11yCartCreditCardGroup']    = 'Credit card details';
+$_LANG['a11yCartApplyCreditGroup']   = 'Account credit';
+$_LANG['a11yCartDomainResults']      = 'Domain search results';
+$_LANG['a11yCartOrderSummaryRegion'] = 'Order summary';
+$_LANG['a11yCartAddDomainToCart']    = 'Add %s to cart';
+$_LANG['a11yCartDomainAdded']        = '%s added to cart';
+$_LANG['a11yCartDomainUnavailable']  = '%s is unavailable';
+$_LANG['a11yCartQuantityFor']        = 'Quantity for %s';
+$_LANG['a11yCartPromoCodeLabel']     = 'Promotion code';
+$_LANG['a11yCartRegistrantContact']  = 'Domain registrant contact';
+$_LANG['a11yCartSecurityQuestion']   = 'Security question';
+$_LANG['a11yCartAccountSelect']      = 'Select account for this order';
+$_LANG['a11yCartCvvHelp']            = 'What is this?';

@@ -254,9 +254,22 @@
         return (clone.textContent || '').replace(/\s+/g, ' ').trim();
     }
 
+    /* Interactive elements that may legally carry aria-label. */
+    var _interactiveTags = { BUTTON: 1, A: 1, INPUT: 1, SELECT: 1, TEXTAREA: 1 };
+
     function fixCardMinimiseButtons() {
         document.querySelectorAll('.card-minimise').forEach(function (btn) {
-            /* Hide the chevron from AT (decorative). */
+            /* If the element is a non-interactive tag (e.g. <i>) and has no
+               explicit role, promote it to role=button so aria-label is
+               permitted and it is keyboard-reachable. */
+            var tag = btn.tagName;
+            if (!_interactiveTags[tag] && !btn.getAttribute('role')) {
+                btn.setAttribute('role', 'button');
+                if (!btn.getAttribute('tabindex')) {
+                    btn.setAttribute('tabindex', '0');
+                }
+            }
+            /* Hide any nested icon from AT (the button name carries the label). */
             btn.querySelectorAll('i, svg').forEach(function (icon) {
                 icon.setAttribute('aria-hidden', 'true');
             });
@@ -268,7 +281,7 @@
             var heading = null;
             var header = btn.closest('.card-header');
             if (header) {
-                var titleEl = header.querySelector('.card-title');
+                var titleEl = header.querySelector('.card-title, .panel-title');
                 if (titleEl) {
                     var tClone = titleEl.cloneNode(true);
                     var cloneBtn = tClone.querySelector('.card-minimise');

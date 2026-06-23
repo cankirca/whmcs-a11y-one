@@ -1,0 +1,421 @@
+{include file="orderforms/a11y-cart/common.tpl"}
+
+<div id="order-standard_cart">
+
+    <div class="row">
+        <div class="cart-sidebar">
+            {include file="orderforms/standard_cart/sidebar-categories.tpl"}
+        </div>
+
+        <div class="cart-body">
+            <div class="header-lined">
+                <h1 class="font-size-36">{$LANG.domaincheckerchoosedomain}</h1>
+            </div>
+            {include file="orderforms/standard_cart/sidebar-categories-collapsed.tpl"}
+            <form id="frmProductDomain">
+                <input type="hidden" id="frmProductDomainPid" value="{$pid}" />
+                <fieldset class="domain-selection-options">
+                    <legend class="sr-only">{$LANG.a11yCartDomainOptionGroup}</legend>
+                    {if $incartdomains}
+                        <div class="option">
+                            <label>
+                                <input type="radio" name="domainoption" value="incart" id="selincart" />{$LANG.cartproductdomainuseincart}
+                            </label>
+                            <div class="domain-input-group clearfix" id="domainincart">
+                                <div class="row">
+                                    <div class="col-sm-8 col-sm-offset-1 col-md-6 col-md-offset-2 offset-sm-1 offset-md-2">
+                                        <div class="domains-row">
+                                            <label for="incartsld" class="sr-only">{$LANG.cartproductdomainuseincart}</label>
+                                            <select id="incartsld" name="incartdomain" class="form-control">
+                                                {foreach key=num item=incartdomain from=$incartdomains}
+                                                    <option value="{$incartdomain}">{$incartdomain}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            {$LANG.orderForm.use}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {/if}
+                    {if $registerdomainenabled}
+                        <div class="option">
+                            <label>
+                                <input type="radio" name="domainoption" value="register" id="selregister"{if $domainoption eq "register"} checked{/if} />{$LANG.cartregisterdomainchoice|sprintf2:$companyname}
+                            </label>
+                            <div class="domain-input-group clearfix{if $showAdvancedSearchOptions} domain-checker-advanced{/if}" id="domainregister">
+                                <div class="row">
+                                    <div class="col-sm-8 col-sm-offset-1 offset-sm-1">
+                                        <div class="row domains-row">
+                                            {if $showAdvancedSearchOptions}
+                                                <label for="message" class="sr-only">{lang key='domainSearch.domainOrAiPrompt'}</label>
+                                                <textarea name="message"
+                                                          id="message"
+                                                          title="{lang key='domainSearch.domainOrAiPrompt'}"
+                                                          data-placement="left"
+                                                          data-trigger="manual"
+                                                          placeholder="{lang key='domainSearch.domainOrAiInstruction'}">{$message}</textarea>
+                                            {else}
+                                            <div class="col-xs-9 col-9">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon input-group-prepend">
+                                                        <span class="input-group-text" id="registersldPrefix">{$LANG.orderForm.www}</span>
+                                                    </div>
+                                                    <label for="registersld" class="sr-only">{lang key='orderForm.enterDomain'}</label>
+                                                    <input type="text" id="registersld" value="{$sld}" class="form-control" autocapitalize="none" aria-describedby="registersldPrefix" data-toggle="tooltip" data-placement="top" data-trigger="manual" title="{lang key='orderForm.enterDomain'}" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-3">
+                                                <label for="registertld" class="sr-only">{lang key='orderdomain'}</label>
+                                                <select id="registertld" class="form-control">
+                                                    {foreach from=$registertlds item=listtld}
+                                                        <option value="{$listtld}"{if $listtld eq $tld} selected="selected"{/if}>{$listtld}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                            {/if}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button id="btnCheckAvailability" type="submit" class="btn btn-primary btn-block">
+                                            {$LANG.orderForm.check}{if $showAdvancedSearchOptions}  <i class="fa-regular fa-sparkles" aria-hidden="true"></i>{/if}
+                                        </button>
+                                    </div>
+                                </div>
+                                {if $showAdvancedSearchOptions}
+                                <div class="row">
+                                    <div class="col-sm-8 col-sm-offset-1 offset-sm-1">
+                                        <div class="row domains-row">
+                                            {* Bootstrap-multiselect TLD picker: see deferral note in tests/a11y-one/test_ws_h_cart.py *}
+                                            <select name="tlds[]" class="multiselect multiselect-filter" multiple="multiple" aria-label="{lang key='domainSearch.tlds'}" data-placeholder="{lang key='domainSearch.tlds'}" data-min-selection="1">
+                                                {foreach $tlds as $tld}
+                                                    <option{if in_array($tld, $selectedTlds)} selected {if count($selectedTlds) <= 1}disabled="disabled"{/if}{/if} value="{$tld}">{$tld}</option>
+                                                {/foreach}
+                                            </select>
+                                            <select name="maxLength" class="multiselect" aria-label="{lang key='domainSearch.maxLength'}" data-placeholder="{lang key='domainSearch.maxLength'}">
+                                                {foreach $searchLengths as $len}
+                                                    <option value="{$len}" {if $maxLength === $len}selected{/if}>{$len}</option>
+                                                {/foreach}
+                                            </select>
+                                            <label>
+                                                <input type="checkbox" name="filter" class="no-icheck" {if $safeSearchSelected}checked{/if}>{lang key="domainSearch.safeSearch"}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/if}
+                            </div>
+                        </div>
+                    {/if}
+                    {if $transferdomainenabled}
+                        <div class="option">
+                            <label>
+                                <input type="radio" name="domainoption" value="transfer" id="seltransfer"{if $domainoption eq "transfer"} checked{/if} />{$LANG.carttransferdomainchoice|sprintf2:$companyname}
+                            </label>
+                            <div class="domain-input-group clearfix" id="domaintransfer">
+                                <div class="row">
+                                    <div class="col-sm-8 col-sm-offset-1 offset-sm-1">
+                                        <div class="row domains-row">
+                                            <div class="col-xs-9 col-9">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon input-group-prepend">
+                                                        <span class="input-group-text" id="transfersldPrefix">{$LANG.orderForm.www}</span>
+                                                    </div>
+                                                    <label for="transfersld" class="sr-only">{lang key='orderForm.enterDomain'}</label>
+                                                    <input type="text" id="transfersld" value="{$sld}" class="form-control" autocapitalize="none" aria-describedby="transfersldPrefix" data-toggle="tooltip" data-placement="top" data-trigger="manual" title="{lang key='orderForm.enterDomain'}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-3">
+                                                <label for="transfertld" class="sr-only">{lang key='orderdomain'}</label>
+                                                <select id="transfertld" class="form-control">
+                                                    {foreach from=$transfertlds item=listtld}
+                                                        <option value="{$listtld}"{if $listtld eq $tld} selected="selected"{/if}>{$listtld}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            {$LANG.orderForm.transfer}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {/if}
+                    {if $owndomainenabled}
+                        <div class="option">
+                            <label>
+                                <input type="radio" name="domainoption" value="owndomain" id="selowndomain"{if $domainoption eq "owndomain"} checked{/if} />{$LANG.cartexistingdomainchoice|sprintf2:$companyname}
+                            </label>
+                            <div class="domain-input-group clearfix" id="domainowndomain">
+                                <div class="row">
+                                    <div class="col-sm-8 col-sm-offset-1 offset-sm-1">
+                                        <div class="row domains-row">
+                                            <div class="col-xs-9 col-9">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon input-group-prepend">
+                                                        <span class="input-group-text" id="owndomainsldPrefix">{lang key='orderForm.www'}</span>
+                                                    </div>
+                                                    <label for="owndomainsld" class="sr-only">{lang key='orderForm.enterDomain'}</label>
+                                                    <input type="text" id="owndomainsld" value="{$sld}" placeholder="{lang key='yourdomainplaceholder'}" class="form-control" autocapitalize="none" aria-describedby="owndomainsldPrefix" data-toggle="tooltip" data-placement="top" data-trigger="manual" title="{lang key='orderForm.enterDomain'}" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-3">
+                                                <label for="owndomaintld" class="sr-only">{lang key='orderdomain'}</label>
+                                                <input type="text" id="owndomaintld" value="{$tld|substr:1}" placeholder="{$LANG.yourtldplaceholder}" class="form-control" autocapitalize="none" data-toggle="tooltip" data-placement="top" data-trigger="manual" title="{lang key='orderForm.required'}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="submit" class="btn btn-primary btn-block" id="useOwnDomain">
+                                            {$LANG.orderForm.use}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {/if}
+                    {if $subdomains}
+                        <div class="option">
+                            <label>
+                                <input type="radio" name="domainoption" value="subdomain" id="selsubdomain"{if $domainoption eq "subdomain"} checked{/if} />{$LANG.cartsubdomainchoice|sprintf2:$companyname}
+                            </label>
+                            <div class="domain-input-group clearfix" id="domainsubdomain">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="row domains-row">
+                                            <div class="col-xs-2 col-2 text-right">
+                                                <p class="form-control-static" id="subdomainsldPrefix">http://</p>
+                                            </div>
+                                            <div class="col-xs-5 col-5">
+                                                <label for="subdomainsld" class="sr-only">{lang key='orderForm.enterDomain'}</label>
+                                                <input type="text" id="subdomainsld" value="{$sld}" placeholder="yourname" class="form-control" autocapitalize="none" aria-describedby="subdomainsldPrefix" data-toggle="tooltip" data-placement="top" data-trigger="manual" title="{lang key='orderForm.enterDomain'}" />
+                                            </div>
+                                            <div class="col-xs-5 col-5">
+                                                <label for="subdomaintld" class="sr-only">{lang key='orderdomain'}</label>
+                                                <select id="subdomaintld" class="form-control">
+                                                    {foreach $subdomains as $subid => $subdomain}
+                                                        <option value="{$subid}">{$subdomain}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            {$LANG.orderForm.check}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {/if}
+                </fieldset>
+
+                {if $freedomaintlds}
+                    <p>* <em>{$LANG.orderfreedomainregistration} {$LANG.orderfreedomainappliesto}: {$freedomaintlds}</em></p>
+                {/if}
+
+            </form>
+
+            <div class="clearfix"></div>
+            <form method="post" action="{$WEB_ROOT}/cart.php?a=add&pid={$pid}&domainselect=1" id="frmProductDomainSelections">
+
+                <div id="DomainSearchResults" class="w-hidden" role="status" aria-live="polite">
+                    <div id="primarySuggestionHeading" class="primary-domain-header"><i class="fa-regular fa-sparkles" aria-hidden="true"></i> {$LANG.domainSearch.topSuggestion}</div>
+                    <div id="primaryExactHeading" class="primary-domain-header">{$LANG.domainSearch.exactMatch}</div>
+                    <div id="searchDomainInfo">
+                        <p id="primaryLookupSearching" class="domain-lookup-loader domain-lookup-primary-loader domain-searching domain-checker-result-headline">
+                            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                            <span class="domain-lookup-register-loader">{lang key='orderForm.checkingAvailability'}...</span>
+                            <span class="domain-lookup-transfer-loader">{lang key='orderForm.verifyingTransferEligibility'}...</span>
+                            <span class="domain-lookup-other-loader">{lang key='orderForm.verifyingDomain'}...</span>
+                        </p>
+                        <div id="primaryLookupResult" class="domain-lookup-result domain-lookup-primary-results w-hidden">
+                            <div class="domain-unavailable domain-checker-unavailable headline">{lang key='orderForm.domainIsUnavailable'}</div>
+                            <div class="domain-available domain-checker-available headline">{$LANG.domainavailablemessage}</div>
+                            <div class="btn btn-primary domain-contact-support headline">{$LANG.domainContactUs}</div>
+                            <div class="transfer-eligible">
+                                <p class="domain-checker-available headline">{lang key='orderForm.transferEligible'}</p>
+                                <p>{lang key='orderForm.transferUnlockBeforeContinuing'}</p>
+                            </div>
+                            <div class="transfer-not-eligible">
+                                <p class="domain-checker-unavailable headline">{lang key='orderForm.transferNotEligible'}</p>
+                                <p>{lang key='orderForm.transferNotRegistered'}</p>
+                                <p>{lang key='orderForm.trasnferRecentlyRegistered'}</p>
+                                <p>{lang key='orderForm.transferAlternativelyRegister'}</p>
+                            </div>
+                            <div class="domain-invalid">
+                                <p class="domain-checker-unavailable headline">{lang key='orderForm.domainInvalid'}</p>
+                                <p>
+                                    {lang key='orderForm.domainLetterOrNumber'}<span class="domain-length-restrictions">{lang key='orderForm.domainLengthRequirements'}</span><br />
+                                    {lang key='orderForm.domainInvalidCheckEntry'}
+                                </p>
+                            </div>
+                            <div id="idnLanguageSelector" class="margin-10 idn-language-selector idn-language w-hidden">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 offset-sm-1 offset-lg-2">
+                                        <div class="margin-10 text-center">
+                                            {lang key='cart.idnLanguageDescription'}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-8 col-lg-6 col-sm-offset-2 col-lg-offset-3 offset-sm-2 offset-lg-3">
+                                        <div class="form-group">
+                                            <label for="idnlanguageSelect" class="sr-only">{lang key='cart.idnLanguage'}</label>
+                                            <select name="idnlanguage" id="idnlanguageSelect" class="form-control">
+                                                <option value="">{lang key='cart.idnLanguage'}</option>
+                                                {foreach $idnLanguages as $idnLanguageKey => $idnLanguage}
+                                                    <option value="{$idnLanguageKey}">{lang key='idnLanguage.'|cat:$idnLanguageKey}</option>
+                                                {/foreach}
+                                            </select>
+                                            <div class="field-error-msg">
+                                                {lang key='cart.selectIdnLanguageForRegister'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="domain-price">
+                                <span class="register-price-label">{lang key='orderForm.domainPriceRegisterLabel'}</span>
+                                <span class="transfer-price-label w-hidden">{lang key='orderForm.domainPriceTransferLabel'}</span>
+                                <span class="price"></span>
+                            </div>
+                            <p class="domain-error domain-checker-unavailable headline"></p>
+                            <input type="hidden" id="resultDomainOption" name="domainoption" />
+                            <input type="hidden" id="resultDomain" name="domains[]" />
+                            <input type="hidden" id="resultDomainPricingTerm" />
+                        </div>
+                    </div>
+
+                    {if $registerdomainenabled}
+                        {if $spotlightTlds}
+                            <div id="spotlightTlds" class="spotlight-tlds clearfix w-hidden">
+                                <div class="spotlight-tlds-container">
+                                    {foreach $spotlightTlds as $key => $data}
+                                        <div class="spotlight-tld-container spotlight-tld-container-{$spotlightTlds|count}">
+                                            <div id="spotlight{$data.tldNoDots}" class="spotlight-tld">
+                                                {if $data.group}
+                                                    <div class="spotlight-tld-{$data.group}">{$data.groupDisplayName}</div>
+                                                {/if}
+                                                {$data.tld}
+                                                <span class="domain-lookup-loader domain-lookup-spotlight-loader">
+                                                    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                                                </span>
+                                                <div class="domain-lookup-result">
+                                                    <button type="button" class="btn unavailable w-hidden" disabled="disabled">
+                                                        {lang key='domainunavailable'}
+                                                    </button>
+                                                    <button type="button" class="btn invalid w-hidden" disabled="disabled">
+                                                        {lang key='domainunavailable'}
+                                                    </button>
+                                                    <span class="available price w-hidden">{$data.register}</span>
+                                                    <button type="button" class="btn btn-add-to-cart product-domain w-hidden" data-whois="0" data-domain="" data-label-add="{lang key='orderForm.add'}" data-label-added="{lang key='domaincheckeradded'}" data-label-unavailable="{$LANG.domaincheckertaken}">
+                                                        <span class="to-add">{lang key='orderForm.add'}</span>
+                                                        <span class="loading">
+                                                            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i> {lang key='loading'}
+                                                        </span>
+                                                        <span class="added"><i class="far fa-shopping-cart" aria-hidden="true"></i> {lang key='domaincheckeradded'}</span>
+                                                        <span class="unavailable">{$LANG.domaincheckertaken}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary domain-contact-support w-hidden">
+                                                        {lang key='domainChecker.contactSupport'}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {/foreach}
+                                </div>
+                            </div>
+                        {/if}
+
+                        <div class="suggested-domains w-hidden">
+                            <div class="panel-heading card-header">
+                                {lang key='orderForm.suggestedDomains'}
+                            </div>
+                            <div id="suggestionsLoader" class="card-body panel-body domain-lookup-loader domain-lookup-suggestions-loader">
+                                <i class="fas fa-spinner fa-spin" aria-hidden="true"></i> {lang key='orderForm.generatingSuggestions'}
+                            </div>
+                            <div class="panel-body card-body domain-lookup-message domain-lookup-suggestions-message">
+                                {lang key='domainSearch.errors.noSuggestions'}
+                            </div>
+                            <div id="domainSuggestions" class="domain-lookup-result list-group w-hidden">
+                                <div class="domain-suggestion list-group-item w-hidden">
+                                    <span class="domain"></span><span class="extension"></span>
+                                    <div class="actions">
+                                        <button type="button" class="btn btn-add-to-cart product-domain" data-whois="1" data-domain="" data-label-add="{$LANG.addtocart}" data-label-added="{lang key='domaincheckeradded'}" data-label-unavailable="{$LANG.domaincheckertaken}">
+                                            <span class="to-add">{$LANG.addtocart}</span>
+                                            <span class="loading">
+                                                <i class="fas fa-spinner fa-spin" aria-hidden="true"></i> {lang key='loading'}
+                                            </span>
+                                            <span class="added">{lang key='domaincheckeradded'}</span>
+                                            <span class="unavailable">{$LANG.domaincheckertaken}</span>
+                                        </button>
+                                        <button type="button" class="btn btn-primary domain-contact-support w-hidden">{lang key='domainChecker.contactSupport'}</button>
+                                        <span class="price"></span>
+                                        <span class="promo w-hidden"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer card-footer more-suggestions text-center w-hidden">
+                                <a id="moreSuggestions" href="#" onclick="loadMoreSuggestions();return false;">{lang key='domainsmoresuggestions'}</a>
+                                <span id="noMoreSuggestions" class="no-more small w-hidden">{lang key='domaincheckernomoresuggestions'}</span>
+                            </div>
+                            <div class="text-center domain-suggestions-warning">
+                                <p>{lang key='domainssuggestionswarnings'}</p>
+                            </div>
+                        </div>
+                    {/if}
+                </div>
+
+                <div class="text-center">
+                    <button id="btnDomainContinue" type="submit" class="btn btn-primary btn-lg w-hidden" disabled="disabled">
+                        {$LANG.continue}
+                        &nbsp;<i class="fas fa-arrow-circle-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{include file="orderforms/a11y-cart/recommendations-modal.tpl"}
+
+{if $showAdvancedSearchOptions}
+    <script>
+        $(document).ready(function() {
+            jQuery('#frmProductDomain .multiselect').each(function () {
+                let enableFiltering = $(this).hasClass('multiselect-filter');
+                const minSelection = jQuery(this).data('min-selection');
+                $(this).multiselect({
+                    onChange: function (element) {
+                        const closestSelect = element.closest('select');
+                        const selectedOptions = closestSelect.find('option:selected');
+                        if (minSelection === undefined) {
+                            return;
+                        }
+                        const atMinOptions = selectedOptions.length <= minSelection;
+                        const targetOptions = atMinOptions ? selectedOptions : closestSelect.find('option');
+                        targetOptions.each(function () {
+                            const inputElement = jQuery('input[value="' + jQuery(this).val() + '"]');
+                            inputElement.prop('disabled', atMinOptions ? 'disabled' : false);
+                        });
+                    },
+                    buttonText: function(options, select) {
+                        return select.data('placeholder');
+                    },
+                    maxHeight: 200,
+                    includeFilterClearBtn: false,
+                    enableCaseInsensitiveFiltering: enableFiltering,
+                });
+            })
+        });
+    </script>
+{/if}
