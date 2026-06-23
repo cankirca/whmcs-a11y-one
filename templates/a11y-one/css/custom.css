@@ -528,11 +528,13 @@ fieldset.a11y-permissions > legend {
     background-color: #b21f2d !important; /* white 5.0:1 */
 }
 
-/* .status-pending uses #f0ad4e (yellow) + white = 2.0:1 — FAILS.
-   Switch to dark text (body color) on yellow. */
+/* .status-pending: parent yellow #f0ad4e + white text = 2.0:1 — FAILS.
+   Recolour as a self-contained matched pair (white on brown #7a5000 = 7.06:1)
+   so the background and text colour can never cascade apart across sections. */
 .label.status-pending,
 .badge.status-pending {
-    color: #212529 !important;
+    background-color: #7a5000 !important;
+    color: #fff !important;
 }
 
 /* EPP code display — monospace, distinct background */
