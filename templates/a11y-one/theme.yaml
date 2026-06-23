@@ -1,7 +1,9 @@
 # A11y One — accessible child theme of Twenty-One
 name: "A11y One"
+version: "1.0.0"
 description: "Accessible (WCAG 2.2 AA) child theme of Twenty-One with a fast, minimal login."
 author: "Can Kirca"
+license: "MIT"
 config:
   parent: twenty-one
 dependencies:
