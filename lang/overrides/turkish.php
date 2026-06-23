@@ -79,3 +79,15 @@ $_LANG['a11yDownloadsClientsOnly']   = 'Yalnızca müşteriler';
 $_LANG['productDetails']['hookOutputLabel']   = 'Ek hizmet bilgisi';
 $_LANG['metrics']['tableCaption']             = 'Hizmet kullanım metrikleri';
 $_LANG['metrics']['pricingTableCaption']      = 'Fiyatlandırma kademeleri';
+
+// WS-D Task 2: Cancel + Upgrade flow
+$_LANG['a11yCancelTypeGroup']        = 'İptal zamanlaması';
+$_LANG['a11yCancelDomainLabel']      = 'İlişkili alan adını iptal et';
+$_LANG['a11yUpgradeBillingCycleFor'] = '%s için fatura dönemi';
+$_LANG['a11yUpgradeSummaryCaption']  = 'Yükseltme siparişi özeti';
+$_LANG['a11yUpgradePromoLabel']      = 'Promosyon kodu';
+$_LANG['a11yUpgradePaymentLabel']    = 'Ödeme yöntemi';
+$_LANG['a11yUpgradeConfirm']         = 'Yükseltmeyi onayla';
+$_LANG['a11yUpgradeConfigGroup']     = 'Yapılandır: %s';
+$_LANG['a11yUpgradeBillingLabel']    = 'Fatura dönemi';
+$_LANG['a11yUpgradeQtyLabel']        = 'Miktar';

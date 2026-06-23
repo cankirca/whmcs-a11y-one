@@ -79,3 +79,15 @@ $_LANG['a11yDownloadsClientsOnly']   = 'Clients only';
 $_LANG['productDetails']['hookOutputLabel']   = 'Additional service information';
 $_LANG['metrics']['tableCaption']             = 'Service usage metrics';
 $_LANG['metrics']['pricingTableCaption']      = 'Pricing tiers';
+
+// WS-D Task 2: Cancel + Upgrade flow
+$_LANG['a11yCancelTypeGroup']        = 'Cancellation timing';
+$_LANG['a11yCancelDomainLabel']      = 'Cancel associated domain';
+$_LANG['a11yUpgradeBillingCycleFor'] = 'Billing cycle for %s';
+$_LANG['a11yUpgradeSummaryCaption']  = 'Upgrade order summary';
+$_LANG['a11yUpgradePromoLabel']      = 'Promotion code';
+$_LANG['a11yUpgradePaymentLabel']    = 'Payment method';
+$_LANG['a11yUpgradeConfirm']         = 'Confirm upgrade';
+$_LANG['a11yUpgradeConfigGroup']     = 'Configure: %s';
+$_LANG['a11yUpgradeBillingLabel']    = 'Billing cycle';
+$_LANG['a11yUpgradeQtyLabel']        = 'Quantity';
