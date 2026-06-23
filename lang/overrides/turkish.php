@@ -74,3 +74,8 @@ $_LANG['a11yKbVoteYes']              = 'Evet, bu makale yardımcı oldu';
 $_LANG['a11yKbVoteNo']               = 'Hayır, bu makale yardımcı olmadı';
 $_LANG['a11yDownloadsSearchLabel']   = 'İndirmelerde ara';
 $_LANG['a11yDownloadsClientsOnly']   = 'Yalnızca müşteriler';
+
+// WS-D Task 1: Products / services
+$_LANG['productDetails']['hookOutputLabel']   = 'Ek hizmet bilgisi';
+$_LANG['metrics']['tableCaption']             = 'Hizmet kullanım metrikleri';
+$_LANG['metrics']['pricingTableCaption']      = 'Fiyatlandırma kademeleri';

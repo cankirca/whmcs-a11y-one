@@ -74,3 +74,8 @@ $_LANG['a11yKbVoteYes']              = 'Yes, this article was helpful';
 $_LANG['a11yKbVoteNo']               = 'No, this article was not helpful';
 $_LANG['a11yDownloadsSearchLabel']   = 'Search downloads';
 $_LANG['a11yDownloadsClientsOnly']   = 'Clients only';
+
+// WS-D Task 1: Products / services
+$_LANG['productDetails']['hookOutputLabel']   = 'Additional service information';
+$_LANG['metrics']['tableCaption']             = 'Service usage metrics';
+$_LANG['metrics']['pricingTableCaption']      = 'Pricing tiers';
