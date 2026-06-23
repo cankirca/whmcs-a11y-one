@@ -327,7 +327,7 @@
                 <p class="text-center">
                     <label class="form-check">
                         <input type="checkbox" name="accepttos" class="form-check-input accepttos">
-                        {lang key='ordertosagreement'} <a href="{$tosurl}" target="_blank">{lang key='ordertos'}</a>
+                        {lang key='ordertosagreement'} <a href="{$tosurl}" target="_blank" rel="noopener noreferrer">{lang key='ordertos'}</a>
                     </label>
                 </p>
             {/if}

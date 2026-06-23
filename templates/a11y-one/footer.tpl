@@ -46,7 +46,7 @@
                 </li>
                 {if $acceptTOS}
                     <li class="nav-item">
-                        <a class="nav-link" href="{$tosURL}" target="_blank">{lang key='ordertos'}</a>
+                        <a class="nav-link" href="{$tosURL}" target="_blank" rel="noopener noreferrer">{lang key='ordertos'}</a>
                     </li>
                 {/if}
             </ul>

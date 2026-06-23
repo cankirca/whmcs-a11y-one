@@ -156,7 +156,7 @@
                                         {else}
                                             <a href="dl.php?type={if $reply.id}ar&id={$reply.id}{else}a&id={$id}{/if}&i={$num}"
                                                target="_blank" rel="noopener"
-                                               aria-label="{lang key='downloadbtn'} {$attachment} ({lang key='a11yOpensInNewWindow'})">
+                                               aria-label="{lang key='downloadbtn'} {$attachment|escape} ({lang key='a11yOpensInNewWindow'})">
                                                 <span>
                                                     <figure>
                                                         <i class="far fa-file" aria-hidden="true"></i>

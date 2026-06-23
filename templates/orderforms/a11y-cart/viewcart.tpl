@@ -92,7 +92,7 @@
                                                         {$LANG.orderForm.edit}
                                                     </a>
                                                     <span class="visible-xs-inline d-inline d-sm-none">
-                                                        <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('p','{$num}')" aria-label="{$LANG.orderForm.remove}: {$product.productinfo.name}">
+                                                        <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('p','{$num}')" aria-label="{$LANG.orderForm.remove}: {$product.productinfo.name|escape}">
                                                             <i class="fas fa-times" aria-hidden="true"></i>
                                                             {$LANG.orderForm.remove}
                                                         </button>
@@ -134,7 +134,7 @@
                                                 {if $product.proratadate}<br />({$LANG.orderprorata} {$product.proratadate}){/if}
                                             </div>
                                             <div class="col-sm-1 hidden-xs d-none d-sm-block">
-                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('p','{$num}')" aria-label="{$LANG.orderForm.remove}: {$product.productinfo.name}">
+                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('p','{$num}')" aria-label="{$LANG.orderForm.remove}: {$product.productinfo.name|escape}">
                                                     <i class="fas fa-times" aria-hidden="true"></i>
                                                 </button>
                                             </div>
@@ -180,7 +180,7 @@
                                                 <span class="item-title">
                                                     {$addon.name}
                                                     <span class="visible-xs-inline d-inline d-sm-none">
-                                                        <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('a','{$num}')" aria-label="{$LANG.orderForm.remove}: {$addon.name}">
+                                                        <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('a','{$num}')" aria-label="{$LANG.orderForm.remove}: {$addon.name|escape}">
                                                             <i class="fas fa-times" aria-hidden="true"></i>
                                                             {$LANG.orderForm.remove}
                                                         </button>
@@ -213,7 +213,7 @@
                                                 {if $addon.isProrated}<br />({$LANG.orderprorata} {$addon.prorataDate}){/if}
                                             </div>
                                             <div class="col-sm-1 hidden-xs d-none d-sm-block">
-                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('a','{$num}')" aria-label="{$LANG.orderForm.remove}: {$addon.name}">
+                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('a','{$num}')" aria-label="{$LANG.orderForm.remove}: {$addon.name|escape}">
                                                     <i class="fas fa-times" aria-hidden="true"></i>
                                                 </button>
                                             </div>
@@ -232,7 +232,7 @@
                                                         {$LANG.orderForm.edit}
                                                     </a>
                                                     <span class="visible-xs-inline d-inline d-sm-none">
-                                                        <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('d','{$num}')" aria-label="{$LANG.orderForm.remove}: {$domain.domain}">
+                                                        <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('d','{$num}')" aria-label="{$LANG.orderForm.remove}: {$domain.domain|escape}">
                                                             <i class="fas fa-times" aria-hidden="true"></i>
                                                             {$LANG.orderForm.remove}
                                                         </button>
@@ -277,7 +277,7 @@
                                                 {/if}
                                             </div>
                                             <div class="col-sm-1 hidden-xs d-none d-sm-block">
-                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('d','{$num}')" aria-label="{$LANG.orderForm.remove}: {$domain.domain}">
+                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('d','{$num}')" aria-label="{$LANG.orderForm.remove}: {$domain.domain|escape}">
                                                     <i class="fas fa-times" aria-hidden="true"></i>
                                                 </button>
                                             </div>
@@ -304,7 +304,7 @@
                                                 <span class="cycle">{$service.billingCycle}</span>
                                             </div>
                                             <div class="col-sm-1">
-                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('r','{$num}','service')" aria-label="{$LANG.orderForm.remove}: {$service.name}">
+                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('r','{$num}','service')" aria-label="{$LANG.orderForm.remove}: {$service.name|escape}">
                                                     <i class="fas fa-times" aria-hidden="true"></i>
                                                     <span class="visible-xs d-block d-sm-none">{lang key='orderForm.remove'}</span>
                                                 </button>
@@ -332,7 +332,7 @@
                                                 <span class="cycle">{$service.billingCycle}</span>
                                             </div>
                                             <div class="col-sm-1">
-                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('r','{$num}','addon')" aria-label="{$LANG.orderForm.remove}: {$service.name}">
+                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('r','{$num}','addon')" aria-label="{$LANG.orderForm.remove}: {$service.name|escape}">
                                                     <i class="fas fa-times" aria-hidden="true"></i>
                                                     <span class="visible-xs d-block d-sm-none">{lang key='orderForm.remove'}</span>
                                                 </button>
@@ -360,7 +360,7 @@
                                                 <span class="cycle">{$domain.regperiod} {$LANG.orderyears}</span>
                                             </div>
                                             <div class="col-sm-1">
-                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('r','{$num}','domain')" aria-label="{$LANG.orderForm.remove}: {$domain.domain}">
+                                                <button type="button" class="btn btn-link btn-xs btn-remove-from-cart" onclick="removeItem('r','{$num}','domain')" aria-label="{$LANG.orderForm.remove}: {$domain.domain|escape}">
                                                     <i class="fas fa-times" aria-hidden="true"></i>
                                                     <span class="visible-xs d-block d-sm-none">{$LANG.orderForm.remove}</span>
                                                 </button>

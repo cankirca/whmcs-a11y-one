@@ -817,7 +817,7 @@
                                 <input type="checkbox" name="accepttos" id="accepttos" />
                                 &nbsp;
                                 {$LANG.ordertosagreement}
-                                <a href="{$tosurl}" target="_blank">{$LANG.ordertos}</a>
+                                <a href="{$tosurl}" target="_blank" rel="noopener noreferrer">{$LANG.ordertos}</a>
                             </label>
                         </p>
                     {/if}

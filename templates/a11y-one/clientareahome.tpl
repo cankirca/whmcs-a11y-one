@@ -19,7 +19,7 @@
 <div class="tiles mb-4">
     <div class="row no-gutters">
         <div class="col-6 col-xl-3">
-            <a href="clientarea.php?action=services" class="tile" aria-label="{lang key='navservices'}: {$clientsstats.productsnumactive}">
+            <a href="clientarea.php?action=services" class="tile" aria-label="{lang key='navservices'}: {$clientsstats.productsnumactive|escape}">
                 <i class="fas fa-cube" aria-hidden="true"></i>
                 <div class="stat" aria-hidden="true">{$clientsstats.productsnumactive}</div>
                 <div class="title" aria-hidden="true">{lang key='navservices'}</div>
@@ -28,7 +28,7 @@
         </div>
         {if $clientsstats.numdomains || $registerdomainenabled || $transferdomainenabled}
             <div class="col-6 col-xl-3">
-                <a href="clientarea.php?action=domains" class="tile" aria-label="{lang key='navdomains'}: {$clientsstats.numactivedomains}">
+                <a href="clientarea.php?action=domains" class="tile" aria-label="{lang key='navdomains'}: {$clientsstats.numactivedomains|escape}">
                     <i class="fas fa-globe" aria-hidden="true"></i>
                     <div class="stat" aria-hidden="true">{$clientsstats.numactivedomains}</div>
                     <div class="title" aria-hidden="true">{lang key='navdomains'}</div>
@@ -37,7 +37,7 @@
             </div>
         {elseif $condlinks.affiliates && $clientsstats.isAffiliate}
             <div class="col-6 col-xl-3">
-                <a href="affiliates.php" class="tile" aria-label="{lang key='affiliatessignups'}: {$clientsstats.numaffiliatesignups}">
+                <a href="affiliates.php" class="tile" aria-label="{lang key='affiliatessignups'}: {$clientsstats.numaffiliatesignups|escape}">
                     <i class="fas fa-shopping-cart" aria-hidden="true"></i>
                     <div class="stat" aria-hidden="true">{$clientsstats.numaffiliatesignups}</div>
                     <div class="title" aria-hidden="true">{lang key='affiliatessignups'}</div>
@@ -46,7 +46,7 @@
             </div>
         {else}
             <div class="col-6 col-xl-3">
-                <a href="clientarea.php?action=quotes" class="tile" aria-label="{lang key='quotes'}: {$clientsstats.numquotes}">
+                <a href="clientarea.php?action=quotes" class="tile" aria-label="{lang key='quotes'}: {$clientsstats.numquotes|escape}">
                     <i class="far fa-file-alt" aria-hidden="true"></i>
                     <div class="stat" aria-hidden="true">{$clientsstats.numquotes}</div>
                     <div class="title" aria-hidden="true">{lang key='quotes'}</div>
@@ -55,7 +55,7 @@
             </div>
         {/if}
         <div class="col-6 col-xl-3">
-            <a href="supporttickets.php" class="tile" aria-label="{lang key='navtickets'}: {$clientsstats.numactivetickets}">
+            <a href="supporttickets.php" class="tile" aria-label="{lang key='navtickets'}: {$clientsstats.numactivetickets|escape}">
                 <i class="fas fa-comments" aria-hidden="true"></i>
                 <div class="stat" aria-hidden="true">{$clientsstats.numactivetickets}</div>
                 <div class="title" aria-hidden="true">{lang key='navtickets'}</div>
@@ -63,7 +63,7 @@
             </a>
         </div>
         <div class="col-6 col-xl-3">
-            <a href="clientarea.php?action=invoices" class="tile" aria-label="{lang key='navinvoices'}: {$clientsstats.numunpaidinvoices}">
+            <a href="clientarea.php?action=invoices" class="tile" aria-label="{lang key='navinvoices'}: {$clientsstats.numunpaidinvoices|escape}">
                 <i class="fas fa-credit-card" aria-hidden="true"></i>
                 <div class="stat" aria-hidden="true">{$clientsstats.numunpaidinvoices}</div>
                 <div class="title" aria-hidden="true">{lang key='navinvoices'}</div>

@@ -59,7 +59,7 @@
                         <td>
                             {if $sslProduct->status == $sslStatusAwaitingIssuance}
                                 <button class="btn btn-default btn-sm btn-resend-approver-email"
-                                        aria-label="{lang key='sslresendmail'} — {$sslProduct->addon->productAddon->name}"
+                                        aria-label="{lang key='sslresendmail'} — {$sslProduct->addon->productAddon->name|escape}"
                                         data-url="{routePath('clientarea-ssl-certificates-resend-approver-email')}"
                                         data-addonid="{$sslProduct->addonId}">{lang key='sslresendmail'}</button>
                             {/if}
@@ -70,7 +70,7 @@
                                 <form action="{$sslProduct->getUpgradeUrl()}" method="post">
                                     <input type="hidden" name="id" value="{$sslProduct->id}">
                                     <button type="submit" class="btn btn-default btn-sm"
-                                            aria-label="{lang key='upgrade'} — {$sslProduct->addon->productAddon->name}"{if $sslProduct->validationType == 'EV'} disabled="disabled" aria-disabled="true"{/if}>{lang key='upgrade'}</button>
+                                            aria-label="{lang key='upgrade'} — {$sslProduct->addon->productAddon->name|escape}"{if $sslProduct->validationType == 'EV'} disabled="disabled" aria-disabled="true"{/if}>{lang key='upgrade'}</button>
                                 </form>
                             {/if}
                         </td>
@@ -102,7 +102,7 @@
                         <td>
                             {if $sslProduct->status == $sslStatusAwaitingIssuance}
                                 <button class="btn btn-default btn-sm btn-resend-approver-email"
-                                        aria-label="{lang key='sslresendmail'} — {$sslProduct->service->product->name}"
+                                        aria-label="{lang key='sslresendmail'} — {$sslProduct->service->product->name|escape}"
                                         data-url="{routePath('clientarea-ssl-certificates-resend-approver-email')}"
                                         data-serviceid="{$sslProduct->serviceId}">{lang key='sslresendmail'}</button>
                             {/if}

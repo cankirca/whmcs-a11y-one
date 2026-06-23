@@ -36,7 +36,7 @@
                 <div class="alert alert-warning text-center">
                     {$LANG.ordercompletebutnotpaid}
                     <br /><br />
-                    <a href="{$WEB_ROOT}/viewinvoice.php?id={$invoiceid}" target="_blank" class="alert-link">
+                    <a href="{$WEB_ROOT}/viewinvoice.php?id={$invoiceid}" target="_blank" rel="noopener noreferrer" class="alert-link">
                         {$LANG.invoicenumber}{$invoiceid}
                     </a>
                 </div>

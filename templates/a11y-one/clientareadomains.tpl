@@ -80,7 +80,7 @@
                     {foreach $domains as $domain}
                         <tr onclick="clickableSafeRedirect(event, 'clientarea.php?action=domaindetails&amp;id={$domain.id}', false)">
                             <td>
-                                <input type="checkbox" name="domids[]" class="domids stopEventBubble" value="{$domain.id}" aria-label="{lang key='a11yDomainSelectRow'}: {$domain.domain}" />
+                                <input type="checkbox" name="domids[]" class="domids stopEventBubble" value="{$domain.id}" aria-label="{lang key='a11yDomainSelectRow'}: {$domain.domain|escape}" />
                             </td>
                             <td class="text-center ssl-info" data-element-id="{$domain.id}" data-type="domain" data-domain="{$domain.domain}">
                                 {if $domain.sslStatus}
@@ -91,7 +91,7 @@
                             </td>
                             <td>
                                 <a href="clientarea.php?action=domaindetails&amp;id={$domain.id}" class="stopEventBubble">{$domain.domain}</a>
-                                <a href="http://{$domain.domain}" target="_blank" rel="noopener" class="stopEventBubble ml-1" aria-label="{lang key='a11yDomainVisitSite'}: {$domain.domain} ({lang key='a11yOpensInNewWindow'})">
+                                <a href="http://{$domain.domain}" target="_blank" rel="noopener noreferrer" class="stopEventBubble ml-1" aria-label="{lang key='a11yDomainVisitSite'}: {$domain.domain|escape} ({lang key='a11yOpensInNewWindow'})">
                                     <i class="fas fa-external-link-alt fa-xs" aria-hidden="true"></i>
                                 </a>
                                 <br>

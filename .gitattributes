@@ -1,0 +1,4 @@
+tests/ export-ignore
+docs/ export-ignore
+.superpowers/ export-ignore
+.claude/ export-ignore
