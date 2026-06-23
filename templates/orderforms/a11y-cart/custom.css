@@ -1,0 +1,42 @@
+/**
+ * A11y Cart — accessibility-only CSS corrections for the standard_cart base.
+ *
+ * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
+ * License: MIT
+ *
+ * All rules here fix WCAG 2.2 AA violations that originate in the parent
+ * standard_cart template or Bootstrap utility classes and therefore cannot be
+ * patched in Smarty overrides alone.
+ */
+
+/* ── Color-contrast fixes ──────────────────────────────────────────────────
+   CAPTCHA instruction text (#888 on #f9f9f9 = 3.4:1 — fails 4.5:1 AA small).
+   Domain-promo text-warning (.text-warning Bootstrap yellow on light bg = 1.5:1).
+   Small print footnotes (.small in .domain-promo-box, #999 on #f9f9f9 = 2.7:1).
+   ─────────────────────────────────────────────────────────────────────────── */
+#captchaInstruction {
+    color: #595959; /* #595959 on #f9f9f9 ≈ 7:1 — AAA */
+}
+
+.domain-promo-box .text-warning,
+.text-warning {
+    color: #8a6300 !important; /* dark amber — passes 4.5:1 on white/near-white */
+}
+
+.domain-promo-box .small,
+.domain-promo-box small {
+    color: #595959; /* same as captcha fix — 7:1 on #f9f9f9 */
+}
+
+/* ── Touch-target size fix ─────────────────────────────────────────────────
+   .no-icheck checkboxes render at 13×13 px (WCAG 2.5.8 requires ≥24×24 px).
+   Enlarge the checkbox to meet the minimum 24×24 px touch target.
+   ─────────────────────────────────────────────────────────────────────────── */
+input.no-icheck[type="checkbox"],
+input.no-icheck[type="radio"] {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    cursor: pointer;
+}

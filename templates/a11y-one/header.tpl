@@ -20,8 +20,8 @@
                 <div class="container">
                     <div class="d-flex">
                         <div class="mr-auto">
-                            <button type="button" class="btn" data-toggle="popover" id="accountNotifications" data-placement="bottom">
-                                <i class="far fa-flag"></i>
+                            <button type="button" class="btn" data-toggle="popover" id="accountNotifications" data-placement="bottom" aria-haspopup="dialog" aria-expanded="false" aria-controls="accountNotificationsContent" aria-label="{lang key='notifications'} ({count($clientAlerts)})">
+                                <i class="far fa-flag" aria-hidden="true"></i>
                                 {if count($clientAlerts) > 0}
                                     {count($clientAlerts)}
                                     <span class="d-none d-sm-inline">{lang key='notifications'}</span>
@@ -30,12 +30,12 @@
                                     <span class="d-none d-sm-inline">{lang key='nonotifications'}</span>
                                 {/if}
                             </button>
-                            <div id="accountNotificationsContent" class="w-hidden">
+                            <div id="accountNotificationsContent" class="w-hidden" tabindex="-1">
                                 <ul class="client-alerts">
                                 {foreach $clientAlerts as $alert}
                                     <li>
                                         <a href="{$alert->getLink()}">
-                                            <i class="fas fa-fw fa-{if $alert->getSeverity() == 'danger'}exclamation-circle{elseif $alert->getSeverity() == 'warning'}exclamation-triangle{elseif $alert->getSeverity() == 'info'}info-circle{else}check-circle{/if}"></i>
+                                            <i class="fas fa-fw fa-{if $alert->getSeverity() == 'danger'}exclamation-circle{elseif $alert->getSeverity() == 'warning'}exclamation-triangle{elseif $alert->getSeverity() == 'info'}info-circle{else}check-circle{/if}" aria-hidden="true"></i>
                                             <div class="message">{$alert->getMessage()}</div>
                                         </a>
                                     </li>
@@ -63,12 +63,12 @@
                                             {/if}
                                         </span>
                                     </a>
-                                    <a href="{routePath('user-accounts')}" class="btn" data-toggle="tooltip" data-placement="bottom" title="Switch Account">
-                                        <i class="fad fa-random"></i>
+                                    <a href="{routePath('user-accounts')}" class="btn" data-toggle="tooltip" data-placement="bottom" title="{lang key='a11ySwitchAccount'}" aria-label="{lang key='a11ySwitchAccount'}">
+                                        <i class="fad fa-random" aria-hidden="true"></i>
                                     </a>
                                     {if $adminMasqueradingAsClient || $adminLoggedIn}
-                                        <a href="{$WEB_ROOT}/logout.php?returntoadmin=1" class="btn btn-return-to-admin" data-toggle="tooltip" data-placement="bottom" title="{if $adminMasqueradingAsClient}{lang key='adminmasqueradingasclient'} {lang key='logoutandreturntoadminarea'}{else}{lang key='adminloggedin'} {lang key='returntoadminarea'}{/if}">
-                                            <i class="fas fa-redo-alt"></i>
+                                        <a href="{$WEB_ROOT}/logout.php?returntoadmin=1" class="btn btn-return-to-admin" data-toggle="tooltip" data-placement="bottom" aria-label="{lang key='admin.returnToAdmin'}" title="{if $adminMasqueradingAsClient}{lang key='adminmasqueradingasclient'} {lang key='logoutandreturntoadminarea'}{else}{lang key='adminloggedin'} {lang key='returntoadminarea'}{/if}">
+                                            <i class="fas fa-redo-alt" aria-hidden="true"></i>
                                             <span class="d-none d-md-inline-block">{lang key="admin.returnToAdmin"}</span>
                                         </a>
                                     {/if}
@@ -104,15 +104,14 @@
 
                 <ul class="navbar-nav toolbar">
                     <li class="nav-item ml-3">
-                        <a class="btn nav-link cart-btn" href="{$WEB_ROOT}/cart.php?a=view">
-                            <i class="far fa-shopping-cart fa-fw"></i>
-                            <span id="cartItemCount" class="badge badge-info">{$cartitemcount}</span>
-                            <span class="sr-only">{lang key="carttitle"}</span>
+                        <a class="btn nav-link cart-btn" href="{$WEB_ROOT}/cart.php?a=view" aria-label="{lang key='carttitle'} ({$cartitemcount} {lang key='a11yItemsInCart'})">
+                            <i class="far fa-shopping-cart fa-fw" aria-hidden="true"></i>
+                            <span id="cartItemCount" class="badge badge-info" aria-hidden="true">{$cartitemcount}</span>
                         </a>
                     </li>
                     <li class="nav-item ml-3 d-xl-none">
-                        <button class="btn nav-link" type="button" data-toggle="collapse" data-target="#mainNavbar">
-                            <span class="fas fa-bars fa-fw"></span>
+                        <button class="btn nav-link" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="{lang key='a11yMenu'}">
+                            <span class="fas fa-bars fa-fw" aria-hidden="true"></span>
                         </button>
                     </li>
                 </ul>

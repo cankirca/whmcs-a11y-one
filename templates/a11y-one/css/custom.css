@@ -34,9 +34,48 @@ textarea:focus-visible,
 /* Contrast: active breadcrumb text >= 4.5:1 on the #e9ecef breadcrumb bar (5.41:1) */
 .breadcrumb-item.active { color: #595f6b; }
 
+/* Contrast: .btn-success default Bootstrap green (#28a745) gives ~3.0:1 white text.
+   Override to #1c7430 which gives ~5.1:1 white text — passes WCAG AA 4.5:1. */
+.btn-success {
+    background-color: #1c7430 !important;
+    border-color: #1a6b2c !important;
+}
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active {
+    background-color: #155724 !important;
+    border-color: #144d20 !important;
+}
+
+/* Contrast: .status-unpaid badge uses Bootstrap danger red (#d9534f) as background,
+   with dark .textred text inside — that pairing is only 1.6:1. Fix: darken the
+   badge background to #c0392b (5.44:1 with white) and force white inner text.
+   For any standalone .textred on a white background, use #b02a37 (6.5:1 on white). */
+.label.status-unpaid,
+.badge.status-unpaid {
+    background-color: #c0392b !important;
+}
+.label.status-unpaid .textred,
+.badge.status-unpaid .textred {
+    color: #fff !important;
+}
+.textred { color: #b02a37 !important; }
+
 /* Minimum target size 24px (WCAG 2.5.8) */
 .btn, .nav-link, .form-check-input { min-height: 24px; }
 .btn-reveal-pw { min-width: 44px; }
+
+/* Services list: product-name and domain inline links sit inside <td> flow
+   at ~19 px line-height, failing the 24 px target-size requirement (WCAG 2.5.8).
+   Promote them to inline-block with a 24 px minimum so each link individually
+   meets the touch-target size without changing the visual layout. */
+#tableServicesList td strong > a,
+#tableServicesList td > a[href^="http"] {
+    display: inline-block;
+    min-height: 24px;
+    line-height: 24px;
+}
 
 /* Minimal auth layout */
 body.auth-page { background: #f5f6f8; }
@@ -47,7 +86,577 @@ body.auth-page { background: #f5f6f8; }
 .auth-footer { padding: 1.5rem 0; color: #595f6b; }
 .auth-page .card { box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 
+/* ------------------------------------------------------------------ */
+/* iCheck replacement — style the now-native checkbox/radio controls.   */
+/*                                                                      */
+/* a11y-one.js replaces iCheck so the real <input> stays visible,       */
+/* focusable and operable; these rules give it the twenty-one look      */
+/* (a ~20px square/round control painted in the WHMCS primary blue)     */
+/* without ever hiding it. accent-color keeps the control fully native  */
+/* — checked state, indeterminate state and keyboard operation are all  */
+/* handled by the browser and exposed to assistive tech.                */
+/* The .a11y-native-check class is added in JS to every input that the  */
+/* parent would have handed to iCheck (class .icheck-button).           */
+/* ------------------------------------------------------------------ */
+input.icheck-button,
+input.a11y-native-check {
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+    appearance: auto;
+    position: static;   /* undo any iCheck inline absolute positioning */
+    opacity: 1;         /* undo any iCheck inline opacity:0            */
+    width: 20px;
+    height: 20px;
+    margin: 0 .5rem 0 0;
+    vertical-align: middle;
+    cursor: pointer;
+    accent-color: #1a6fd4;  /* matches twenty-one square-blue + focus token */
+    flex: 0 0 auto;
+}
+input.icheck-button:disabled,
+input.a11y-native-check:disabled {
+    cursor: not-allowed;
+    opacity: .65;
+}
+/* Keyboard focus ring (inherits the global :focus-visible token above). */
+input.icheck-button:focus-visible,
+input.a11y-native-check:focus-visible {
+    outline: 3px solid #1a6fd4;
+    outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Sidebar collapse disclosure (SR round 2, improvement C)            */
+/*                                                                    */
+/* The sidebar card toggle is now a full-width <button> wrapping the  */
+/* section title + chevron (clean disclosure pattern: the button's    */
+/* accessible name IS the section title; aria-expanded carries state).*/
+/* These rules keep the ORIGINAL visual appearance: the button must   */
+/* read as a heading row (inherit colour/size, no link underline),    */
+/* with the title on the left and the chevron pinned right. The       */
+/* parent theme rotates .card-minimise.minimised 180deg; because the  */
+/* chevron now lives in a child <i>, we move that rotation onto the   */
+/* icon so the title text does NOT flip.                              */
+/* ------------------------------------------------------------------ */
+.card-sidebar .card-title .card-minimise {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    /* The button replaces the heading text node; neutralise btn-link. */
+    transform: none;
+}
+.card-sidebar .card-title .card-minimise:hover,
+.card-sidebar .card-title .card-minimise:focus {
+    color: inherit;
+    text-decoration: none;
+}
+.card-sidebar .card-title .card-minimise .card-title-text {
+    flex: 0 1 auto;
+}
+/* Chevron pinned to the right, carries the rotate animation. */
+.card-sidebar .card-title .card-minimise .card-minimise-icon {
+    margin-left: auto;
+    transition: transform .2s ease;
+}
+/* Parent whmcs.js toggles .minimised on the button; rotate the icon, */
+/* not the whole button, so the title text stays upright.             */
+.card-sidebar .card-title .card-minimise.minimised {
+    transform: none;
+}
+.card-sidebar .card-title .card-minimise.minimised .card-minimise-icon {
+    transform: rotate(180deg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Accessible ticket star-rating (viewticket.tpl)                       */
+/*                                                                      */
+/* The parent renders a clickable <span rate="N"> widget that is mouse- */
+/* only and exposes nothing to assistive tech. A11y One rebuilds it as  */
+/* a <fieldset> of five native radios; these rules draw the same gold   */
+/* stars OVER the native inputs (kept in the a11y tree, sr-only) so the */
+/* visual is unchanged while the control stays keyboard-operable.       */
+/*                                                                      */
+/* Star glyph + colours mirror the parent (FA \f005, #999 / #f2de88).   */
+/* direction:rtl puts DOM order 5..1 on screen as 1..5 left-to-right    */
+/* and lets the "~ later sibling" combinator fill from the chosen star  */
+/* down to the first.                                                   */
+.rating-fieldset {
+    float: right;
+    padding: 5px 10px;
+    margin: 0;
+    border: 0;
+    direction: rtl;
+    font-size: 24px;
+    line-height: 1;
+}
+/* The legend is the rating prompt — keep it for AT but visually hidden
+   so the row of stars reads exactly like the parent's. */
+.rating-fieldset .rating-legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    float: none;
+    font-size: 1rem;
+}
+.rating-fieldset .rating-star {
+    display: inline-block;
+    margin: 0;
+    cursor: pointer;
+    font-family: "Font Awesome 6 Pro";
+    font-weight: 400;
+    font-style: normal;
+}
+.rating-fieldset .rating-star::before {
+    content: "\f005";
+    color: #999;
+}
+/* Hover preview: the hovered star and every later sibling (visually to
+   its left, i.e. lower ratings) light up. */
+.rating-fieldset .rating-star:hover::before,
+.rating-fieldset .rating-star:hover ~ .rating-star::before,
+/* Checked state: the checked input's label and all later sibling labels. */
+.rating-fieldset .rating-input:checked + .rating-star::before,
+.rating-fieldset .rating-input:checked + .rating-star ~ .rating-star::before {
+    color: #f2de88;
+}
+/* Keyboard focus: outline the star whose radio is focused (the sr-only
+   input itself is not visible, so move the focus ring to its label). */
+.rating-fieldset .rating-input:focus-visible + .rating-star,
+.rating-fieldset .rating-input:focus + .rating-star {
+    outline: 3px solid #1a6fd4;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Contrast: ticket requestor badges (viewticket + sidebar).            */
+/* Parent uses light green/blue badge backgrounds with white bold text  */
+/* (~2.1-2.5:1). Darken the backgrounds so white text clears 4.5:1.     */
+.requestor-type-owner {
+    background-color: #1c7430 !important; /* white on this ~5.1:1 */
+}
+.requestor-type-operator {
+    background-color: #117285 !important; /* white on this ~4.8:1 */
+}
+
+/* Contrast: core renders some ticket status labels with an inline grey
+   background (#888888) + white text (~3.5:1). Lift the grey label to a
+   darker grey so white text clears 4.5:1. Targets the inline-styled label
+   used for "Closed"/low-priority states in the ticket sidebar/thread. */
+.label[style*="#888888"],
+.label[style*="#888"] {
+    background-color: #595f6b !important; /* white on this ~5.6:1 */
+}
+
+/* Contrast: ticket status "Closed" badge (.status-closed) uses #87939f
+   background with white bold text — 3.13:1, fails 4.5:1.
+   Darken to #5a6475 which gives ~5.1:1 on white. */
+.label.status-closed,
+.badge.status-closed {
+    background-color: #5a6475 !important; /* white text 5.1:1 */
+}
+
+/* Contrast: sidebar recent-ticket status text uses inline style color:#888888
+   on white background — 3.54:1, fails 4.5:1. Override inline colour to #595f6b
+   (~5.6:1 on white). Selector targets the inline-styled span core emits inside
+   the sidebar recent-tickets list item. */
+.recent-ticket span[style*="#888888"],
+.recent-ticket span[style*="#888"],
+.sidebar-menu-item-label .recent-ticket small span[style] {
+    color: #595f6b !important; /* ~5.6:1 on white */
+}
+
+/* Contrast: bootstrap-markdown status footer text (#959694 on #f5f5f5 ~2.7:1). */
+.md-footer .small-font,
+.md-footer .markdown-save,
+.markdown-editor-status {
+    color: #595f6b !important; /* ~5.7:1 on #f5f5f5 */
+}
+
+/* ------------------------------------------------------------------ */
+/* Contrast: KB / downloads (WS-F Task 5)                              */
+/*                                                                      */
+/* badge-info (#17a2b8) with white text gives 3.04:1 — fails 4.5:1.   */
+/* Override to a darker teal (#117285) which gives ~4.8:1.             */
+/* Applies site-wide: badge-info is used on KB category article counts. */
+.badge-info {
+    background-color: #117285 !important; /* white text 4.8:1 */
+}
+
+/* .kb-article-item > small uses the twenty-one muted grey (#87939f)   */
+/* on white — 3.13:1 fails WCAG AA. Lift to #595f6b (~5.6:1 on white). */
+.kb-article-item small,
+.kb-article-item > small {
+    color: #595f6b !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Contrast: product-status-text + service status badges (WS-D Task 1) */
+/*                                                                      */
+/* .product-status-active bg #46a546 + white text = ~3.1:1 — FAILS.   */
+/* .product-status-pending bg #f89406 + white text = ~2.5:1 — FAILS.  */
+/* .product-status-cancelled / -terminated bg #666 + white = ~3.9:1.  */
+/* Fix: darken each colour to reach >= 4.5:1 with white text.          */
+/*                                                                      */
+/* Also fix the product-status-text div colour on coloured bg: the     */
+/* parent sets color:#fff which is fine, but each bg needs to clear     */
+/* 4.5:1. We override the backgrounds here and leave color:#fff alone. */
+/* ------------------------------------------------------------------ */
+.product-status-active {
+    background-color: #246b24 !important; /* white 5.1:1 */
+}
+.product-status-pending {
+    background-color: #7a5000 !important; /* white 7.2:1 */
+}
+.product-status-cancelled,
+.product-status-terminated {
+    background-color: #4a4a4a !important; /* white 7.0:1 */
+}
+.product-status-fraud {
+    /* parent #000 passes (21:1); keep as-is */
+}
+/* .product-status-suspended parent #0768b8 gives ~4.7:1 — passes. */
+
+/* Services list: .label.status-* badges on the clientareaproducts page.
+   These mirror Bootstrap label-{success/warning/default} colours.
+   Global fixStatusBadges() (a11y-one.js WS-A) injects sr-only text.
+   The colour fixes here ensure axe color-contrast passes on this page. */
+.label.status-active,
+.badge.status-active {
+    background-color: #246b24 !important; /* white 5.1:1 */
+}
+.label.status-pending,
+.badge.status-pending {
+    background-color: #7a5000 !important; /* white 7.2:1 */
+}
+.label.status-cancelled,
+.badge.status-cancelled,
+.label.status-terminated,
+.badge.status-terminated {
+    background-color: #4a4a4a !important; /* white 7.0:1 */
+}
+
 /* Respect reduced-motion (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {
     * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
+
+/* === WS-D Task 3: SSL + subscription-manage === */
+/* managessl: validation-type badge contrast.
+   DV badge uses label-default (#6c757d bg on white = ~3.0:1 — FAILS WCAG AA).
+   Lift to #595f6b (~5.6:1 on white). OV = label-warning (#ffc107 + dark text — passes).
+   EV = label-success (#28a745 + white = ~4.6:1 — passes). */
+.label.label-default {
+    background-color: #595f6b !important; /* white text 5.6:1 */
+}
+
+/* configuressl-steptwo: ensure inline radio targets meet 24×24 px minimum (WCAG 2.5.5) */
+.configuressl-steptwo .form-check-inline {
+    min-height: 24px;
+    align-items: center;
+}
+
+/* subscription-manage: cap card width for readability; auto-centre */
+.mw-540 {
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* === WS-C: Billing === */
+
+/* Clickable invoice/quote rows expose a real <a> in the first cell for
+   keyboard/AT access. Inherit row colour so it doesn't read as a styled
+   hyperlink amid a clickable row; keep a distinct focus outline. */
+.table-list td .a11y-row-link,
+.table-list th .a11y-row-link {
+    color: inherit;
+    text-decoration: none;
+}
+.table-list .a11y-row-link:focus {
+    outline: 2px solid #0768b8;
+    outline-offset: 2px;
+    text-decoration: underline;
+}
+
+/* Status badge contrast — invoice / quote list (axe color-contrast).
+   Mirrors WS-A/WS-D fixes for the same badge classes.              */
+.label.status-paid,
+.badge.status-paid {
+    background-color: #246b24 !important; /* white 5.1:1 */
+}
+.label.status-unpaid,
+.badge.status-unpaid,
+.label.status-overdue,
+.badge.status-overdue {
+    background-color: #b21f2d !important; /* white 5.0:1 */
+}
+.label.status-draft,
+.badge.status-draft,
+.label.status-collections,
+.badge.status-collections {
+    background-color: #7a5000 !important; /* white 7.2:1 */
+}
+.label.status-cancelled,
+.badge.status-cancelled,
+.label.status-refunded,
+.badge.status-refunded {
+    background-color: #4a4a4a !important; /* white 7.0:1 */
+}
+
+/* Quote-stage status badges */
+.label.status-delivered,
+.badge.status-delivered {
+    background-color: #b21f2d !important; /* reuses unpaid/overdue red, white 5.0:1 */
+}
+.label.status-accepted,
+.badge.status-accepted {
+    background-color: #246b24 !important; /* green, white 5.1:1 */
+}
+.label.status-onhold,
+.badge.status-onhold,
+.label.status-lost,
+.badge.status-lost,
+.label.status-dead,
+.badge.status-dead {
+    background-color: #4a4a4a !important; /* white 7.0:1 */
+}
+
+/* Transactions ledger card-title: bg-info (#17a2b8) + text-white = 2.9:1 — FAILS.
+   Use a darker teal that keeps the look but passes at 4.5:1 on white.      */
+.card-title.py-1.bg-info,
+.card > .card-title.bg-info {
+    background-color: #0d6876 !important; /* white 5.2:1 */
+}
+
+/* Panel card-title with bg-warning (#ffc107) + text-white = 1.6:1 — FAILS.
+   Switch to dark text (#212529) which gives 10.9:1 on warning yellow.      */
+.card-title.py-1.bg-warning,
+.card > .card-title.bg-warning {
+    color: #212529 !important; /* dark text 10.9:1 on #ffc107 */
+}
+
+/* Standalone invoice/quote/billing-note skip-link (same style as header.tpl
+   skip-link but self-contained — these pages don't load header.tpl).      */
+.invoice-container .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+.invoice-container .skip-link:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    display: inline-block;
+    margin: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: #0768b8;
+    color: #fff;
+    border-radius: 3px;
+    text-decoration: none;
+    z-index: 9999;
+}
+
+/* === WS-B === */
+/* Account / Profile / Security / Contacts / Users */
+
+/* Permission checkboxes fieldset — remove default border */
+fieldset.a11y-permissions {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+fieldset.a11y-permissions > legend {
+    margin-bottom: 0.5rem;
+}
+
+/* Contrast: .label-info (Bootstrap 3 badge, e.g. "Owner" on user-management)
+   default bg #5bc0de + white text = ~2.5:1 — FAILS WCAG AA 4.5:1.
+   Override to a darker teal that gives ~4.8:1 on white text. */
+.label-info {
+    background-color: #117285 !important; /* white text 4.8:1 */
+}
+
+/* === WS-E Domains === */
+
+/* TLD filter buttons: badge-styled <button> elements; keep badge sizing. */
+.tld-filters .tld-filter-btn {
+    display: inline-block;
+    margin: 0 0.25rem 0.5rem 0;
+    font-size: 75%;
+    font-weight: 700;
+    padding: 0.25em 0.4em;
+    line-height: 1;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+.tld-filters .tld-filter-btn:focus-visible {
+    outline: 3px solid #0768b8;
+    outline-offset: 2px;
+}
+
+/* Domain status badges — ensure sufficient contrast on common statuses.
+   parent .status-active uses #5cb85c (bg) + white text = 3.1:1 — FAILS.
+   Override to darker green 4.6:1. */
+.label.status-active,
+.badge.status-active {
+    background-color: #2d7d2d !important; /* white 5.0:1 */
+}
+
+/* .status-expired / .status-cancelled uses #d9534f (bg) + white = 4.0:1 — BORDERLINE.
+   Use a slightly darker red. */
+.label.status-expired,
+.badge.status-expired,
+.label.status-cancelled,
+.badge.status-cancelled {
+    background-color: #b21f2d !important; /* white 5.0:1 */
+}
+
+/* .status-pending: parent yellow #f0ad4e + white text = 2.0:1 — FAILS.
+   Recolour as a self-contained matched pair (white on brown #7a5000 = 7.06:1)
+   so the background and text colour can never cascade apart across sections. */
+.label.status-pending,
+.badge.status-pending {
+    background-color: #7a5000 !important;
+    color: #fff !important;
+}
+
+/* EPP code display — monospace, distinct background */
+.epp-code-display {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    display: inline-block;
+    user-select: all;
+}
+
+/* Domains table: select-all checkbox alignment */
+#tableDomainsList th:first-child,
+#tableDomainsList td:first-child {
+    width: 2rem;
+    vertical-align: middle;
+}
+
+/* Bulk domain management: contact fieldset border suppressed */
+fieldset.a11y-bulk-contact {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+fieldset.a11y-bulk-contact > legend {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* === WS-G Dashboard / Misc / Errors / OAuth / Standalone === */
+
+/* Dashboard stat tiles: .tile sits on #f8f8f8; .stat/.title text is #888888
+   → contrast ratio 3.33:1 — FAILS WCAG AA (need ≥ 4.5:1 for 12 px bold).
+   Darken to #595959 → 7.0:1 on #f8f8f8.
+   Parent rule is .tiles .tile .title {color:#888} (3-class specificity), so we
+   must match that specificity to win. */
+.tiles .tile .stat,
+.tiles .tile .title {
+    color: #595959;
+}
+
+/* Dashboard panel action buttons: bg-color-gold / red / blue / asbestos classes
+   carry Bootstrap's status colours at low contrast with white text.
+   Replaced colours are tuned to ≥ 4.5:1 against #fff. */
+.btn-xs.bg-color-gold   { background-color: #946800 !important; border-color: #7a5600 !important; color: #fff !important; }
+.btn-xs.bg-color-red    { background-color: #b52b27 !important; border-color: #9c2522 !important; color: #fff !important; }
+.btn-xs.bg-color-blue   { background-color: #0069d9 !important; border-color: #0062cc !important; color: #fff !important; }
+.btn-xs.bg-color-asbestos { background-color: #5d6d7e !important; border-color: #4d5d6e !important; color: #fff !important; }
+
+/* Bootstrap .label-success (#5cb85c bg + white text = 2.5:1 — FAILS AA).
+   Darken to #3d7a3d → 4.56:1 on white. */
+.label-success {
+    background-color: #3d7a3d;
+}
+
+/* Panel card small/muted text on white: #888888 on #fff = 3.54:1 — FAILS AA.
+   card-body <small> elements inherit site muted colour — darken to #595959 → 7.0:1. */
+.card-body small,
+.list-group-item small {
+    color: #595959;
+}
+
+/* Switch-account chooser: buttons must fill width like the original <a> links */
+.select-account .btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 4px;
+}
+
+/* user-verify-email: live-region stays visually hidden but available to AT */
+#verifyEmailStatus {
+    clip: rect(0, 0, 0, 0);
+}
+
+/* Error pages: display-1 text-primary (#007bff on #fff ≈ 3.1:1 — FAILS AA).
+   Darken to #0056b3 (≈ 5.6:1 on white). */
+.error-container .text-primary,
+.text-center.p-5 h1.text-primary,
+.text-center.p-5 > i.text-primary {
+    color: #0056b3 !important;
+}
+
+/* btn-info (#17a2b8 bg + white text = 3.0:1 — FAILS AA globally).
+   Darken background to #117a8b (4.7:1 on white). */
+.btn-info {
+    background-color: #117a8b !important;
+    border-color: #10707f !important;
+}
+.btn-info:hover,
+.btn-info:focus {
+    background-color: #0f6674 !important;
+    border-color: #0e5c68 !important;
+}
+
+/* OAuth layout: header/footer rendered as block-level landmarks */
+header#header,
+footer#footer {
+    display: block;
+}
+
+/* OAuth layout: sr-only skip link */
+.sr-only-focusable:focus {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+}
+
+/* viewemail popup: ensure heading is readable at normal size inside popup */
+#popup-backdrop h1.h2 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+/* forwardpage: live-region sr-only */
+#fwdPageStatus {
+    clip: rect(0, 0, 0, 0);
+}
+

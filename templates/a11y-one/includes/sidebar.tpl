@@ -2,11 +2,11 @@
     <div menuItemName="{$item->getName()}" class="mb-3 card card-sidebar{if $item->getClass()} {$item->getClass()}{/if}{if $item->getExtra('mobileSelect') and $item->hasChildren()} d-none d-md-block{/if}"{if $item->getAttribute('id')} id="{$item->getAttribute('id')}"{/if}>
         <div class="card-header">
             <h3 class="card-title m-0">
-                {if $item->hasIcon()}<i class="{$item->getIcon()}" aria-hidden="true"></i>&nbsp;{/if}
-                {$item->getLabel()}
-                {if $item->hasBadge()}&nbsp;<span class="badge float-right">{$item->getBadge()}</span>{/if}
-                <button class="card-minimise float-right btn btn-link p-0 border-0" aria-expanded="true" aria-controls="sidebar-panel-{$item->getName()|lower|replace:' ':'-'}">
-                    <i class="fas fa-chevron-up" aria-hidden="true"></i>
+                <button type="button" class="card-minimise btn btn-link p-0 border-0 d-flex align-items-center w-100 text-left" aria-expanded="true" aria-controls="sidebar-panel-{$item->getName()|lower|replace:' ':'-'}">
+                    {if $item->hasIcon()}<i class="{$item->getIcon()}" aria-hidden="true"></i>&nbsp;{/if}
+                    <span class="card-title-text">{$item->getLabel()}</span>
+                    {if $item->hasBadge()}&nbsp;<span class="badge ml-2">{$item->getBadge()}</span>{/if}
+                    <i class="fas fa-chevron-up card-minimise-icon ml-auto" aria-hidden="true"></i>
                 </button>
             </h3>
         </div>
@@ -106,14 +106,3 @@
         </div>
     {/if}
 {/foreach}
-{literal}
-<script>
-/* A11y One: keep aria-expanded in sync with the custom card-minimise toggle */
-(function ($) {
-    $(document).on('click', '.card-minimise', function () {
-        var expanded = $(this).attr('aria-expanded') === 'true';
-        $(this).attr('aria-expanded', expanded ? 'false' : 'true');
-    });
-}(jQuery));
-</script>
-{/literal}

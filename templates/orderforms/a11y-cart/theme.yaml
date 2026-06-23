@@ -1,0 +1,10 @@
+# A11y Cart — accessible (WCAG 2.2 AA) child of the Standard Cart order form
+name: "A11y Cart"
+description: "Accessible order form / cart. Override-only child of Standard Cart adding labels, fieldset/legend option groups, ARIA live price & domain-result regions, accessible modals and payment fields."
+author: "Can Kirca"
+config:
+  parent: standard_cart
+dependencies:
+  bootstrap: 3||4
+  jquery: 1.12
+  fontawesome: 5

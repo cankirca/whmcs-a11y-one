@@ -46,7 +46,7 @@
                 </li>
                 {if $acceptTOS}
                     <li class="nav-item">
-                        <a class="nav-link" href="{$tosURL}" target="_blank">{lang key='ordertos'}</a>
+                        <a class="nav-link" href="{$tosURL}" target="_blank" rel="noopener noreferrer">{lang key='ordertos'}</a>
                     </li>
                 {/if}
             </ul>
@@ -156,6 +156,52 @@
 
     {include file="$template/includes/generate-password.tpl"}
 
+    {* i18n carrier: a11y-one.js reads these data-attributes for localised ARIA strings.
+       Present on every page (moved here from tablelist.tpl) so auth pages also get
+       localised labels (password reveal, strength meter). Hidden from layout and AT. *}
+    <span id="a11yOneI18n" hidden
+        data-collapse="{lang key='a11yCollapse'}"
+        data-expand="{lang key='a11yExpand'}"
+        data-panel="{lang key='a11yPanel'}"
+        data-rowsperpage="{lang key='a11yRowsPerPage'}"
+        data-tablepagination="{lang key='a11yTablePagination'}"
+        data-prevpage="{lang key='a11yPrevPage'}"
+        data-nextpage="{lang key='a11yNextPage'}"
+        data-firstpage="{lang key='a11yFirstPage'}"
+        data-lastpage="{lang key='a11yLastPage'}"
+        data-page="{lang key='a11yPage'}"
+        data-search="{lang key='a11ySearch'}"
+        data-showpassword="{lang key='userLogin.showPassword'}"
+        data-hidepassword="{lang key='userLogin.hidePassword'}"
+        data-pwweak="{lang key='a11yPwWeak'}"
+        data-pwfair="{lang key='a11yPwFair'}"
+        data-pwstrong="{lang key='a11yPwStrong'}"
+        data-copytoclipboard="{lang key='a11yCopyToClipboard'}"
+        data-copied="{lang key='a11yCopied'}"
+        data-sortable="{lang key='a11ySortable'}"
+        data-sortedasc="{lang key='a11ySortedAsc'}"
+        data-sorteddesc="{lang key='a11ySortedDesc'}"
+        data-notsorted="{lang key='a11yNotSorted'}"
+        data-devlicensenotice="{lang key='a11yDevLicenseNotice'}"
+        data-mdeeditor="{lang key='a11yMdeEditor'}"
+        data-mdetoolbar="{lang key='a11yMdeToolbar'}"
+        data-mdebold="{lang key='a11yMdeBold'}"
+        data-mdeitalic="{lang key='a11yMdeItalic'}"
+        data-mdeheading="{lang key='a11yMdeHeading'}"
+        data-mdeurl="{lang key='a11yMdeUrl'}"
+        data-mdeimage="{lang key='a11yMdeImage'}"
+        data-mdelist="{lang key='a11yMdeList'}"
+        data-mdelisto="{lang key='a11yMdeListO'}"
+        data-mdecode="{lang key='a11yMdeCode'}"
+        data-mdequote="{lang key='a11yMdeQuote'}"
+        data-mdepreview="{lang key='a11yMdePreview'}"
+        data-mdehelp="{lang key='a11yMdeHelp'}"
+        data-mdefullscreen="{lang key='a11yMdeFullscreen'}"
+        data-fileattachment="{lang key='a11yFileAttachment'}"
+        data-fileattachmentadded="{lang key='a11yFileAttachmentAdded'}"
+        data-domainsearchlabel="{lang key='a11yDomainSearchLabel'}"
+    ></span>
+    <script src="{$WEB_ROOT}/templates/{$template}/js/a11y-one.js"></script>
     {$footeroutput}
 
 </body>
