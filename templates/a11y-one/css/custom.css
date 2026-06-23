@@ -343,3 +343,101 @@ input.a11y-native-check:focus-visible {
     margin-left: auto;
     margin-right: auto;
 }
+
+/* === WS-C: Billing === */
+
+/* Clickable invoice/quote rows expose a real <a> in the first cell for
+   keyboard/AT access. Inherit row colour so it doesn't read as a styled
+   hyperlink amid a clickable row; keep a distinct focus outline. */
+.table-list td .a11y-row-link,
+.table-list th .a11y-row-link {
+    color: inherit;
+    text-decoration: none;
+}
+.table-list .a11y-row-link:focus {
+    outline: 2px solid #0768b8;
+    outline-offset: 2px;
+    text-decoration: underline;
+}
+
+/* Status badge contrast — invoice / quote list (axe color-contrast).
+   Mirrors WS-A/WS-D fixes for the same badge classes.              */
+.label.status-paid,
+.badge.status-paid {
+    background-color: #246b24 !important; /* white 5.1:1 */
+}
+.label.status-unpaid,
+.badge.status-unpaid,
+.label.status-overdue,
+.badge.status-overdue {
+    background-color: #b21f2d !important; /* white 5.0:1 */
+}
+.label.status-draft,
+.badge.status-draft,
+.label.status-collections,
+.badge.status-collections {
+    background-color: #7a5000 !important; /* white 7.2:1 */
+}
+.label.status-cancelled,
+.badge.status-cancelled,
+.label.status-refunded,
+.badge.status-refunded {
+    background-color: #4a4a4a !important; /* white 7.0:1 */
+}
+
+/* Quote-stage status badges */
+.label.status-delivered,
+.badge.status-delivered {
+    background-color: #b21f2d !important; /* reuses unpaid/overdue red, white 5.0:1 */
+}
+.label.status-accepted,
+.badge.status-accepted {
+    background-color: #246b24 !important; /* green, white 5.1:1 */
+}
+.label.status-onhold,
+.badge.status-onhold,
+.label.status-lost,
+.badge.status-lost,
+.label.status-dead,
+.badge.status-dead {
+    background-color: #4a4a4a !important; /* white 7.0:1 */
+}
+
+/* Transactions ledger card-title: bg-info (#17a2b8) + text-white = 2.9:1 — FAILS.
+   Use a darker teal that keeps the look but passes at 4.5:1 on white.      */
+.card-title.py-1.bg-info,
+.card > .card-title.bg-info {
+    background-color: #0d6876 !important; /* white 5.2:1 */
+}
+
+/* Panel card-title with bg-warning (#ffc107) + text-white = 1.6:1 — FAILS.
+   Switch to dark text (#212529) which gives 10.9:1 on warning yellow.      */
+.card-title.py-1.bg-warning,
+.card > .card-title.bg-warning {
+    color: #212529 !important; /* dark text 10.9:1 on #ffc107 */
+}
+
+/* Standalone invoice/quote/billing-note skip-link (same style as header.tpl
+   skip-link but self-contained — these pages don't load header.tpl).      */
+.invoice-container .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+.invoice-container .skip-link:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    display: inline-block;
+    margin: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: #0768b8;
+    color: #fff;
+    border-radius: 3px;
+    text-decoration: none;
+    z-index: 9999;
+}

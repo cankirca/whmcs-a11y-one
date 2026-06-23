@@ -95,3 +95,7 @@ $_LANG['a11yUpgradeQtyLabel']        = 'Miktar';
 // WS-D Task 3: SSL (managessl + configure ×3) + subscription-manage
 $_LANG['a11ySslValidationType']      = 'Doğrulama türü';
 $_LANG['a11ySslApproverEmailGroup']  = 'Onaylayıcı e-posta adresi seçin';
+
+// WS-C: Billing — faturalar, teklifler, fatura görüntüleme, ödeme
+$_LANG['a11ySecurePaymentFrame']     = 'Güvenli ödeme formu';
+$_LANG['a11yQuoteActions']           = 'İşlemler';

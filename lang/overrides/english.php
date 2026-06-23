@@ -95,3 +95,7 @@ $_LANG['a11yUpgradeQtyLabel']        = 'Quantity';
 // WS-D Task 3: SSL (managessl + configure ×3) + subscription-manage
 $_LANG['a11ySslValidationType']      = 'Validation type';
 $_LANG['a11ySslApproverEmailGroup']  = 'Select approver email address';
+
+// WS-C: Billing — invoices, quotes, viewinvoice, viewquote, viewbillingnote, payment
+$_LANG['a11ySecurePaymentFrame']     = 'Secure payment form';
+$_LANG['a11yQuoteActions']           = 'Actions';
