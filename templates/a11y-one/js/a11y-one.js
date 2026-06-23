@@ -2205,41 +2205,27 @@
         });
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', fixSslStateImageAlts);
-    } else {
+    function initSslStateAlts() {
         fixSslStateImageAlts();
+        /* ssl-info.js populates each image's title/state via AJAX after load.
+           Only the SSL pages (managessl, SSL widgets) carry img.ssl-state, so
+           scope the observer to those images. This avoids a site-wide subtree
+           observer that would fire on every unrelated class/DOM change. */
+        var imgs = document.querySelectorAll('img.ssl-state');
+        if (!imgs.length || typeof MutationObserver === 'undefined') { return; }
+        var obs = new MutationObserver(fixSslStateImageAlts);
+        imgs.forEach(function (img) {
+            obs.observe(img, {
+                attributes: true,
+                attributeFilter: ['src', 'title', 'data-original-title']
+            });
+        });
     }
 
-    /* Observe future injections (the ssl-info.js script populates images
-       after page load via AJAX — a MutationObserver catches additions). */
-    if (typeof MutationObserver !== 'undefined') {
-        new MutationObserver(function (mutations) {
-            mutations.forEach(function (m) {
-                if (m.type === 'childList') {
-                    m.addedNodes.forEach(function (node) {
-                        if (node.nodeType === 1) {
-                            if (node.matches && node.matches('img.ssl-state')) {
-                                fixSslStateImageAlts();
-                            } else if (node.querySelectorAll) {
-                                node.querySelectorAll('img.ssl-state:not([alt])').forEach(function () {
-                                    fixSslStateImageAlts();
-                                });
-                            }
-                        }
-                    });
-                } else if (m.type === 'attributes' && m.target.matches && m.target.matches('img.ssl-state')) {
-                    if (!m.target.getAttribute('alt')) {
-                        fixSslStateImageAlts();
-                    }
-                }
-            });
-        }).observe(document.body || document.documentElement, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['src', 'class']
-        });
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSslStateAlts);
+    } else {
+        initSslStateAlts();
     }
 
 }());
