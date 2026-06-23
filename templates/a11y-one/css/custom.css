@@ -66,6 +66,17 @@ textarea:focus-visible,
 .btn, .nav-link, .form-check-input { min-height: 24px; }
 .btn-reveal-pw { min-width: 44px; }
 
+/* Services list: product-name and domain inline links sit inside <td> flow
+   at ~19 px line-height, failing the 24 px target-size requirement (WCAG 2.5.8).
+   Promote them to inline-block with a 24 px minimum so each link individually
+   meets the touch-target size without changing the visual layout. */
+#tableServicesList td strong > a,
+#tableServicesList td > a[href^="http"] {
+    display: inline-block;
+    min-height: 24px;
+    line-height: 24px;
+}
+
 /* Minimal auth layout */
 body.auth-page { background: #f5f6f8; }
 .auth-main { display: block; }
@@ -245,6 +256,24 @@ input.a11y-native-check:focus-visible {
 .label[style*="#888888"],
 .label[style*="#888"] {
     background-color: #595f6b !important; /* white on this ~5.6:1 */
+}
+
+/* Contrast: ticket status "Closed" badge (.status-closed) uses #87939f
+   background with white bold text — 3.13:1, fails 4.5:1.
+   Darken to #5a6475 which gives ~5.1:1 on white. */
+.label.status-closed,
+.badge.status-closed {
+    background-color: #5a6475 !important; /* white text 5.1:1 */
+}
+
+/* Contrast: sidebar recent-ticket status text uses inline style color:#888888
+   on white background — 3.54:1, fails 4.5:1. Override inline colour to #595f6b
+   (~5.6:1 on white). Selector targets the inline-styled span core emits inside
+   the sidebar recent-tickets list item. */
+.recent-ticket span[style*="#888888"],
+.recent-ticket span[style*="#888"],
+.sidebar-menu-item-label .recent-ticket small span[style] {
+    color: #595f6b !important; /* ~5.6:1 on white */
 }
 
 /* Contrast: bootstrap-markdown status footer text (#959694 on #f5f5f5 ~2.7:1). */

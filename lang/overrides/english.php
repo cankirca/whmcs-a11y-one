@@ -148,6 +148,9 @@ $_LANG['a11yOauthError']             = 'OAuth error';
 $_LANG['a11yRedirectingPlease']      = 'Redirecting, please wait…';
 $_LANG['a11yJsRequiredForPayment']   = 'JavaScript is required to complete the payment redirect. Please enable JavaScript and reload the page.';
 
+/* === WS-Z Axe sweep fixes === */
+$_LANG['a11yDomainSearchLabel']      = 'Search for a domain';
+
 /* === WS-H Cart === */
 $_LANG['a11yCartConfigOptionsGroup'] = 'Configurable options';
 $_LANG['a11yCartDomainOptionGroup']  = 'Domain registration option';

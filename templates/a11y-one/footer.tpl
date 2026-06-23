@@ -199,6 +199,7 @@
         data-mdefullscreen="{lang key='a11yMdeFullscreen'}"
         data-fileattachment="{lang key='a11yFileAttachment'}"
         data-fileattachmentadded="{lang key='a11yFileAttachmentAdded'}"
+        data-domainsearchlabel="{lang key='a11yDomainSearchLabel'}"
     ></span>
     <script src="{$WEB_ROOT}/templates/{$template}/js/a11y-one.js"></script>
     {$footeroutput}

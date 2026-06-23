@@ -2241,6 +2241,32 @@
         initSslStateAlts();
     }
 
+    /* === Axe-sweep fix: label hook-injected domain search inputs ===
+     * WHMCS core injects a "Register a New Domain" panel on the clientarea
+     * dashboard with a bare <input type="text" name="domain"> that has no
+     * label element (axe rule: label, CRITICAL — WCAG 1.3.1 / 4.1.2).
+     *
+     * The input comes from a hook-generated panel body; no theme template
+     * controls that markup.  Supply an aria-label via JS on DOMContentLoaded.
+     * Label text from the i18n carrier (data-domainsearchlabel).
+     */
+    function labelDomainSearchInputs() {
+        var inputs = document.querySelectorAll(
+            'form[action="domainchecker.php"] input[name="domain"]:not([aria-label]):not([aria-labelledby])'
+        );
+        if (!inputs.length) { return; }
+        var label = _i18n('domainsearchlabel', 'Search for a domain');
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].setAttribute('aria-label', label);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', labelDomainSearchInputs);
+    } else {
+        labelDomainSearchInputs();
+    }
+
 }());
 
 /* === WS-G verify-email live region ===
@@ -2272,3 +2298,4 @@
         initVerifyEmailLiveRegion();
     }
 }());
+

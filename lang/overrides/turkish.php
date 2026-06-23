@@ -148,6 +148,9 @@ $_LANG['a11yOauthError']             = 'OAuth hatası';
 $_LANG['a11yRedirectingPlease']      = 'Yönlendiriliyor, lütfen bekleyin…';
 $_LANG['a11yJsRequiredForPayment']   = 'Ödeme yönlendirmesini tamamlamak için JavaScript gereklidir. Lütfen JavaScript\'i etkinleştirip sayfayı yeniden yükleyin.';
 
+/* === WS-Z Axe sweep fixes === */
+$_LANG['a11yDomainSearchLabel']      = 'Alan adı ara';
+
 /* === WS-H Cart === */
 $_LANG['a11yCartConfigOptionsGroup'] = 'Yapılandırılabilir seçenekler';
 $_LANG['a11yCartDomainOptionGroup']  = 'Alan adı kayıt seçeneği';
