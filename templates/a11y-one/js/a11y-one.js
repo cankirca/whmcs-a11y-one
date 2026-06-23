@@ -1770,10 +1770,14 @@
             setTimeout(function () { fixFileUploadInputs(true); }, 0);
         });
 
-        /* Safety net: observe the container for appended fields. */
+        /* Safety net: observe the container for appended fields.
+           Disconnects after 4 s (consistent with the markdown observer) to
+           avoid an unbounded observer living for the page lifetime. The click
+           handler above already covers all user-initiated additions. */
         if (typeof MutationObserver !== 'undefined') {
             var obs = new MutationObserver(function () { fixFileUploadInputs(true); });
             obs.observe(container, { childList: true });
+            setTimeout(function () { obs.disconnect(); }, 4000);
         }
     }
 
