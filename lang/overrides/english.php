@@ -177,3 +177,7 @@ $_LANG['announcementShareTwitter']   = 'Share on X (Twitter), opens in new windo
 $_LANG['announcementNewWindow']      = '(opens in new window)';
 $_LANG['serverstatusChecking']       = 'Checking…';
 $_LANG['networkIssuesNavLabel']      = 'Network issues navigation';
+
+/* === WS-I Affiliates === */
+$_LANG['a11yAffiliatesCommissionSummary'] = 'Commission and balance summary';
+$_LANG['a11yAffiliatesReferralsList']     = 'Referrals list';

@@ -177,3 +177,7 @@ $_LANG['announcementShareTwitter']   = 'X (Twitter) üzerinde paylaş, yeni penc
 $_LANG['announcementNewWindow']      = '(yeni pencerede açılır)';
 $_LANG['serverstatusChecking']       = 'Kontrol ediliyor…';
 $_LANG['networkIssuesNavLabel']      = 'Ağ sorunları gezintisi';
+
+/* === WS-I Affiliates === */
+$_LANG['a11yAffiliatesCommissionSummary'] = 'Komisyon ve bakiye özeti';
+$_LANG['a11yAffiliatesReferralsList']     = 'Yönlendirmeler listesi';
