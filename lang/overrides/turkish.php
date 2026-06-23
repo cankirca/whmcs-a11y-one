@@ -170,3 +170,10 @@ $_LANG['a11yCartRegistrantContact']  = 'Alan adı kayıt sahibi iletişim';
 $_LANG['a11yCartSecurityQuestion']   = 'Güvenlik sorusu';
 $_LANG['a11yCartAccountSelect']      = 'Bu sipariş için hesap seçin';
 $_LANG['a11yCartCvvHelp']            = 'Bu nedir?';
+
+/* === WS-F Task 6: Announcements / server status === */
+$_LANG['announcementsnavlabel']      = 'Duyuru gezintisi';
+$_LANG['announcementShareTwitter']   = 'X (Twitter) üzerinde paylaş, yeni pencerede açılır';
+$_LANG['announcementNewWindow']      = '(yeni pencerede açılır)';
+$_LANG['serverstatusChecking']       = 'Kontrol ediliyor…';
+$_LANG['networkIssuesNavLabel']      = 'Ağ sorunları gezintisi';

@@ -170,3 +170,10 @@ $_LANG['a11yCartRegistrantContact']  = 'Domain registrant contact';
 $_LANG['a11yCartSecurityQuestion']   = 'Security question';
 $_LANG['a11yCartAccountSelect']      = 'Select account for this order';
 $_LANG['a11yCartCvvHelp']            = 'What is this?';
+
+/* === WS-F Task 6: Announcements / server status === */
+$_LANG['announcementsnavlabel']      = 'Announcements navigation';
+$_LANG['announcementShareTwitter']   = 'Share on X (Twitter), opens in new window';
+$_LANG['announcementNewWindow']      = '(opens in new window)';
+$_LANG['serverstatusChecking']       = 'Checking…';
+$_LANG['networkIssuesNavLabel']      = 'Network issues navigation';
