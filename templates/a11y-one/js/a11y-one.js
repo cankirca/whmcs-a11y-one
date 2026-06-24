@@ -2307,3 +2307,120 @@
     }
 }());
 
+/* === Accessible navigation menus (WAI-ARIA menu-button pattern) ===
+ * WHMCS/Bootstrap nav dropdowns announce aria-expanded but expose their items
+ * as plain links with no menu semantics, so a screen reader stays in browse
+ * mode and arrow keys never reach the dropdown — the user hears "expanded" but
+ * cannot navigate the items. Upgrade each navbar dropdown to a real menu:
+ *   - role=menu on the list, role=menuitem + tabindex=-1 on each link
+ *   - Down/Up move focus between items (wrapping), Home/End jump to ends
+ *   - Enter/Space/Down on the toggle opens the menu and focuses the first item
+ *   - Esc (or Tab) closes; Esc returns focus to the toggle
+ * We handle the keys explicitly (stopPropagation) so behaviour is identical
+ * across screen readers rather than relying on Bootstrap's own key handling,
+ * while still using Bootstrap's show/hide via its jQuery API.
+ */
+(function () {
+    var $ = window.jQuery;
+
+    function enhance(toggle) {
+        var dd = toggle.closest('.dropdown');
+        if (!dd || toggle.__a11yNavMenu) { return; }
+        var menu = dd.querySelector('.dropdown-menu');
+        if (!menu) { return; }
+        toggle.__a11yNavMenu = true;
+
+        toggle.setAttribute('aria-haspopup', 'true');
+        menu.setAttribute('role', 'menu');
+        if (!menu.getAttribute('aria-label')) {
+            var name = (toggle.textContent || '').replace(/\s+/g, ' ').trim();
+            if (name) { menu.setAttribute('aria-label', name); }
+        }
+        Array.prototype.forEach.call(menu.querySelectorAll('a'), function (a) {
+            a.setAttribute('role', 'menuitem');
+            a.setAttribute('tabindex', '-1');
+            /* The wrapping <li> must be role=none so the menuitem's required
+               parent is the role=menu list (ARIA required-parent). */
+            if (a.parentElement && a.parentElement.tagName === 'LI') {
+                a.parentElement.setAttribute('role', 'none');
+            }
+        });
+        /* Dividers between groups → separators. */
+        Array.prototype.forEach.call(menu.querySelectorAll('.dropdown-divider'), function (d) {
+            d.setAttribute('role', 'separator');
+        });
+
+        function items() {
+            return Array.prototype.filter.call(
+                menu.querySelectorAll('a[role="menuitem"]'),
+                function (a) { return !a.classList.contains('disabled') && a.offsetParent !== null; }
+            );
+        }
+        function focusAt(i) {
+            var list = items();
+            if (!list.length) { return; }
+            i = (i + list.length) % list.length;
+            list[i].focus();
+        }
+        function indexOfActive() {
+            return items().indexOf(document.activeElement);
+        }
+        function isOpen() { return dd.classList.contains('show'); }
+        function open(cb) {
+            if (!isOpen() && $) { $(toggle).dropdown('toggle'); }
+            setTimeout(cb, 0);
+        }
+        function close(focusToggle) {
+            if (isOpen() && $) { $(toggle).dropdown('toggle'); }
+            if (focusToggle) { toggle.focus(); }
+        }
+
+        toggle.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowDown' || e.key === 'Down') {
+                e.preventDefault(); e.stopPropagation();
+                open(function () { focusAt(0); });
+            } else if (e.key === 'ArrowUp' || e.key === 'Up') {
+                e.preventDefault(); e.stopPropagation();
+                open(function () { focusAt(-1); });
+            }
+        });
+
+        menu.addEventListener('keydown', function (e) {
+            var i = indexOfActive();
+            switch (e.key) {
+                case 'ArrowDown': case 'Down':
+                    e.preventDefault(); e.stopPropagation(); focusAt(i + 1); break;
+                case 'ArrowUp': case 'Up':
+                    e.preventDefault(); e.stopPropagation(); focusAt(i - 1); break;
+                case 'Home':
+                    e.preventDefault(); e.stopPropagation(); focusAt(0); break;
+                case 'End':
+                    e.preventDefault(); e.stopPropagation(); focusAt(-1); break;
+                case 'Escape': case 'Esc':
+                    e.preventDefault(); e.stopPropagation(); close(true); break;
+                case 'Tab':
+                    close(false); break;
+                default: break;
+            }
+        });
+
+        /* If Bootstrap opens the menu by click, still move focus to the first item. */
+        if ($) {
+            $(dd).on('shown.bs.dropdown', function () {
+                setTimeout(function () { focusAt(0); }, 0);
+            });
+        }
+    }
+
+    function run() {
+        var toggles = document.querySelectorAll('.navbar .dropdown > [data-toggle="dropdown"], .main-navbar-wrapper .dropdown > [data-toggle="dropdown"]');
+        Array.prototype.forEach.call(toggles, enhance);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+}());
+
