@@ -721,3 +721,46 @@ footer#footer {
 .product-details-meta dd {
     padding-top: .25rem;
 }
+
+/* === WS-L visual-organization sweep ============================== *
+ * Consistent vertical rhythm, lighter/uniform content cards, calmer
+ * section spacing — applied theme-wide via the .primary-content scope
+ * so the sidebar, navbar and modals keep the twenty-one look. */
+
+/* Page heading: uniform spacing + a subtle rule separating it from content. */
+#main-body .primary-content > h1.h3:first-child,
+#main-body .primary-content > h1.h3 {
+    margin-bottom: 1.25rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid #e4e7eb;
+}
+
+/* Content cards: even spacing, light border, gentle shadow for separation. */
+.primary-content .card {
+    margin-bottom: 1.25rem;
+    border: 1px solid #e6e8eb;
+    box-shadow: 0 1px 2px rgba(20, 23, 28, .05);
+}
+.primary-content .card > .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e6e8eb;
+    font-weight: 600;
+}
+
+/* Tables: consistent header tint + a little breathing room. */
+.primary-content table.table thead th {
+    background-color: #f8f9fa;
+    border-bottom-width: 1px;
+}
+
+/* Forms: consistent label weight + spacing for scannability. */
+.primary-content .form-group > label,
+.primary-content .control-label {
+    font-weight: 600;
+}
+
+/* Declutter the product-status badge box (was visually heavy). */
+.product-status .product-icon .fa-stack {
+    font-size: 1.55em;
+}
+.product-status .product-icon { padding: .5rem 0; }
