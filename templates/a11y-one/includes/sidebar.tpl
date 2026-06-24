@@ -1,14 +1,18 @@
 {foreach $sidebar as $item}
     <div menuItemName="{$item->getName()}" class="mb-3 card card-sidebar{if $item->getClass()} {$item->getClass()}{/if}{if $item->getExtra('mobileSelect') and $item->hasChildren()} d-none d-md-block{/if}"{if $item->getAttribute('id')} id="{$item->getAttribute('id')}"{/if}>
+        {* Panel title is a disclosure BUTTON, not a heading: sidebar section
+           labels must not crowd the page's content heading outline. The button
+           carries the accessible name + expanded state; the parent <nav> carries
+           the landmark name. *}
         <div class="card-header">
-            <h3 class="card-title m-0">
+            <div class="card-title m-0">
                 <button type="button" class="card-minimise btn btn-link p-0 border-0 d-flex align-items-center w-100 text-left" aria-expanded="true" aria-controls="sidebar-panel-{$item->getName()|lower|replace:' ':'-'}">
                     {if $item->hasIcon()}<i class="{$item->getIcon()}" aria-hidden="true"></i>&nbsp;{/if}
                     <span class="card-title-text">{$item->getLabel()}</span>
                     {if $item->hasBadge()}&nbsp;<span class="badge ml-2">{$item->getBadge()}</span>{/if}
                     <i class="fas fa-chevron-up card-minimise-icon ml-auto" aria-hidden="true"></i>
                 </button>
-            </h3>
+            </div>
         </div>
         <div class="collapsable-card-body" id="sidebar-panel-{$item->getName()|lower|replace:' ':'-'}">
             {if $item->hasBodyHtml()}
@@ -80,15 +84,15 @@
         {* Mobile Select only supports dropdown menus *}
         <div class="card d-block d-md-none {if $item->getClass()}{$item->getClass()}{else}bg-light{/if}"{if $item->getAttribute('id')} id="{$item->getAttribute('id')}"{/if}>
             <div class="card-header">
-                <h3 class="card-title">
+                <div class="card-title" id="mobilenav-{$item->getName()|lower|replace:' ':'-'}">
                     {if $item->hasIcon()}<i class="{$item->getIcon()}" aria-hidden="true"></i>&nbsp;{/if}
                     {$item->getLabel()}
                     {if $item->hasBadge()}&nbsp;<span class="badge float-right">{$item->getBadge()}</span>{/if}
-                </h3>
+                </div>
             </div>
             <div class="card-body">
                 <form role="form">
-                    <select class="form-control" onchange="selectChangeNavigate(this)">
+                    <select class="form-control" aria-labelledby="mobilenav-{$item->getName()|lower|replace:' ':'-'}" onchange="selectChangeNavigate(this)">
                         {foreach $item->getChildren() as $childItem}
                             <option menuItemName="{$childItem->getName()}" value="{$childItem->getUri()}" class="list-group-item list-group-item-action" {if $childItem->isCurrent()}selected="selected"{/if}>
                                 {$childItem->getLabel()}

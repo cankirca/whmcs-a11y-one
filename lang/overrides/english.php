@@ -181,3 +181,8 @@ $_LANG['networkIssuesNavLabel']      = 'Network issues navigation';
 /* === WS-I Affiliates === */
 $_LANG['a11yAffiliatesCommissionSummary'] = 'Commission and balance summary';
 $_LANG['a11yAffiliatesReferralsList']     = 'Referrals list';
+
+/* === WS-J Navigation & heading semantics === */
+$_LANG['a11ySidebarNav']             = 'Sidebar navigation';
+$_LANG['a11yManageService']          = 'Manage service';
+$_LANG['a11yDashboard']              = 'Dashboard';

@@ -1552,6 +1552,14 @@
             div.__a11yLicenseWrapped = true;
             div.setAttribute('role', 'region');
             div.setAttribute('aria-label', _i18n('devlicensenotice', 'Development license notice'));
+            /* Relocate this dev-only banner out of the content reading order to
+               the end of the page (just before the footer), so it no longer
+               interrupts navigation between the menu and the page heading.
+               (It only appears on unlicensed/dev installs, never for end users.) */
+            var footer = document.getElementById('footer');
+            if (footer && footer.parentNode) {
+                footer.parentNode.insertBefore(div, footer);
+            }
         });
     }
 

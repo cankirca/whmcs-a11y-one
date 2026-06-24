@@ -29,6 +29,10 @@
     </div>
 {/if}
 
+{* Page-level heading: stays visible on every tab so the page subject (this
+   service) is the first and primary heading, not the sidebar or a tab label. *}
+<h1 class="h3 mb-4">{lang key='a11yManageService'}: {$product|escape}</h1>
+
 <div class="tab-content margin-bottom">
     <div class="tab-pane fade show active" role="tabpanel" id="tabOverview">
         {if $tplOverviewTabOutput}
@@ -49,8 +53,9 @@
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fas fa-{if $type eq "hostingaccount" || $type == "reselleraccount"}hdd{elseif $type eq "server"}database{else}archive{/if} fa-stack-1x fa-inverse"></i>
                                     </span>
-                                    {* Single <h1> for the page — product name is the page subject *}
-                                    <h1 class="h3">{$product}</h1>
+                                    {* Page <h1> now lives at the top of the page; this is the
+                                       visual product badge only, so it is not a second heading. *}
+                                    <p class="h3 mb-0">{$product}</p>
                                     <p class="h4 mb-0">{$groupname}</p>
                                 </div>
                                 <div class="product-status-text">

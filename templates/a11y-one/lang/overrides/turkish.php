@@ -186,3 +186,8 @@ $_LANG['networkIssuesNavLabel']      = 'Ağ sorunları gezintisi';
 /* === WS-I Affiliates === */
 $_LANG['a11yAffiliatesCommissionSummary'] = 'Komisyon ve bakiye özeti';
 $_LANG['a11yAffiliatesReferralsList']     = 'Yönlendirmeler listesi';
+
+/* === WS-J Navigation & heading semantics === */
+$_LANG['a11ySidebarNav']             = 'Kenar çubuğu gezintisi';
+$_LANG['a11yManageService']          = 'Hizmeti yönet';
+$_LANG['a11yDashboard']              = 'Panel';

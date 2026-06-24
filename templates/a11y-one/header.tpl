@@ -4,7 +4,12 @@
 <head>
     <meta charset="{$charset}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{if $kbarticle.title}{$kbarticle.title} - {/if}{$pagetitle} - {$companyname}</title>
+    {* Build a meaningful, page-specific <title>. WHMCS leaves $pagetitle as a
+       generic "Client Area" on most client-area actions; the breadcrumb leaf is
+       the actual page (e.g. "Product Details", "My Invoices"), so lead with it. *}
+    {assign var="a11yTitleLeaf" value=""}
+    {if $breadcrumb}{foreach $breadcrumb as $a11yBc}{if $a11yBc@last}{assign var="a11yTitleLeaf" value=$a11yBc.label|strip_tags|trim}{/if}{/foreach}{/if}
+    <title>{if $kbarticle.title}{$kbarticle.title}{elseif $a11yTitleLeaf && $a11yTitleLeaf != $pagetitle}{$a11yTitleLeaf}{else}{$pagetitle}{/if} - {$companyname}</title>
     {include file="$template/includes/head.tpl"}
     {$headoutput}
 </head>
@@ -173,7 +178,7 @@
             <div class="{if !$inShoppingCart && ($primarySidebar->hasChildren() || $secondarySidebar->hasChildren())}row{/if}">
 
             {if !$inShoppingCart && ($primarySidebar->hasChildren() || $secondarySidebar->hasChildren())}
-                <div class="col-lg-4 col-xl-3">
+                <nav class="col-lg-4 col-xl-3" aria-label="{lang key='a11ySidebarNav'}">
                     <div class="sidebar">
                         {include file="$template/includes/sidebar.tpl" sidebar=$primarySidebar}
                     </div>
@@ -182,7 +187,7 @@
                             {include file="$template/includes/sidebar.tpl" sidebar=$secondarySidebar}
                         </div>
                     {/if}
-                </div>
+                </nav>
             {/if}
             <div class="{if !$inShoppingCart && ($primarySidebar->hasChildren() || $secondarySidebar->hasChildren())}col-lg-8 col-xl-9{/if} primary-content">
     {/if}

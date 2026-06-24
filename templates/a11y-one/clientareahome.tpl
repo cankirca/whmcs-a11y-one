@@ -16,6 +16,9 @@
 
 {include file="$template/includes/flashmessage.tpl"}
 
+{* Clear page heading so the dashboard has a real <h1> as its first heading. *}
+<h1 class="h3 mb-4">{lang key='a11yDashboard'}</h1>
+
 <div class="tiles mb-4">
     <div class="row no-gutters">
         <div class="col-6 col-xl-3">
