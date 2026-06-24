@@ -97,39 +97,44 @@
                             {/if}
 
                         </div>
-                        <div class="col-md-6 text-center">
+                        <div class="col-md-6">
 
-                            <h2 class="h4">{lang key='clientareahostingregdate'}</h2>
-                            {$regdate}
+                            {* Field labels are a definition list, not headings: they are
+                               label/value pairs, so a <dl> reads as organised data and
+                               keeps them out of the page heading outline. *}
+                            <dl class="product-details-meta row mb-0">
+                                <dt class="col-5">{lang key='clientareahostingregdate'}</dt>
+                                <dd class="col-7">{$regdate}</dd>
 
-                            {if $firstpaymentamount neq $recurringamount}
-                                <h2 class="h4">{lang key='firstpaymentamount'}</h2>
-                                {$firstpaymentamount}
-                            {/if}
+                                {if $firstpaymentamount neq $recurringamount}
+                                    <dt class="col-5">{lang key='firstpaymentamount'}</dt>
+                                    <dd class="col-7">{$firstpaymentamount}</dd>
+                                {/if}
 
-                            {if $billingcycle != "{lang key='orderpaymenttermonetime'}" && $billingcycle != "{lang key='orderfree'}"}
-                                <h2 class="h4">{lang key='recurringamount'}</h2>
-                                {$recurringamount}
-                            {/if}
+                                {if $billingcycle != "{lang key='orderpaymenttermonetime'}" && $billingcycle != "{lang key='orderfree'}"}
+                                    <dt class="col-5">{lang key='recurringamount'}</dt>
+                                    <dd class="col-7">{$recurringamount}</dd>
+                                {/if}
 
-                            {if $quantitySupported && $quantity > 1}
-                                <h2 class="h4">{lang key='quantity'}</h2>
-                                {$quantity}
-                            {/if}
+                                {if $quantitySupported && $quantity > 1}
+                                    <dt class="col-5">{lang key='quantity'}</dt>
+                                    <dd class="col-7">{$quantity}</dd>
+                                {/if}
 
-                            <h2 class="h4">{lang key='orderbillingcycle'}</h2>
-                            {$billingcycle}
+                                <dt class="col-5">{lang key='orderbillingcycle'}</dt>
+                                <dd class="col-7">{$billingcycle}</dd>
 
-                            <h2 class="h4">{lang key='clientareahostingnextduedate'}</h2>
-                            {$nextduedate}
+                                <dt class="col-5">{lang key='clientareahostingnextduedate'}</dt>
+                                <dd class="col-7">{$nextduedate}</dd>
 
-                            <h2 class="h4">{lang key='orderpaymentmethod'}</h2>
-                            {$paymentmethod}
+                                <dt class="col-5">{lang key='orderpaymentmethod'}</dt>
+                                <dd class="col-7">{$paymentmethod}</dd>
 
-                            {if $suspendreason}
-                                <h2 class="h4">{lang key='suspendreason'}</h2>
-                                {$suspendreason}
-                            {/if}
+                                {if $suspendreason}
+                                    <dt class="col-5">{lang key='suspendreason'}</dt>
+                                    <dd class="col-7">{$suspendreason}</dd>
+                                {/if}
+                            </dl>
 
                         </div>
                     </div>

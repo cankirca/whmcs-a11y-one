@@ -708,3 +708,16 @@ footer#footer {
     outline-offset: 2px;
 }
 
+
+/* === WS-K product-details meta (definition list, was heading spam) === */
+.product-details-meta dt {
+    font-weight: 600;
+    color: #495057;
+}
+.product-details-meta dd {
+    margin-bottom: .5rem;
+}
+.product-details-meta dt,
+.product-details-meta dd {
+    padding-top: .25rem;
+}
