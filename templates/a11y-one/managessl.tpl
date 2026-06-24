@@ -9,6 +9,8 @@
    - Live region on the AJAX status div.
    Author: Can Kirca
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='a11yMySslCertificates'}</h1>
 {include file="$template/includes/tablelist.tpl" tableName="SslList" startOrderCol="3" filterColumn="0" noSortColumns="4"}
 
 <div class="alert alert-table-ssl-manage w-hidden" role="status" aria-live="polite"></div>

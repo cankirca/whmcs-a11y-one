@@ -11,6 +11,8 @@
    - fixAllDataTables() from a11y-one.js handles live-region announce + caption
      update on pagination — reuse (no new helper needed). *}
 
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='navemailssent'}</h1>
 {include file="$template/includes/tablelist.tpl" tableName="EmailsList" noSortColumns="-1"}
 
 <script>

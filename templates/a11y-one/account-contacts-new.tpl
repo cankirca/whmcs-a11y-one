@@ -4,6 +4,8 @@
          existing label preserved; submit button alongside onchange select;
          autocomplete tokens added to inputs.
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='clientareanavaddcontact'}</h1>
 {if $errorMessageHtml}
     {include file="$template/includes/alert.tpl" type="error" errorshtml=$errorMessageHtml}
 {/if}

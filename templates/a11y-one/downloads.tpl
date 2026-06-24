@@ -9,6 +9,8 @@
  *   - File type image rendered aria-hidden (decorative — title is the accessible name)
  *   - Lock icon (clients-only) aria-hidden; sr-only text conveys the restriction
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='downloadstitle'}</h1>
 {if empty($dlcats)}
     {include file="$template/includes/alert.tpl" type="info" msg="{lang key='downloadsnone'}" textcenter=true}
 {else}

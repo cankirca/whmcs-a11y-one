@@ -4,6 +4,8 @@
          role="dialog" + aria-modal + aria-labelledby; contact select has
          existing label preserved; submit button alongside onchange select.
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='contacts'}</h1>
 <script src="{$BASE_PATH_JS}/StatesDropdown.js"></script>
 
 <div class="alert alert-block alert-info">

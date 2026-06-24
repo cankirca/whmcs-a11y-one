@@ -1,3 +1,5 @@
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='quotestitle'}</h1>
 {include file="$template/includes/tablelist.tpl" tableName="QuotesList"  noSortColumns="5" filterColumn="4"}
 
 <script>

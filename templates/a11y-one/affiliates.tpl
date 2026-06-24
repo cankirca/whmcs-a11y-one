@@ -13,6 +13,8 @@
  *
  * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='affiliatestitle'}</h1>
 {if $inactive}
 
     {include file="$template/includes/alert.tpl" type="danger" msg="{lang key='affiliatesdisabled'}" textcenter=true}

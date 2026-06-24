@@ -5,6 +5,8 @@
  * decorative icons aria-hidden.
  * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='clientareanavdomains'}</h1>
 {if $warnings}
     {include file="$template/includes/alert.tpl" type="warning" msg=$warnings textcenter=true}
 {/if}

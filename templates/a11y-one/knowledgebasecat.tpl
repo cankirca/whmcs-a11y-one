@@ -8,6 +8,8 @@
  *   - Decorative icons marked aria-hidden
  *   - Back button uses real KB index URL, not javascript:history.go(-1)
  *}
+{* Clear page heading — current KB category name. *}
+{if $kbcurrentcat.name}<h1 class="h3 mb-4">{$kbcurrentcat.name|escape}</h1>{else}<h1 class="h3 mb-4">{lang key='knowledgebasetitle'}</h1>{/if}
 <form role="form" method="post" action="{routePath('knowledgebase-search')}" class="mb-4">
     <div class="input-group input-group-lg kb-search">
         <label for="inputKnowledgebaseSearch" class="sr-only">{lang key='a11yKbSearchLabel'}</label>

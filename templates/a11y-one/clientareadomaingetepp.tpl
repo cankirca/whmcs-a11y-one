@@ -4,6 +4,8 @@
  * handles the data-a11y-copy button — no inline script needed.
  * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='domaingeteppcode'}</h1>
 <div class="card">
     <div class="card-body">
         <h3 class="card-title">{lang key='domaingeteppcode'}</h3>

@@ -6,6 +6,8 @@
          a11y-one.js manages focus on open/close; linked-accounts live region
          handled by initLinkedAccountsLiveRegion().
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='clientareanavsecurity'}</h1>
 {include file="$template/includes/flashmessage.tpl"}
 
 <p>{lang key='userManagement.settings'}</p>

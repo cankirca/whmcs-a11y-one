@@ -6,11 +6,13 @@
  *  - Submit button already carries visible text via {lang key='affiliatesactivate'}; no change
  *    needed for accessible name — confirmed present in parent.
  *  - Hidden activate field and any CSRF token preserved.
- *  - Heading order: <h3> is appropriate within the client-area layout (page <h1> is provided
- *    by the layout; section card heading uses <h3> matching parent convention).
+ *  - Heading order: the page leads with a single <h1>; section card headings
+ *    use <h3> matching parent convention.
  *
  * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='affiliatesignuptitle'}</h1>
 {if $affiliatesystemenabled}
 
     <div class="card">

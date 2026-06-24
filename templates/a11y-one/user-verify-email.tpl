@@ -15,6 +15,8 @@
    Note: the resend AJAX is handled by WHMCS core scripts.min.js; we only need
    to announce the result. See initVerifyEmailLiveRegion() in a11y-one.js. *}
 
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='emailVerification.title'}</h1>
 <div class="card mw-540 mb-md-4 mt-md-4">
     <div class="card-body px-sm-5 py-5 text-center">
         {if $success}

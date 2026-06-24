@@ -6,6 +6,8 @@
  * no canonical a11y-one.js helper covers this specific filter-to-DataTables wire.
  * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='domainspricing'}</h1>
 <div class="domain-pricing">
 
     {if $featuredTlds}

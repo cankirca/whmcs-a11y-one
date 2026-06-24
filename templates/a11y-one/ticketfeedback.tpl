@@ -18,6 +18,8 @@
  *
  * Author: Can Kirca <cankirca@gmail.com>
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='ticketfeedbackrequest'}</h1>
 <div class="card">
     <div class="card-body">
         {if $stillopen}

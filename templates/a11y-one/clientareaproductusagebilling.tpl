@@ -5,6 +5,8 @@
    a standard hosting service without usage metrics). This template is source-verified
    for correct a11y markup; the metric tab only renders when $metricStats is truthy. *}
 
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='metrics.title'}</h1>
 <p>{lang key='metrics.explanation'}</p>
 <table class="table table-striped mb-1 table-solid-bottom-border-light-gray">
     <caption class="sr-only">{lang key='metrics.tableCaption'}</caption>

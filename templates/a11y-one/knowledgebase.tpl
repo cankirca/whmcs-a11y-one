@@ -8,6 +8,8 @@
  *   - Decorative icons marked aria-hidden
  *   - Article list item icons aria-hidden
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='knowledgebasetitle'}</h1>
 <form role="form" method="post" action="{routePath('knowledgebase-search')}" class="mb-4">
     <div class="input-group input-group-lg kb-search">
         <label for="inputKnowledgebaseSearch" class="sr-only">{lang key='a11yKbSearchLabel'}</label>

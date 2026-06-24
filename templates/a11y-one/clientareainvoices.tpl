@@ -1,3 +1,5 @@
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='invoices'}</h1>
 {include file="$template/includes/tablelist.tpl" tableName="InvoicesList" filterColumn="4"}
 
 <script>

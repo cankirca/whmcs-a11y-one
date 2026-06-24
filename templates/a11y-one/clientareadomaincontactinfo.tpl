@@ -5,6 +5,8 @@
  * IRTP modal gets aria-modal + focus management via canonical initModalAria.
  * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='domaincontactinfo'}</h1>
 {if $successful}
     {include file="$template/includes/alert.tpl" type="success" msg="{lang key='changessavedsuccessfully'}" textcenter=true}
 {/if}

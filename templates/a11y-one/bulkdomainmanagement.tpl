@@ -5,6 +5,8 @@
  * contact tabs with full ARIA; contact field labels added.
  * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='domainbulkmanagement'}</h1>
 <div class="card">
     <div class="card-body">
 

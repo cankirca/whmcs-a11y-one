@@ -5,6 +5,8 @@
          sr-only email label; radio group in fieldset/legend; permission checkboxes
          labelled; modals get role/aria-modal/aria-labelledby.
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='navUserManagement'}</h1>
 {include file="$template/includes/flashmessage.tpl"}
 
 <div class="card">

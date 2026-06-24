@@ -188,3 +188,9 @@ $_LANG['a11yManageService']          = 'Hizmeti yönet';
 $_LANG['a11yDashboard']              = 'Panel';
 $_LANG['a11yMyServices']             = 'Ürünlerim ve Hizmetlerim';
 $_LANG['a11yFilters']                = 'Filtreler';
+
+/* === WS-K Page headings rollout === */
+$_LANG['a11yMySslCertificates']      = 'SSL Sertifikalarım';
+$_LANG['a11yUpgradeService']         = 'Hizmet Yükselt';
+$_LANG['a11yUpgradeSummary']         = 'Yükseltme Siparişi';
+$_LANG['a11ySwitchAccountForced']    = 'Hesabı Onayla';

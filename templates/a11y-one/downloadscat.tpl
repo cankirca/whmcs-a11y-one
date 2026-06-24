@@ -10,6 +10,8 @@
  *   - Lock icon aria-hidden; sr-only text conveys the restriction
  *   - Back link uses real downloads index URL — no javascript:history.go(-1)
  *}
+{* Clear page heading — category name from breadcrumb last item. *}
+{foreach $breadcrumb as $a11yBc}{if $a11yBc@last}<h1 class="h3 mb-4">{$a11yBc.label|strip_tags|escape|trim}</h1>{/if}{/foreach}
 <form role="form" method="post" action="{routePath('download-search')}">
     <div class="input-group input-group-lg kb-search margin-bottom">
         <label for="inputDownloadsSearch" class="sr-only">{lang key='a11yDownloadsSearchLabel'}</label>

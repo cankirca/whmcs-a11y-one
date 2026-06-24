@@ -4,6 +4,8 @@
          with explicit <label> and aria-labelledby; required field indicators
          use aria-hidden asterisk + sr-only text; custom field labels preserved.
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='clientareanavdetails'}</h1>
 {if $successful}
     {include file="$template/includes/alert.tpl" type="success" msg="{lang key='changessavedsuccessfully'}" textcenter=true}
 {/if}

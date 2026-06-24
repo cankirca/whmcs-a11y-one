@@ -5,6 +5,8 @@
          email verification status badge gets role="status" + data-a11y-status-label;
          autocomplete tokens added; name inputs avoid collision between forms.
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='userProfile.profile'}</h1>
 {include file="$template/includes/flashmessage.tpl"}
 
 <div class="card">

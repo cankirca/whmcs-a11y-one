@@ -8,13 +8,13 @@
  *   - Domain-cancel <input type=checkbox> is labelled via wrapping <label>
  *     (already present in parent; preserved here explicitly).
  *   - Decorative icons carry aria-hidden="true".
- *   - Single <h1> rendered by global pageheader.tpl; no additional h1 here.
+ *   - Single visible <h1> leads the page content.
  *   - All UI strings via {$LANG.*} — no hardcoded text.
  *   - Token/sub hidden fields preserved.
  *
  * Author: Can Kirca
  **}
-<h1 class="sr-only">{$LANG.clientareacancelrequest}</h1>
+<h1 class="h3 mb-4">{$LANG.clientareacancelrequest}</h1>
 
 {if $invalid}
 

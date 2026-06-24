@@ -16,12 +16,14 @@
  *     in this template (upgrade-configure.tpl); those live in upgrade.tpl
  *     (legacy configoptions flow) and are fixed there with fieldset/legend.
  *     This template renders a product-card selection UI only.
- *   - h3/h4 headings preserved (h1 comes from global pageheader.tpl).
+ *   - h3/h4 headings preserved; the page leads with a single <h1>.
  *   - All strings via {lang key=...} — no hardcoded text.
  *   - Decorative icons carry aria-hidden="true".
  *
  * Author: Can Kirca
  **}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='a11yUpgradeService'}</h1>
 <div class="upgrade">
     {if !$serviceToBeUpgraded && $errorMessage}
         <div class="alert alert-warning">

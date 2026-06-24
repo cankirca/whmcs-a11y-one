@@ -8,6 +8,8 @@
      so the form acts as block (button + link in normal flow).
    - Cancel link is a real <a> href (correct in parent) — preserved. *}
 
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='a11ySwitchAccountForced'}</h1>
 <div class="card mw-540">
     <div class="card-body">
         <p>{lang key="switchAccount.forcedSwitchRequest"}</p>

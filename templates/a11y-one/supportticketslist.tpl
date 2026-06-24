@@ -15,6 +15,8 @@
     DataTables a11y (caption/scope/sort/pagination) is applied by a11y-one.js
     via the shared tablelist behaviour.
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='clientareanavsupporttickets'}</h1>
 {include file="$template/includes/tablelist.tpl" tableName="TicketsList" filterColumn="2"}
 
 <script>

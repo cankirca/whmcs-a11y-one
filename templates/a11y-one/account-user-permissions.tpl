@@ -3,6 +3,8 @@
    WS-B: Permission checkboxes wrapped in <fieldset>/<legend>; each checkbox
          gets an explicit <label for="..."> with a matching id on the input.
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='userManagement.managePermissions'}</h1>
 {include file="$template/includes/flashmessage.tpl"}
 
 <div class="card">

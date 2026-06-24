@@ -8,6 +8,8 @@
      class only; explicit role ensures SR announces immediately).
    - Single clear error message structure preserved from parent. *}
 
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='bannedtitle'}</h1>
 <div class="alert alert-danger" role="alert">
     <strong>
         <i class="fas fa-gavel" aria-hidden="true"></i>

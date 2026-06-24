@@ -8,11 +8,13 @@
  *   - Empty <th> cells in the package table given aria-hidden to suppress
  *     axe empty-table-header violation.
  *   - Config-options sub-table column headers carry scope="col".
- *   - Single <h1> from global pageheader.tpl; no additional h1 here.
+ *   - Single <h1> leads the page content; no additional h1 here.
  *   - All strings via {$LANG.*} / {lang key=...} — no hardcoded text.
  *
  * Author: Can Kirca
  **}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='a11yUpgradeService'}</h1>
 {if $overdueinvoice}
     {include file="$template/includes/alert.tpl" type="warning" msg=$LANG.upgradeerroroverdueinvoice}
 {elseif $existingupgradeinvoice}

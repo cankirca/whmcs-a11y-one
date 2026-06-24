@@ -4,6 +4,8 @@
          spans wrapped in aria-live region; initBootstrapSwitchA11y() in
          a11y-one.js adds role=switch + aria-checked to .bootstrap-switch wrapper.
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='clientareanavsecurity'}</h1>
 {if $showSsoSetting}
     <div class="card">
         <div class="card-body">

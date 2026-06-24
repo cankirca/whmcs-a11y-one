@@ -193,3 +193,9 @@ $_LANG['a11yManageService']          = 'Manage service';
 $_LANG['a11yDashboard']              = 'Dashboard';
 $_LANG['a11yMyServices']             = 'My Products & Services';
 $_LANG['a11yFilters']                = 'Filters';
+
+/* === WS-K Page headings rollout === */
+$_LANG['a11yMySslCertificates']      = 'My SSL Certificates';
+$_LANG['a11yUpgradeService']         = 'Upgrade Service';
+$_LANG['a11yUpgradeSummary']         = 'Upgrade Order';
+$_LANG['a11ySwitchAccountForced']    = 'Confirm Account';

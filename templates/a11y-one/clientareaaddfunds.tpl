@@ -1,3 +1,5 @@
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='addfunds'}</h1>
 {if $addfundsdisabled}
     {include file="$template/includes/alert.tpl" type="error" msg="{lang key='clientareaaddfundsdisabled'}" textcenter=true}
 {elseif $notallowed}

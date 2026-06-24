@@ -10,6 +10,8 @@
  *   - All decorative icons get aria-hidden="true".
  *   - phpinfo target=_blank link gets rel="noopener noreferrer" + sr-only note.
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='serverstatustitle'}</h1>
 
 {if $opencount == 0}
     <div class="alert alert-success">

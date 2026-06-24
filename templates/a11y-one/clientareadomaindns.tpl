@@ -4,6 +4,8 @@
  * input gets headers + aria-label for AT; new-record row labelled sr-only.
  * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='domaindnsmanagement'}</h1>
 <div class="card">
     <div class="card-body">
         <h3 class="card-title">{lang key='domaindnsmanagement'}</h3>

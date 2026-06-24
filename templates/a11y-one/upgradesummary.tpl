@@ -7,11 +7,13 @@
  *   - Promo-code <input type="text"> receives an explicit <label for> (WCAG 1.3.1).
  *   - Payment-method <select> receives an explicit <label for> (WCAG 1.3.1, 4.1.2).
  *   - Submit button retains value= as its accessible name.
- *   - Single <h1> from global pageheader.tpl; subheaders are h3 via subheader.tpl.
+ *   - Single <h1> leads the page content; subheaders are h3.
  *   - All strings via {$LANG.*} — no hardcoded text.
  *
  * Author: Can Kirca
  **}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='a11yUpgradeSummary'}</h1>
 {if $promoerror}
     {include file="$template/includes/alert.tpl" type="error" msg=$promoerror textcenter=true}
 {/if}

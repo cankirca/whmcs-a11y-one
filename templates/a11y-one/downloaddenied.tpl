@@ -12,6 +12,8 @@
      renders inside the client-area chrome's main content area which has a
      page-level h1 from the breadcrumb/page-title region in header.tpl. *}
 
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='accessdenied'}</h1>
 {if $reason eq "supportandupdates"}
 
     {include file="$template/includes/alert.tpl" type="error" msg="{lang key='supportAndUpdatesExpiredLicense'}{if $licensekey}: {$licensekey}{else}.{/if}" textcenter=true}

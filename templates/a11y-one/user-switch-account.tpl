@@ -12,6 +12,8 @@
    - Labels and badges inside buttons remain readable by AT.
    - Form submit is triggered from JS on button click (delegated; no inline onclick). *}
 
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='switchAccount.choose'}</h1>
 <div class="card mw-540">
     <div class="card-body">
         {include file="$template/includes/flashmessage.tpl"}

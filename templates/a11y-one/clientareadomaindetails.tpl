@@ -5,6 +5,8 @@
  * decorative icons aria-hidden.
  * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='a11yManageService'}: {$domain|escape}</h1>
 {if $registrarcustombuttonresult=="success"}
     {include file="$template/includes/alert.tpl" type="success" msg="{lang key='moduleactionsuccess'}" textcenter=true}
 {elseif $registrarcustombuttonresult}

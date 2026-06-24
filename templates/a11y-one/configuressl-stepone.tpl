@@ -9,6 +9,8 @@
    - Autocomplete attributes on personal/address fields.
    Author: Can Kirca
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='sslconfsslcertificate'}</h1>
 {if !$status}
     <div class="card py-3">
         <div class="card-body text-center">

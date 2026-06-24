@@ -6,6 +6,8 @@
      and the link carries aria-label for an unambiguous accessible name.
    Author: Can Kirca
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='manageSubscription'}</h1>
 <div class="card mw-540">
     <div class="card-body" role="status" aria-live="polite">
 

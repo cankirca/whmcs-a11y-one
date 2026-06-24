@@ -5,6 +5,8 @@
  * is descriptive but not programmatically associated — aria-describedby added.
  * Author: Can Kirca <cankirca@gmail.com> — https://github.com/cankirca
  *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='domainregisterns'}</h1>
 {if $result}
     {include file="$template/includes/alert.tpl" type="warning" msg=$result textcenter=true}
 {/if}

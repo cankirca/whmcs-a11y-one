@@ -9,6 +9,8 @@
    - Submit button: explicit aria-label.
    Author: Can Kirca
 *}
+{* Clear page heading. *}
+<h1 class="h3 mb-4">{lang key='sslconfsslcertificate'}</h1>
 {if empty($approvalMethods)}
     {assign var="approvalMethods" value=[]}
 {/if}
