@@ -8,3 +8,6 @@ index.php
 CLAUDE.md
 .claude/
 docs/superpowers/
+
+# Dev-only accessibility test suite (not published)
+tests/
