@@ -3,6 +3,9 @@
    WS-D Task 1: keyboard-accessible rows (real <a> link, no onclick redirect),
    product logo img alt, status badge sr-only text, DataTables inherited. *}
 
+{* Clear page heading — this list page had no <h1> of its own. *}
+<h1 class="h3 mb-4">{lang key='a11yMyServices'}</h1>
+
 {include file="$template/includes/tablelist.tpl" tableName="ServicesList" filterColumn="4" noSortColumns="0"}
 
 <script>

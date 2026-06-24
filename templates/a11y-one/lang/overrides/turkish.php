@@ -191,3 +191,4 @@ $_LANG['a11yAffiliatesReferralsList']     = 'Yönlendirmeler listesi';
 $_LANG['a11ySidebarNav']             = 'Kenar çubuğu gezintisi';
 $_LANG['a11yManageService']          = 'Hizmeti yönet';
 $_LANG['a11yDashboard']              = 'Panel';
+$_LANG['a11yMyServices']             = 'Ürünlerim ve Hizmetlerim';

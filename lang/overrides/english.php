@@ -186,3 +186,4 @@ $_LANG['a11yAffiliatesReferralsList']     = 'Referrals list';
 $_LANG['a11ySidebarNav']             = 'Sidebar navigation';
 $_LANG['a11yManageService']          = 'Manage service';
 $_LANG['a11yDashboard']              = 'Dashboard';
+$_LANG['a11yMyServices']             = 'My Products & Services';

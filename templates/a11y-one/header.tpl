@@ -95,19 +95,7 @@
                     {/if}
                 </a>
 
-                <form method="post" action="{routePath('knowledgebase-search')}" class="form-inline ml-auto">
-                    <div class="input-group search d-none d-xl-flex">
-                        <div class="input-group-prepend">
-                            <button class="btn btn-default" type="submit">
-                                <i class="fas fa-search" aria-hidden="true"></i>
-                                <span class="sr-only">{lang key="searchOurKnowledgebase"}</span>
-                            </button>
-                        </div>
-                        <input class="form-control appended-form-control font-weight-light" type="text" name="search" placeholder="{lang key="searchOurKnowledgebase"}...">
-                    </div>
-                </form>
-
-                <ul class="navbar-nav toolbar">
+                <ul class="navbar-nav toolbar ml-auto">
                     <li class="nav-item ml-3">
                         <a class="btn nav-link cart-btn" href="{$WEB_ROOT}/cart.php?a=view" aria-label="{lang key='carttitle'} ({$cartitemcount} {lang key='a11yItemsInCart'})">
                             <i class="far fa-shopping-cart fa-fw" aria-hidden="true"></i>
@@ -125,17 +113,6 @@
         <div class="navbar navbar-expand-xl main-navbar-wrapper">
             <div class="container">
                 <div class="collapse navbar-collapse" id="mainNavbar">
-                    <form method="post" action="{routePath('knowledgebase-search')}" class="d-xl-none">
-                        <div class="input-group search w-100 mb-2">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-default" type="submit">
-                                    <i class="fas fa-search" aria-hidden="true"></i>
-                                    <span class="sr-only">{lang key="searchOurKnowledgebase"}</span>
-                                </button>
-                            </div>
-                            <input class="form-control prepended-form-control" type="text" name="search" placeholder="{lang key="searchOurKnowledgebase"}...">
-                        </div>
-                    </form>
                     <ul id="nav" class="navbar-nav mr-auto">
                         {include file="$template/includes/navbar.tpl" navbar=$primaryNavbar}
                     </ul>
