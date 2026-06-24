@@ -2424,3 +2424,68 @@
     }
 }());
 
+/* === List-page filters: collapsed "Filters" disclosure below the heading ===
+ * WHMCS renders list-page status filters ("View": Active/Pending/…) as a panel
+ * in the secondary sidebar, which clutters navigation and pushes the list down.
+ * Relocate that panel into a single collapsed "Filters" button placed right
+ * under the page heading, so the list leads and filters are one predictable,
+ * keyboard-operable control. Progressive enhancement: with no JS the filters
+ * stay in the sidebar and still work.
+ */
+(function () {
+    function filtersLabel() {
+        var c = document.getElementById('a11yOneI18n');
+        return (c && c.getAttribute('data-filters')) || 'Filters';
+    }
+    function initListFilters() {
+        var card = document.querySelector('.view-filter-btns');
+        if (!card) { return; }
+        var group = card.querySelector('.list-group');
+        var h1 = document.querySelector('.primary-content h1') || document.querySelector('#main-body h1');
+        if (!group || !h1) { return; }
+        var label = filtersLabel();
+
+        var wrap = document.createElement('div');
+        wrap.className = 'a11y-filters mb-4';
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = 'a11yFiltersToggle';
+        btn.className = 'btn btn-outline-secondary a11y-filters-toggle';
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-controls', 'a11yFiltersRegion');
+        var icon = document.createElement('i');
+        icon.className = 'fas fa-filter mr-1';
+        icon.setAttribute('aria-hidden', 'true');
+        var lbl = document.createElement('span');
+        lbl.textContent = label;
+        btn.appendChild(icon);
+        btn.appendChild(lbl);
+
+        var region = document.createElement('div');
+        region.id = 'a11yFiltersRegion';
+        region.className = 'a11y-filters-region mt-2';
+        region.setAttribute('role', 'group');
+        region.setAttribute('aria-label', label);
+        region.hidden = true;
+        region.appendChild(group);
+
+        wrap.appendChild(btn);
+        wrap.appendChild(region);
+        h1.insertAdjacentElement('afterend', wrap);
+
+        if (card.parentNode) { card.parentNode.removeChild(card); }
+
+        btn.addEventListener('click', function () {
+            var open = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+            region.hidden = open;
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initListFilters);
+    } else {
+        initListFilters();
+    }
+}());
+

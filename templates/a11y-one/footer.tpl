@@ -183,6 +183,7 @@
         data-sorteddesc="{lang key='a11ySortedDesc'}"
         data-notsorted="{lang key='a11yNotSorted'}"
         data-devlicensenotice="{lang key='a11yDevLicenseNotice'}"
+        data-filters="{lang key='a11yFilters'}"
         data-mdeeditor="{lang key='a11yMdeEditor'}"
         data-mdetoolbar="{lang key='a11yMdeToolbar'}"
         data-mdebold="{lang key='a11yMdeBold'}"

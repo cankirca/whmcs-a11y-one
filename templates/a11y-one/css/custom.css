@@ -660,3 +660,51 @@ footer#footer {
     clip: rect(0, 0, 0, 0);
 }
 
+/* === WS-K list-page "Filters" disclosure === */
+.a11y-filters-toggle {
+    display: inline-flex;
+    align-items: center;
+    /* Bootstrap btn-outline-secondary text (#6c757d) is only 4.15:1 on the
+       page background; darken to #495057 (7.0:1) to pass WCAG AA. */
+    color: #495057;
+    border-color: #adb5bd;
+}
+.a11y-filters-toggle:hover,
+.a11y-filters-toggle:focus {
+    color: #fff;
+    background-color: #495057;
+    border-color: #495057;
+}
+.a11y-filters-toggle[aria-expanded="true"] {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+/* Lay the relocated status filters out as a horizontal, wrapping pill group
+   instead of the sidebar's full-width vertical list. */
+.a11y-filters-region .list-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+.a11y-filters-region .list-group-item {
+    width: auto;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    padding: .4rem .8rem;
+}
+.a11y-filters-region .list-group-item .sidebar-menu-item-wrapper {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+.a11y-filters-region .list-group-item.active {
+    border-color: #117285;
+    background-color: #e7f3f6;
+    color: #0b4f5c;
+    font-weight: 600;
+}
+.a11y-filters-region .list-group-item:focus {
+    outline: 2px solid #117285;
+    outline-offset: 2px;
+}
+
