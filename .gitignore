@@ -1,3 +1,10 @@
 __pycache__/
 *.pyc
 .superpowers/
+
+# Not part of the published theme (local install / dev tooling / secrets)
+.env
+index.php
+CLAUDE.md
+.claude/
+docs/superpowers/

@@ -1,4 +1,2 @@
+# Exclude development-only material from `git archive` release packages.
 tests/ export-ignore
-docs/ export-ignore
-.superpowers/ export-ignore
-.claude/ export-ignore
