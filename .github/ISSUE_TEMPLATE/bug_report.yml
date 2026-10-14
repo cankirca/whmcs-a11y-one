@@ -1,0 +1,39 @@
+name: Bug report
+description: Something is broken, mis-rendered, or a template does not behave as documented
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: whmcs
+    attributes:
+      label: WHMCS version and A11y One version
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Browser, operating system and any assistive technology
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: The active client-area theme is `a11y-one` and the cart order form is `a11y-cart`
+        - label: I cleared the WHMCS template cache (`templates_c`) after installing or updating

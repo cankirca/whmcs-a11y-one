@@ -1,0 +1,41 @@
+name: Accessibility barrier
+description: A page or control in the client area that is hard or impossible to use with a keyboard or screen reader
+labels: ["accessibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Reports from real assistive-technology use are the most valuable thing you can send.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens
+      description: What you heard or what the keyboard did, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The page URL path (for example `clientarea.php?action=invoices`) and the keys or gestures you used.
+    validations:
+      required: true
+  - type: input
+    id: at
+    attributes:
+      label: Screen reader and version
+      placeholder: NVDA 2025.1, JAWS 2025, VoiceOver macOS 15, Orca 47, TalkBack
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and operating system
+    validations:
+      required: true
+  - type: input
+    id: whmcs
+    attributes:
+      label: WHMCS version and A11y One version
+    validations:
+      required: true
